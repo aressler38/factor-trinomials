@@ -1,0 +1,351 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+    
+    <!--
+    
+    Currently, this is a program that will display a diamond that is to be used
+    with a generic rectangle for factoring quadratic expressions (ax^2 + bx +c).
+    
+    I've not seperated the HTML from the JavaScript. However, I have minimized the
+    JavaScript to 3 locations: (2) calls to external libraries in the HEAD and
+    (1) the main JavaScript program that is implemented below the last DOM element
+    in the html BODY. 
+    
+    The diamond is rendered in SVG managed by the JavaScript. 
+    
+    comments and TODOs throughout...
+    
+    -->
+    
+<html lang="en">
+
+<head>
+    <title>Factor Trinomials</title>
+    
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <style type="text/css">
+        .ft-container {
+        
+        }
+        .ft-trinomial {
+            position:relative;
+            float:left;
+            
+        }
+        .ft-rectangle {
+            position:relative;
+            float:right;
+        }
+        .ft-diamond {
+            border: 1px solid black;
+            width: 200px;
+            height: 200px;
+        }
+        
+    </style>
+</head>
+
+
+
+
+
+<body>
+    <div class="ft-container">
+    <!--
+        I'm not indenting the elements that are 1 level into ft-container;
+        I don't want to style the body tag. What if you want to
+        integrate this somewhere else? So, treat ".ft-container" like the body,
+        and style it instead.
+    -->
+    
+    <div class="ft-trinomial">
+        Trinomial container
+    </div> 
+    <div style="clear:both;"></div>
+    
+    <div class="ft-diamond">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width:200px; height:200px;" version="1.1" class="ft-svg-container" viewBox="0 0 200 200"></svg>
+    </div>
+    
+    <div class="ft-rectangle"></div>   
+    
+   <!-- <textarea class="ft-logger" cols="50" rows="10"></textarea> -->
+   
+    </div>
+    
+    <!-- Finished with the initial layout. The following JavaScript would ideally be in a seperate file -->
+    
+    <script type="text/javascript">
+        
+        // Wait!
+        // I have some variables that need explaining...
+        //
+        // DOM elements with id = ft-diamond-text-<number> 
+        //     these are the DOM ids that correspond to each LaTeX expression within the diamond
+        // expression
+        //     used to set up the DOM span elements inside diamond, which will hold the rendered LaTeX
+        // inputBox
+        //     used for the DOM input element when you click on part of the diamond
+        // coefficients
+        //     object containing the values a,b,c in polynomial ax^2 + bx + c
+        //
+        // that
+        //     none of your business
+        
+        var that = this;
+        var parameters = [1, -17, 30]; // these are the a,b,c that go in ax^2 + bx + c
+        
+        var coefficients =
+            {
+                a:parameters[0],
+                b:parameters[1],
+                c:parameters[2]
+            };
+                 
+        for (var c in coefficients) {
+            
+            switch (coefficients[c]) {
+                case 1:
+                    coefficients[c] = "";
+                    break;
+                case -1:
+                    coefficients[c] = "- ";
+                    break;
+                
+                default:
+                    if (coefficients[c] > 0) {
+                        coefficients[c] = "+ "+coefficients[c];
+                    }
+                    else {
+                        coefficients[c] = "- "+-1*coefficients[c];
+                    }
+            }
+        }        
+        
+        $(".ft-trinomial").html("Factor the following trinomial: &nbsp;"+
+                                "<span class='ft-trinomial-equation' style='font-size:22px'>"+                          
+                                coefficients.a+"<em>x</em><sup>2</sup> "+
+                                coefficients.b+"<em>x</em> "+
+                                coefficients.c +
+                                "</span>"
+        );
+        
+        // setup for the diamond
+        var diamondInputs = [];
+        var xmlns="http://www.w3.org/2000/svg";
+        var View_MAX = 350,   // set the max pixels for the diamond's box container
+            diamondPartLength =  Math.floor(View_MAX * Math.sqrt(2.0)/4.0);
+            
+        // Grab the html containers and set up the dimensions based on View_MAX
+        $(".ft-diamond")[0].setAttribute("style", "width:" + View_MAX + "px;" + "height:" + View_MAX + "px;");
+        $(".ft-svg-container")[0].setAttribute("style", "width:" + View_MAX + "px;" + "height:" + View_MAX + "px;");
+        $(".ft-svg-container")[0].setAttribute("viewBox", "0 0 " + View_MAX + " " + View_MAX);
+        
+        
+        // Make 4 inner squares and rotate them accordingly to make the diamond
+        //
+        // Here's the setup structure according to class suffix (1,2,3, or 4)
+        //
+        //          3
+        //        2   4  
+        //          1
+        //
+        for (var i=0; i<4; i++) {
+            var angle = 45 + i*90;
+            var diamondPart = document.createElementNS(xmlns, "rect");
+            diamondPart.setAttribute("class", "ft-diamondBox-"+(i+1)); // assign classes to each box
+            diamondPart.setAttribute("x", View_MAX/2.0);
+            diamondPart.setAttribute("y", View_MAX/2.0);
+            diamondPart.setAttribute("width", diamondPartLength);
+            diamondPart.setAttribute("height", diamondPartLength);
+            diamondPart.setAttribute("transform", "rotate(" + angle + " " + View_MAX/2.0 + " " + View_MAX/2.0 + ")");
+            diamondPart.setAttribute("style", "stroke-width:3; stroke:blue; fill:white;");
+            $(".ft-svg-container").append(diamondPart);
+        }
+        
+        
+        // TODO: these event bindings need to be implemented somewhere else... also, modularize this code... at least follow
+        // a functional approach. This is ridiculous, think modular ... like oreos.
+        //
+        // Watch for diamond clicks, this is the hook for the mouse click event on the diamond
+        $(".ft-diamondBox-1, .ft-diamondBox-2, .ft-diamondBox-3, .ft-diamondBox-4").click(createInputBox);
+
+        // This is the function that will create the input for LaTeX when you click on the diamond.
+        function createInputBox(e) {
+            // first... i'm gonna ... remove the old inputBox
+            $(that.inputBox).remove();
+            // then... i'm gonna use you as a human shield, *cough* i mean figure out your class name
+            var svgTarget = e.currentTarget;
+            var diamondNumber = svgTarget.className.baseVal.replace("ft-diamondBox-", "");
+            var coords = [e.clientX, e.clientY];
+             
+            $("#ft-diamond-text-"+diamondNumber).remove()
+
+            that.inputBox = document.createElement("input");
+            that.expression = document.createElement("span");
+                                   
+            that.inputBox.setAttribute("style",
+                                "position:absolute;" +
+                                "top:"+coords[1] +"px;"+
+                                "left:"+coords[0]+"px;"+
+                                "height:50px;" +
+                                "width:100px;"+
+                                "font-size:22px;"
+            );
+            $("body").append(inputBox);
+            inputBox.focus();
+            
+            // binding a keyup event to the input box
+            //  use the event to figure out what diamond you clicked and run through a switch
+            $(that.inputBox).keyup(function(e){
+                if (e.which == 13) {
+                    var text = $(that.inputBox).val();
+                    // Get rid of all the spaces in the user's input text
+                    if (text.indexOf(" ") != -1) {
+                        while (text.indexOf(" ") != -1) {
+                            text = text.replace(" ", "");
+                        }
+                    }
+                    // textCoords is where the text will go
+                    var textCoords=[null,null];
+                    
+                    switch (parseInt(diamondNumber)) {
+                            // Don't ask about these ratios... they're for positioning         
+                        case 1:
+                            textCoords = [17.0/35.0*View_MAX, 30.0/35.0*View_MAX];
+                            break;
+                        case 2:
+                            textCoords = [8.0/35.0*View_MAX, 22.0/35.0*View_MAX];                           
+                            break;
+                        case 3:
+                            textCoords = [17.0/35.0*View_MAX, 121.0/350.0*View_MAX]
+                            break;
+                        case 4:
+                            textCoords = [26.0/35.0*View_MAX, 22.0/35.0*View_MAX];
+                            break;
+                        default:
+                            throw "something's wrong with the diamond number."
+                        
+                    }
+                    that.expression.setAttribute("id", "ft-diamond-text-"+diamondNumber);
+                    that.expression.setAttribute("style",
+                                               "position:absolute;"+ 
+                                               "top:"+textCoords[1]+"px;"+
+                                               "left:"+textCoords[0]+"px;"
+                    );
+                    
+                    // now write the LaTeX string to the expression and append to body
+                    that.expression.textContent = "\\(\\Large "+text+"\\)"
+                    $("body").append(that.expression);
+                    $(that.inputBox).remove();
+                    
+                    
+                    // store what the user just entered in diamondInputs array
+                    // store text in a 1-1 fashion matching the diamondNumber
+                    that.diamondInputs[parseInt(diamondNumber)-1] = text;
+                                   
+                    // This for loop is where I check the diamondInputs against the parameters.
+                    // I'm going to color the diamond parts here.
+                    //
+                    // TODO: add a hook that checks if the entire diamond is ok
+                    // then create the rectangle and finsish this beast.
+                    //
+                    for (var i=0; i<4; i++) {
+                        var dParsed = readDiamondInput(that.diamondInputs[i]);
+                        log("You entered: " + dParsed);
+                        switch (i) {
+                            case 0:
+                                if (dParsed != parameters[1]) {
+                                    log("That is not the correct value for the sum.");
+                                }
+                                else {
+                                    log(dParsed + " is the correct value for the sum");
+                                }
+                                break;
+                            case 1:
+                            // you're storing things as strings...not ints
+                                break;
+                            case 2:
+                                if (dParsed != parameters[0]*parameters[2]) {
+                                    log("I was expecting "+parameters[0]*parameters[2]+" for the product");
+                                }
+                                else {
+                                    log("the product was correct: "+dParsed);  
+                                }
+                                break;
+                            case 3:
+                                log("the sum of the sides is "+that.diamondInputs[1]+that.diamondInputs[3]); 
+                                break;
+                            default:
+                                log("Something is seriously wrong... contact tech support");
+                                throw "Error while parsing index i.";
+                        }
+                        
+                    }
+                    
+                    // This function reads the input of a diamond and looks at the coefficient.
+                    // It sees if you entered just "x" instead of "1x" or "-x" instead of "-1x".
+                    // 
+                    function readDiamondInput(data) {
+                        if (typeof(data) == "undefined") {
+                            return "error";
+                        }
+                        // Handle the case if the coefficient is an implied 1 or an implied -1.
+                        if (isNaN(parseInt(data))) {
+                            switch (data[0]) {
+                                case "x":
+                                    return 1;
+                                    break;
+                                case "-":
+                                    return -1;
+                                    break;
+                                default:
+                                    log("There's something wrong with what you entered. I was expecting the expression to start with x or -x");
+                                    log("You entered: '"+data[0]+"'");
+                                    throw "Error in readDiamondInput: data[0] not recognized.";
+                            }
+                        }
+                        else {
+                            data = parseInt(data);
+                            log("I have recognized the coefficient: "+data);
+                            return data;
+                        }
+                        
+                        return null;
+                    }
+
+                    // This is my logger function... yeah... 
+                    function log(message) {
+                        //$('.ft-logger').prepend(message +"\n");
+                        console.log(message);
+                    }
+                    
+                    
+                    // Lastly, render the LaTeX via MathJax...yes!
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, String("ft-diamond-text-"+diamondNumber)]);
+                }
+            });
+        }
+        
+        // TODO: This is feedback from Richard; make this happen:
+        /*
+        I am not a programmer, so I do not know what is possible.
+        Can the area of the diamond problem being filled in turn green when it is correct and red when it is incorrect?
+        Upon hitting enter to fill the area of the diamond, the program could compare the answer with the correct answer and
+        turn the background of the diamond section green if the program returns a true parameter.
+        Once the entire two numbers that satisfy the product-sum rule are entered correctly,
+        that those two values then migrate to the generic rectangle cells?
+        Then, the students could proceed to entering the factors on the outer part of the generic rectangle.
+        Finally, students could enter their factored expression and click a submit button to see if they are correct.
+        */
+        
+    </script>
+    
+    
+</body>
+
+
+</html>
