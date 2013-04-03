@@ -278,14 +278,11 @@ Diamond = {
 
     
 }
-// TODO: This is feedback from Richard; make this happen:
+// TODO: 
 /*
-I am not a programmer, so I do not know what is possible.
-Can the area of the diamond problem being filled in turn green when it is correct and red when it is incorrect?
-Upon hitting enter to fill the area of the diamond, the program could compare the answer with the correct answer and
-turn the background of the diamond section green if the program returns a true parameter.
-Once the entire two numbers that satisfy the product-sum rule are entered correctly,
-that those two values then migrate to the generic rectangle cells?
-Then, the students could proceed to entering the factors on the outer part of the generic rectangle.
-Finally, students could enter their factored expression and click a submit button to see if they are correct.
+    * Make the are of the diamond fill green when the user's input is correct, and make the diamond fill red when the user input is incorrect.
+    * Once the two numbers that satisfy the product-sum rule are entered correctly:
+        - animate those two numbers to the generic rectangle cells.
+    * Students could enter the factors on the outer part of the generic rectangle.
+    * Finally, students could enter their factored expression and click a submit button to see if they      are correct.
 */
