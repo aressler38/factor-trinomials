@@ -2,6 +2,8 @@ factor-trinomials
 =================
 
 Use a generic rectangle and diamond to a factor trinomial
+    Copyright (c) 2013. All Rights Reserved. 
+        By Alexander Ressler.
 
 
 
