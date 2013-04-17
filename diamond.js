@@ -70,8 +70,8 @@ Diamond = {
         // setup for the diamond
         this.diamondInputs = [];
         var xmlns="http://www.w3.org/2000/svg";
-        this.View_MAX = 350,   // set the max pixels for the diamond's box container
-            diamondPartLength =  Math.floor(this.View_MAX * Math.sqrt(2.0)/4.0);
+        this.View_MAX = 350;   // set the max pixels for the diamond's box container
+        var diamondPartLength =  Math.floor(this.View_MAX * Math.sqrt(2.0)/4.0);
             
         // Grab the html containers and set up the dimensions based on View_MAX
         $(".ft-diamond")[0].setAttribute("style", "width:" + this.View_MAX + "px;" + "height:" + this.View_MAX + "px;");
@@ -116,8 +116,8 @@ Diamond = {
     // input box and printing the MathJax when the user hits enter (key 13)
     createInputBox: function(e) {
         var that = this;
-        console.log(e)
-        console.log(that)
+        log(e)
+        log(that)
         // first... i'm gonna ... remove the old inputBox
         $(this.inputBox).remove();
         // then... i'm gonna use you as a human shield, *cough* i mean figure out your class name
