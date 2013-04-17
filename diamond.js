@@ -1,3 +1,13 @@
+// Diamond.js is a file associated with the factor-trinomial 
+// browser application. It role is to set up a diamond, which
+// aids in the factoring of a trinomial. 
+//
+// copyright (c) 2013 By Alexander Ressler
+
+
+
+
+
 
 // Wait!
 // I have some variables that need explaining...
