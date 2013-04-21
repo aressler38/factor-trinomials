@@ -3,15 +3,9 @@
 // aids in the factoring of a trinomial. 
 //
 // copyright (c) 2013 By Alexander Ressler
-
-
-
-
-
-
-// Wait!
-// I have some variables that need explaining...
 //
+// ================================================================================================
+// 
 // DOM elements with id = ft-diamond-text-<number> 
 //     these are the DOM ids that correspond to each LaTeX expression within the diamond
 // expression
@@ -21,6 +15,7 @@
 // coefficients
 //     object containing the values a,b,c in polynomial ax^2 + bx + c
 //
+// ================================================================================================
 
 
 
