@@ -1,0 +1,17 @@
+.ft-container {
+
+}
+.ft-trinomial {
+    position:relative;
+    float:left;
+    
+}
+.ft-rectangle {
+    position:relative;
+    float:right;
+}
+.ft-diamond {
+    border: 1px solid black;
+    width: 200px;
+    height: 200px;
+}
