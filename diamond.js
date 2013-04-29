@@ -50,7 +50,6 @@ Diamond = {
             }
             return coefficients;
         }());
-
     },
     
     initialize: function(parameters) {
@@ -105,7 +104,7 @@ Diamond = {
         this.events();
 
     },
-    
+
     // TODO: these event bindings need to be implemented somewhere else... also, modularize this code... at least follow
     // a functional approach. This is ridiculous, think modular ... like oreos.
     //
@@ -124,23 +123,21 @@ Diamond = {
     },
 
     diamondNumber:{},
+    
     // This is the function that will create the input for LaTeX when you click on the diamond.
-    // Previously, I had been overloading this method: this method should only be responsible for creating the 
-    // input box and printing the MathJax when the user hits enter (key 13)
+    // * should only be responsible for creating the input box and printing the MathJax
     createInputBox: function(e) {
         var that = this;
-        // first... i'm gonna ... remove the old inputBox
         $(this.inputBox).remove();
-        // then... i'm gonna use you as a human shield, *cough* i mean figure out your class name
         var svgTarget = e.currentTarget;
         this.diamondNumber = svgTarget.className.baseVal.replace("ft-diamondBox-", "");
         var coords = [e.clientX, e.clientY];
-         
+        
         $("#ft-diamond-text-"+this.diamondNumber).remove()
 
         this.inputBox = document.createElement("input");
         this.expression = document.createElement("span");
-                               
+
         this.inputBox.setAttribute("style",
                             "position:absolute;" +
                             "top:"+coords[1] +"px;"+
@@ -156,14 +153,14 @@ Diamond = {
         // use the event to figure out what diamond you clicked and run through a switch
         // CONTINUE ON ENTER (KEY VAL 13)
         var that=this;
-         $(".ft-d-input-box").keydown(function(e){console.log(e);
+         $(".ft-d-input-box").keydown(function(e){
             if(e.which == 13) {
                 that.setInputBox(e);  
             }
         });
     },
 
-    setInputBox: function(e){
+    setInputBox: function(e) {
             var text = $(this.inputBox).val();
             // Get rid of all the spaces in the user's input text
             if (text.indexOf(" ") != -1) {
@@ -198,31 +195,27 @@ Diamond = {
                                        "top:"+textCoords[1]+"px;"+
                                        "left:"+textCoords[0]+"px;"
             );
-            
             // now write the LaTeX string to the expression and append to body
             this.expression.textContent = "\\(\\Large "+text+"\\)"
             $("body").append(this.expression);
             $(this.inputBox).remove();
-            
             // store what the user just entered in diamondInputs array
             // store text in a 1-1 fashion matching the diamondNumber
             this.diamondInputs[parseInt(this.diamondNumber)-1] = text;
-                           
-            // I need to start checking the diamond inputs here and this method needs
-            // to return an array          
+            
+            // ============
+            // Check Values
+            // ============
 
-//TODO!!!!          log("MAKE SURE YOU CHECK WHAT HAPPENS RIGHT AFTER THIS LOG MESSAGE");
-            this.diamondInputs = this.readDiamondInput(this.diamondInputs);
-
-            // This function reads the input of a diamond and looks at the coefficient.
-            // It sees if you entered just "x" instead of "1x" or "-x" instead of "-1x".
-
+            this.diamondInputs = this.formatDiamondInput(this.diamondInputs);
+            log(this.diamondInputs);
+            this.checkDiamondInputs(this.diamondInputs);
             // Lastly, render the LaTeX via MathJax...yes!
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, String("ft-diamond-text-"+this.diamondNumber)]);
-            //MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
     },
     
-    readDiamondInput: function(data) {
+    formatDiamondInput: function(data) {
+        console.log(data)
         for (var i=0; i<4; i++) {
             if (typeof(data[i]) == "undefined") {
                 log("one of the data elements is undefined... skipping.")
@@ -232,20 +225,15 @@ Diamond = {
             if (isNaN(parseInt(data[i]))) {
                 switch (data[i][0]) {
                     case "x":
-                        return 1;
+                        return "-1"+data[i];
                         break;
                     case "-":
-                        return -1;
+                        return data[i].replace("-","-1");
                         break;
                     default:
                         log("There's something wrong with what you entered. I was expecting the expression to start with x or -x");
                         log("You entered: '"+data[i][0]+"'");
-                        //throw "Error in readDiamondInput: data["+i+"][0] not recognized.";
                 }
-            }
-            else {
-                data[i] = parseInt(data[i]);
-                log("I have recognized the coefficient: "+data[i]);
             }
         }
         return data;
@@ -253,46 +241,61 @@ Diamond = {
 
     // This for loop is where I check the diamondInputs against the parameters.
     // I'm going to color the diamond parts here.
-    checkDiamondInputs: function(dParsed){
-        // TODO: add a hook that checks if the entire diamond is ok
-        // then create the rectangle and finsish this beast.
-        //
+    checkDiamondInputs: function(dFormatted){
         for (var i=0; i<4; i++) {
-            //var dParsed = readDiamondInput(that.diamondInputs[i]);
-            log("You entered: " + dParsed[i]);
+            if (!dFormatted[i] || !dFormatted[i].match('x')) {
+                log("check the variables");
+                Messenger.send("ft-guide", "Make sure you are using the correct variable.");
+                continue;
+            }
             switch (i) {
+                // bottom square --- match middle term
                 case 0:
-                    if (dParsed[i] != parameters[1]) {
-                        log("That is not the correct value for the sum.");
+                    if (dFormatted[0] != (this.parameters[1]+'x')) {
+                        Messenger.send("ft-guide", "That is not the correct value for the sum.");
+                        Messenger.send("ft-d-eval", {0:false});
+                        break;
                     }
                     else {
-                        log(dParsed[i] + " is the correct value for the sum");
+                        Messenger.send("ft-d-eval", {0:true});
                     }
                     break;
                 case 1:
-                // you're storing things as strings...not ints
-                    break;
-                case 2:
-                    if (dParsed[i] != parameters[0]*parameters[2]) {
-                        log("I was expecting "+parameters[0]*parameters[2]+" for the product");
+                    if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') != (this.parameters[1]+'x')) {
+                        Messenger.send("ft-guide", "The left and right diamond inputs don't add up to the correct value.");
+                        Messenger.send("ft-d-eval", {1:false, 3:false});
                     }
                     else {
-                        log("the product was correct: "+dParsed[i]);  
+                        Messenger.send("ft-d-eval", {1:true, 3:true});
+                        Messenger.send("ft-guide", "It looks like the sum is correct: ")
                     }
                     break;
+                // top square --- if product isn't correct
+                case 2:
+                    if (dFormatted[2] != ((this.parameters[0]*this.parameters[2])+"x^2")) {
+                        Messenger.send("ft-d-eval", {2:false});
+                    }
+                    else {
+                        Messenger.send("ft-guide", ("the product was correct: "+dFormatted[i]));
+                        Messenger.send("ft-d-eval", {2:true});
+                    }
+                    break;
+                // right square --- if sum doesn't add up
                 case 3:
-                    log("the sum of the sides is "+this.diamondInputs[1]+this.diamondInputs[3]); 
+                    if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') != (this.parameters[1]+'x')) {
+                        Messenger.send("ft-guide", "The left and right diamond inputs don't add up to the correct value.");
+                        Messenger.send("ft-d-eval", {1:false, 3:false});
+                    }
+                    else {
+                        Messenger.send("ft-d-eval", {1:true, 3:true});
+                    }
                     break;
                 default:
                     log("Something is seriously wrong... contact tech support");
                     throw "Error while parsing index in checkDiamondInputs";
             }
         }
-    }
-
-
-
-    
+    }   
 }
 // TODO: 
 /*

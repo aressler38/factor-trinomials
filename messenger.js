@@ -6,7 +6,7 @@
   
     
     
-Messenger = ( function(){
+Messenger = (function(){
 
     // the home base
     var cloud = document.createElement("div");
@@ -19,36 +19,35 @@ Messenger = ( function(){
     customEvent.prototype.event.initEvent(this.trigger, true, true);
     customEvent.prototype.data = {};
 
-
     // store events created by makeEvent
     var events = {}; 
     
-    
     return ({
-        
         on: function(trigger, handler) {
-            console.log(cloud);
+            var handle = handler;
             events[trigger] = new customEvent(trigger);
-            events[trigger].handler = handler;
-            cloud.addEventListener(trigger, handler,false);
+            events[trigger].handler = handle;
+            cloud.addEventListener(trigger, handle, false);
         },
         
-        off: function(trigger, handler) {
-            cloud.removeEventListener(trigger,handler,false);
+        off: function(event, handler) {
+            cloud.removeEventListener(event, handler, false);
+            events[event]={data:null, handler:function(){}};
+            
         },
         
         // fire the event and pass the event handler custom data 
-        fire: function(event, t) {
-            events[event].data = t; // find a better way to pass data when firing a function
+        send: function(event, dataThru) {
+            if (events[event]) {
+                    events[event].data = dataThru; // find a better way to pass data when firing a function                        
+            }
             // call the handler function manually and pass in the data
-            events[event].handler.call(this, events[event].data)
-            cloud.dispatchEvent(events[event]);
+            if (events[event] && events[event].handler) {
+                events[event].handler((events[event].data));
+            }
         }       
-        
     });    
-    
 }());
-
 
 function test(e) {
     console.log("running test function");
