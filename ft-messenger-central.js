@@ -3,7 +3,7 @@
 //
 // copyright (c) 2013 By Alexander Ressler
 //
-// ================================================================================================
+// =========================================================================================
 
 
 
@@ -11,24 +11,23 @@
 (function() {
     
     var diamond = {
+	0:false,
         1:false,
         2:false,
-        3:false,
-        4:false
+        3:false
     };
     
     function evaluateDiamond(dInput) {
         $.extend(diamond, dInput);
+	console.log('the diamond input');console.log(diamond);
     }
     
-    function logger(msg) {
+    function guide(msg) {
         console.log("you are logging to ft-guide: "+msg)
     }
-    function toast(e) {
-        console.log('you can not fire logger, you are firing toast '+e)
-    }
+
     
-    Messenger.on("ft-guide", logger);
-    Messenger.on("ft-d-eval", toast);
+    Messenger.on("ft-guide", guide);
+    Messenger.on("ft-d-eval", evaluateDiamond);
     
 }());
