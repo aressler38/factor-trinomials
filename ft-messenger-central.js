@@ -11,7 +11,7 @@
 (function() {
     
     var diamond = {
-	0:false,
+        0:false,
         1:false,
         2:false,
         3:false
@@ -26,8 +26,9 @@
         console.log("you are logging to ft-guide: "+msg)
     }
 
-    
     Messenger.on("ft-guide", guide);
     Messenger.on("ft-d-eval", evaluateDiamond);
+
+    
     
 }());

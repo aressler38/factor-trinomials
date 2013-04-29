@@ -18,285 +18,280 @@
 // ================================================================================================
 
 
-Diamond = {
+Diamond = (function() {
+        var parameters=[1, -17, 30]; // these are the a,b,c that go in ax^2 + bx + c -- set by initialize
+        var diamondNumber={};
+        
+        function clean_parameters () {  // for presentational purposes only
+            var coefficients =
+                   {
+                    a:parameters[0],
+                    b:parameters[1],
+                    c:parameters[2]
+                   }
+            return (function() {
+                
+                for (var c in coefficients) {
+                    switch (coefficients[c]) {
+                        case 1:
+                            coefficients[c] = "";
+                            break;
+                        case -1:
+                            coefficients[c] = "- ";
+                            break;
+                        default:
+                            if (coefficients[c] > 0) {
+                                coefficients[c] = "+ "+coefficients[c];
+                            }
+                            else {
+                                coefficients[c] = "- "+-1*coefficients[c];
+                            }
+                    }
+                }
+                return coefficients;
+            }());
+        };
+        
+
+
+        // TODO: these event bindings need to be implemented somewhere else... also, modularize this code... at least follow
+        // a functional approach. This is ridiculous, think modular ... like oreos.
+        //
+        // Watch for diamond clicks, this is the hook for the mouse click event on the diamond
+        // 
+        function events(){
+            $(".ft-diamondBox-1,"
+              + ".ft-diamondBox-2,"
+              + ".ft-diamondBox-3,"
+              + ".ft-diamondBox-4")
+                .click(function(e){
+                    createInputBox(e);
+                });
+        };
+
+        
+        // This is the function that will create the input for LaTeX when you click on the diamond.
+        // * should only be responsible for creating the input box and printing the MathJax
+        function createInputBox (e) {
+            var that = this;
+            $(this.inputBox).remove();
+            var svgTarget = e.currentTarget;
+            diamondNumber = svgTarget.className.baseVal.replace("ft-diamondBox-", "");
+            var coords = [e.clientX, e.clientY];
             
-    parameters:[1, -17, 30], // these are the a,b,c that go in ax^2 + bx + c -- set by initialize
-    
-    clean_parameters : function() {  // for presentational purposes only
-        var coefficients =
-               {
-                a:this.parameters[0],
-                b:this.parameters[1],
-                c:this.parameters[2]
-               }
-        return (function() {
-            
-            for (var c in coefficients) {
-                switch (coefficients[c]) {
+            $("#ft-diamond-text-"+diamondNumber).remove()
+
+            this.inputBox = document.createElement("input");
+            this.expression = document.createElement("span");
+
+            this.inputBox.setAttribute("style",
+                                "position:absolute;" +
+                                "top:"+coords[1] +"px;"+
+                                "left:"+coords[0]+"px;"+
+                                "height:50px;" +
+                                "width:100px;"+
+                                "font-size:22px;"
+            );
+            this.inputBox.setAttribute("class", "ft-d-input-box")
+            $("body").append(this.inputBox);
+            this.inputBox.focus();
+            // binding a keyup event to the input box
+            // use the event to figure out what diamond you clicked and run through a switch
+            // CONTINUE ON ENTER (KEY VAL 13)
+            var that=this;
+             $(".ft-d-input-box").keydown(function(e){
+                if(e.which == 13) {
+                    setInputBox(e);  
+                }
+            });
+        };
+
+        function setInputBox(e) {
+                var text = $(this.inputBox).val();
+                // Get rid of all the spaces in the user's input text
+                if (text.indexOf(" ") != -1) {
+                    while (text.indexOf(" ") != -1) {
+                        text = text.replace(" ", "");
+                    }
+                }
+                // textCoords is where the text will go
+                var textCoords=[null,null];
+                
+                switch (parseInt(diamondNumber)) {
+                        // Don't ask about these ratios... they're for positioning         
                     case 1:
-                        coefficients[c] = "";
+                        textCoords = [17.0/35.0*this.View_MAX, 30.0/35.0*this.View_MAX];
                         break;
-                    case -1:
-                        coefficients[c] = "- ";
+                    case 2:
+                        textCoords = [8.0/35.0*this.View_MAX, 22.0/35.0*this.View_MAX];                           
+                        break;
+                    case 3:
+                        textCoords = [17.0/35.0*this.View_MAX, 121.0/350.0*this.View_MAX]
+                        break;
+                    case 4:
+                        textCoords = [26.0/35.0*this.View_MAX, 22.0/35.0*this.View_MAX];
                         break;
                     default:
-                        if (coefficients[c] > 0) {
-                            coefficients[c] = "+ "+coefficients[c];
+                        throw "something's wrong with the diamond number."
+                    
+                }
+                this.expression.setAttribute("id", "ft-diamond-text-"+diamondNumber);
+                this.expression.setAttribute("style",
+                                           "position:absolute;"+ 
+                                           "top:"+textCoords[1]+"px;"+
+                                           "left:"+textCoords[0]+"px;"
+                );
+                // now write the LaTeX string to the expression and append to body
+                this.expression.textContent = "\\(\\Large "+text+"\\)"
+                $("body").append(this.expression);
+                $(this.inputBox).remove();
+                // store what the user just entered in diamondInputs array
+                // store text in a 1-1 fashion matching the diamondNumber
+                this.diamondInputs[parseInt(diamondNumber)-1] = text;
+                
+                // ============
+                // Check Values
+                // ============
+
+                this.diamondInputs = formatDiamondInput(this.diamondInputs);
+                console.log(this.diamondInputs);
+                checkDiamondInputs(this.diamondInputs);
+                // Lastly, render the LaTeX via MathJax...yes!
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, String("ft-diamond-text-"+diamondNumber)]);
+        };
+        
+        function formatDiamondInput(data) {
+            for (var i=0; i<4; i++) {
+                if (typeof(data[i]) == "undefined") {
+                    console.log("one of the data elements is undefined... skipping.")
+                    continue;
+                }
+                // Handle the case if the coefficient is an implied 1 or an implied -1.
+                if (isNaN(parseInt(data[i]))) {
+                    switch (data[i][0]) {
+                        case "x":
+                            return "-1"+data[i];
+                            break;
+                        case "-":
+                            return data[i].replace("-","-1");
+                            break;
+                        default:
+                            console.log("There's something wrong with what you entered. I was expecting the expression to start with x or -x");
+                            console.log("You entered: '"+data[i][0]+"'");
+                    }
+                }
+            }
+            return data;
+        };
+
+        // This for loop is where I check the diamondInputs against the parameters.
+        // I'm going to color the diamond parts here.
+        function checkDiamondInputs(dFormatted){
+            for (var i=0; i<4; i++) {
+                if (!dFormatted[i] || !dFormatted[i].match('x')) {
+                    console.log("check the variables");
+                    Messenger.send("ft-guide", "Make sure you are using the correct variable.");
+                    continue;
+                }
+                switch (i) {
+                    // bottom square --- match middle term
+                    case 0:
+                        if (dFormatted[0] != (parameters[1]+'x')) {
+                            Messenger.send("ft-guide", "That is not the correct value for the sum.");
+                            Messenger.send("ft-d-eval", {0:false});
+                            break;
                         }
                         else {
-                            coefficients[c] = "- "+-1*coefficients[c];
+                            Messenger.send("ft-d-eval", {0:true});
                         }
-                }
-            }
-            return coefficients;
-        }());
-    },
-    
-    initialize: function(parameters) {
-        if (typeof(log) == "undefined") {
-            window.log = function(m){console.log(m);};
-        }
-        if (parameters) {
-            this.parameters = parameters;
-        }
-        log("init");
-        var coefficients = this.clean_parameters();
-        $(".ft-trinomial").html("Factor the following trinomial: &nbsp;"+
-                                "<span class='ft-trinomial-equation' style='font-size:22px'>"+                          
-                                coefficients.a+"<em>x</em><sup>2</sup> "+
-                                coefficients.b+"<em>x</em> "+
-                                coefficients.c +
-                                "</span>"
-        );
-        
-        // setup for the diamond
-        this.diamondInputs = [];
-        var xmlns="http://www.w3.org/2000/svg";
-        this.View_MAX = 350;   // set the max pixels for the diamond's box container
-        var diamondPartLength =  Math.floor(this.View_MAX * Math.sqrt(2.0)/4.0);
-            
-        // Grab the html containers and set up the dimensions based on View_MAX
-        $(".ft-diamond")[0].setAttribute("style", "width:" + this.View_MAX + "px;" + "height:" + this.View_MAX + "px;");
-        $(".ft-svg-container")[0].setAttribute("style", "width:" + this.View_MAX + "px;" + "height:" + this.View_MAX + "px;");
-        $(".ft-svg-container")[0].setAttribute("viewBox", "0 0 " + this.View_MAX + " " + this.View_MAX);
-        
-        // Make 4 inner squares and rotate them accordingly to make the diamond
-        // Here's the setup structure according to class suffix (1,2,3, or 4)
-        //          3
-        //        2   4  
-        //          1
-        for (var i=0; i<4; i++) {
-            var angle = 45 + i*90;
-            var diamondPart = document.createElementNS(xmlns, "rect");
-            diamondPart.setAttribute("class", "ft-diamondBox-"+(i+1)); // assign classes to each box
-            diamondPart.setAttribute("x", this.View_MAX/2.0);
-            diamondPart.setAttribute("y", this.View_MAX/2.0);
-            diamondPart.setAttribute("width", diamondPartLength);
-            diamondPart.setAttribute("height", diamondPartLength);
-            diamondPart.setAttribute("transform", "rotate(" + angle + " " + this.View_MAX/2.0 + " " + this.View_MAX/2.0 + ")");
-            diamondPart.setAttribute("style", "stroke-width:3; stroke:blue; fill:white;");
-            $(".ft-svg-container").append(diamondPart);
-        }
-        
-        // =============
-        // Event Binding
-        // =============
-        this.events();
-
-    },
-
-    // TODO: these event bindings need to be implemented somewhere else... also, modularize this code... at least follow
-    // a functional approach. This is ridiculous, think modular ... like oreos.
-    //
-    // Watch for diamond clicks, this is the hook for the mouse click event on the diamond
-    // 
-    events: function(){
-        var that=this;
-        $(".ft-diamondBox-1,"
-          + ".ft-diamondBox-2,"
-          + ".ft-diamondBox-3,"
-          + ".ft-diamondBox-4")
-            .click(function(e){
-                that.createInputBox(e);
-            });
-       
-    },
-
-    diamondNumber:{},
-    
-    // This is the function that will create the input for LaTeX when you click on the diamond.
-    // * should only be responsible for creating the input box and printing the MathJax
-    createInputBox: function(e) {
-        var that = this;
-        $(this.inputBox).remove();
-        var svgTarget = e.currentTarget;
-        this.diamondNumber = svgTarget.className.baseVal.replace("ft-diamondBox-", "");
-        var coords = [e.clientX, e.clientY];
-        
-        $("#ft-diamond-text-"+this.diamondNumber).remove()
-
-        this.inputBox = document.createElement("input");
-        this.expression = document.createElement("span");
-
-        this.inputBox.setAttribute("style",
-                            "position:absolute;" +
-                            "top:"+coords[1] +"px;"+
-                            "left:"+coords[0]+"px;"+
-                            "height:50px;" +
-                            "width:100px;"+
-                            "font-size:22px;"
-        );
-        this.inputBox.setAttribute("class", "ft-d-input-box")
-        $("body").append(this.inputBox);
-        this.inputBox.focus();
-        // binding a keyup event to the input box
-        // use the event to figure out what diamond you clicked and run through a switch
-        // CONTINUE ON ENTER (KEY VAL 13)
-        var that=this;
-         $(".ft-d-input-box").keydown(function(e){
-            if(e.which == 13) {
-                that.setInputBox(e);  
-            }
-        });
-    },
-
-    setInputBox: function(e) {
-            var text = $(this.inputBox).val();
-            // Get rid of all the spaces in the user's input text
-            if (text.indexOf(" ") != -1) {
-                while (text.indexOf(" ") != -1) {
-                    text = text.replace(" ", "");
-                }
-            }
-            // textCoords is where the text will go
-            var textCoords=[null,null];
-            
-            switch (parseInt(this.diamondNumber)) {
-                    // Don't ask about these ratios... they're for positioning         
-                case 1:
-                    textCoords = [17.0/35.0*this.View_MAX, 30.0/35.0*this.View_MAX];
-                    break;
-                case 2:
-                    textCoords = [8.0/35.0*this.View_MAX, 22.0/35.0*this.View_MAX];                           
-                    break;
-                case 3:
-                    textCoords = [17.0/35.0*this.View_MAX, 121.0/350.0*this.View_MAX]
-                    break;
-                case 4:
-                    textCoords = [26.0/35.0*this.View_MAX, 22.0/35.0*this.View_MAX];
-                    break;
-                default:
-                    throw "something's wrong with the diamond number."
-                
-            }
-            this.expression.setAttribute("id", "ft-diamond-text-"+this.diamondNumber);
-            this.expression.setAttribute("style",
-                                       "position:absolute;"+ 
-                                       "top:"+textCoords[1]+"px;"+
-                                       "left:"+textCoords[0]+"px;"
-            );
-            // now write the LaTeX string to the expression and append to body
-            this.expression.textContent = "\\(\\Large "+text+"\\)"
-            $("body").append(this.expression);
-            $(this.inputBox).remove();
-            // store what the user just entered in diamondInputs array
-            // store text in a 1-1 fashion matching the diamondNumber
-            this.diamondInputs[parseInt(this.diamondNumber)-1] = text;
-            
-            // ============
-            // Check Values
-            // ============
-
-            this.diamondInputs = this.formatDiamondInput(this.diamondInputs);
-            log(this.diamondInputs);
-            this.checkDiamondInputs(this.diamondInputs);
-            // Lastly, render the LaTeX via MathJax...yes!
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, String("ft-diamond-text-"+this.diamondNumber)]);
-    },
-    
-    formatDiamondInput: function(data) {
-        console.log(data)
-        for (var i=0; i<4; i++) {
-            if (typeof(data[i]) == "undefined") {
-                log("one of the data elements is undefined... skipping.")
-                continue;
-            }
-            // Handle the case if the coefficient is an implied 1 or an implied -1.
-            if (isNaN(parseInt(data[i]))) {
-                switch (data[i][0]) {
-                    case "x":
-                        return "-1"+data[i];
                         break;
-                    case "-":
-                        return data[i].replace("-","-1");
+                    case 1:
+                        if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') != (parameters[1]+'x')) {
+                            Messenger.send("ft-guide", "The left and right diamond inputs don't add up to the correct value.");
+                            Messenger.send("ft-d-eval", {1:false, 3:false});
+                        }
+                        else {
+                            Messenger.send("ft-d-eval", {1:true, 3:true});
+                            Messenger.send("ft-guide", "It looks like the sum is correct: ")
+                        }
+                        break;
+                    // top square --- if product isn't correct
+                    case 2:
+                        if (dFormatted[2] != ((parameters[0]*parameters[2])+"x^2")) {
+                            Messenger.send("ft-d-eval", {2:false});
+                        }
+                        else {
+                            Messenger.send("ft-guide", ("the product was correct: "+dFormatted[i]));
+                            Messenger.send("ft-d-eval", {2:true});
+                        }
+                        break;
+                    // right square --- if sum doesn't add up
+                    case 3:
+                        if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') != (parameters[1]+'x')) {
+                            Messenger.send("ft-guide", "The left and right diamond inputs don't add up to the correct value.");
+                            Messenger.send("ft-d-eval", {1:false, 3:false});
+                        }
+                        else {
+                            Messenger.send("ft-d-eval", {1:true, 3:true});
+                        }
                         break;
                     default:
-                        log("There's something wrong with what you entered. I was expecting the expression to start with x or -x");
-                        log("You entered: '"+data[i][0]+"'");
+                        console.log("Something is seriously wrong... contact tech support");
+                        throw "Error while parsing index in checkDiamondInputs";
                 }
             }
-        }
-        return data;
-    },
+        };  
 
-    // This for loop is where I check the diamondInputs against the parameters.
-    // I'm going to color the diamond parts here.
-    checkDiamondInputs: function(dFormatted){
-        for (var i=0; i<4; i++) {
-            if (!dFormatted[i] || !dFormatted[i].match('x')) {
-                log("check the variables");
-                Messenger.send("ft-guide", "Make sure you are using the correct variable.");
-                continue;
+        return function(parameters) {
+            if (parameters) {
+                this.parameters = parameters;
             }
-            switch (i) {
-                // bottom square --- match middle term
-                case 0:
-                    if (dFormatted[0] != (this.parameters[1]+'x')) {
-                        Messenger.send("ft-guide", "That is not the correct value for the sum.");
-                        Messenger.send("ft-d-eval", {0:false});
-                        break;
-                    }
-                    else {
-                        Messenger.send("ft-d-eval", {0:true});
-                    }
-                    break;
-                case 1:
-                    if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') != (this.parameters[1]+'x')) {
-                        Messenger.send("ft-guide", "The left and right diamond inputs don't add up to the correct value.");
-                        Messenger.send("ft-d-eval", {1:false, 3:false});
-                    }
-                    else {
-                        Messenger.send("ft-d-eval", {1:true, 3:true});
-                        Messenger.send("ft-guide", "It looks like the sum is correct: ")
-                    }
-                    break;
-                // top square --- if product isn't correct
-                case 2:
-                    if (dFormatted[2] != ((this.parameters[0]*this.parameters[2])+"x^2")) {
-                        Messenger.send("ft-d-eval", {2:false});
-                    }
-                    else {
-                        Messenger.send("ft-guide", ("the product was correct: "+dFormatted[i]));
-                        Messenger.send("ft-d-eval", {2:true});
-                    }
-                    break;
-                // right square --- if sum doesn't add up
-                case 3:
-                    if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') != (this.parameters[1]+'x')) {
-                        Messenger.send("ft-guide", "The left and right diamond inputs don't add up to the correct value.");
-                        Messenger.send("ft-d-eval", {1:false, 3:false});
-                    }
-                    else {
-                        Messenger.send("ft-d-eval", {1:true, 3:true});
-                    }
-                    break;
-                default:
-                    log("Something is seriously wrong... contact tech support");
-                    throw "Error while parsing index in checkDiamondInputs";
+            var coefficients = clean_parameters();
+            $(".ft-trinomial").html("Factor the following trinomial: &nbsp;"+
+                                    "<span class='ft-trinomial-equation' style='font-size:22px'>"+                          
+                                    coefficients.a+"<em>x</em><sup>2</sup> "+
+                                    coefficients.b+"<em>x</em> "+
+                                    coefficients.c +
+                                    "</span>"
+            );
+            
+            // setup for the diamond
+            this.diamondInputs = [];
+            var xmlns="http://www.w3.org/2000/svg";
+            this.View_MAX = 350;   // set the max pixels for the diamond's box container
+            var diamondPartLength =  Math.floor(this.View_MAX * Math.sqrt(2.0)/4.0);
+                
+            // Grab the html containers and set up the dimensions based on View_MAX
+            $(".ft-diamond")[0].setAttribute("style", "width:" + this.View_MAX + "px;" + "height:" + this.View_MAX + "px;");
+            $(".ft-svg-container")[0].setAttribute("style", "width:" + this.View_MAX + "px;" + "height:" + this.View_MAX + "px;");
+            $(".ft-svg-container")[0].setAttribute("viewBox", "0 0 " + this.View_MAX + " " + this.View_MAX);
+            
+            // Make 4 inner squares and rotate them accordingly to make the diamond
+            // Here's the setup structure according to class suffix (1,2,3, or 4)
+            //          3
+            //        2   4  
+            //          1
+            for (var i=0; i<4; i++) {
+                var angle = 45 + i*90;
+                var diamondPart = document.createElementNS(xmlns, "rect");
+                diamondPart.setAttribute("class", "ft-diamondBox-"+(i+1)); // assign classes to each box
+                diamondPart.setAttribute("x", this.View_MAX/2.0);
+                diamondPart.setAttribute("y", this.View_MAX/2.0);
+                diamondPart.setAttribute("width", diamondPartLength);
+                diamondPart.setAttribute("height", diamondPartLength);
+                diamondPart.setAttribute("transform", "rotate(" + angle + " " + this.View_MAX/2.0 + " " + this.View_MAX/2.0 + ")");
+                diamondPart.setAttribute("style", "stroke-width:3; stroke:blue; fill:white;");
+                $(".ft-svg-container").append(diamondPart);
             }
+            
+            // =============
+            // Event Binding
+            // =============
+
+            events();
         }
-    }   
-}
+    
+}());
 // TODO: 
 /*
     * Make the are of the diamond fill green when the user's input is correct, and make the diamond fill red when the user input is incorrect.
