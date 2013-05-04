@@ -10,9 +10,9 @@ Messenger = (function(){
 
     // use the new keyword and this function to register a new event
     function customEvent(trigger) {
-	this.event = document.createEvent("Event");
-	this.event.initEvent(this.trigger, true, true);
-	this.data = {};
+        this.event = document.createEvent("Event");
+        this.event.initEvent(this.trigger, true, true);
+        this.data = {};
         return this.event;
     }
     //customEvent.prototype.event = document.createEvent("Event");
