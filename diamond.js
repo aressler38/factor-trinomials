@@ -18,10 +18,12 @@
 // ================================================================================================
 
 
-Diamond = (function() {
+Diamond = (function(_p1,_p2,_p3) {
+
         var parameters=[1, -17, 30]; // these are the a,b,c that go in ax^2 + bx + c -- set by initialize
+
         var diamondNumber={};
-        
+
         function clean_parameters () {  // for presentational purposes only
             var coefficients =
                    {
@@ -73,7 +75,6 @@ Diamond = (function() {
         // This is the function that will create the input for LaTeX when you click on the diamond.
         // * should only be responsible for creating the input box and printing the MathJax
         function createInputBox (e) {
-            var that = this;
             $(this.inputBox).remove();
             var svgTarget = e.currentTarget;
             diamondNumber = svgTarget.className.baseVal.replace("ft-diamondBox-", "");
@@ -98,12 +99,12 @@ Diamond = (function() {
             // binding a keyup event to the input box
             // use the event to figure out what diamond you clicked and run through a switch
             // CONTINUE ON ENTER (KEY VAL 13)
-            var that=this;
-             $(".ft-d-input-box").keydown(function(e){
+             $(".ft-d-input-box").keydown(function(e) {
                 if(e.which == 13) {
                     setInputBox(e);  
                 }
             });
+             
         };
 
         function setInputBox(e) {
@@ -242,10 +243,12 @@ Diamond = (function() {
             }
         };  
 
-        return function(parameters) {
-            if (parameters) {
-                this.parameters = parameters;
-            }
+        return function(_p1, _p2, _p3) {
+
+            if (typeof(_p1) == "number" && typeof(_p2) == "number" && typeof(_p3) == "number") {
+                parameters = [_p1, _p2, _p3];
+            }           
+            
             var coefficients = clean_parameters();
             $(".ft-trinomial").html("Factor the following trinomial: &nbsp;"+
                                     "<span class='ft-trinomial-equation' style='font-size:22px'>"+                          

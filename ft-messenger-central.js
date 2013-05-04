@@ -18,8 +18,10 @@
     };
     
     function evaluateDiamond(dInput) {
+        console.log("you are running evaluateDiamond")
         $.extend(diamond, dInput);
-	console.log('the diamond input');console.log(diamond);
+	console.log('the diamond input');
+        console.log(diamond);
     }
     
     function guide(msg) {
