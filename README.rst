@@ -1,10 +1,12 @@
-# factor-trinomials
+factor-trinomials
+=================
 
 Use a generic rectangle and diamond to a factor trinomial
     Copyright (c) 2013. All Rights Reserved. 
         By Alexander Ressler.
 
-## About
+About
+-----
 
         
     * Currently, this is a program that will display a diamond that is to be used
@@ -17,7 +19,8 @@ Use a generic rectangle and diamond to a factor trinomial
     * The diamond is rendered in SVG managed by the JavaScript. 
     
 
-## TODO
+TODO
+----
 
     * Finish TODOs in diamond.js 
     * Start/Finish the rectangle.js file to handle the generic rectangle.
