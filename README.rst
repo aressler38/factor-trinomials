@@ -14,7 +14,7 @@ About
     * The diamond.js file handles everything that has to do with the diamond.
     * Custom events are propogated via a Messenger object.
         * Most of the custom event handling is dealt with in ft-messenger-central.js
-    * Initialize the trinomial by calling Diamond(a,b,c), where a, b, c are the 
+    * Initialize the trinomial by calling Diamond.initialize(a,b,c), where a, b, c are the 
       leading coefficients of the trinimial.  
     * The diamond is rendered in SVG managed by the JavaScript. 
     
