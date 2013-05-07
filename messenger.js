@@ -15,12 +15,8 @@ Messenger = (function(){
         this.data = {};
         return this.event;
     }
-    //customEvent.prototype.event = document.createEvent("Event");
-    //customEvent.prototype.event.initEvent(this.trigger, true, true);
-    //customEvent.prototype.data = {};
-
-    // store events created by makeEvent
-    var events = {}; 
+    
+    var events = {}; // store events created by makeEvent
     
     return ({
         on: function(trigger, handler) {
@@ -38,7 +34,7 @@ Messenger = (function(){
         // fire the event and pass the event handler custom data 
         send: function(event, dataThru) {
             if (events[event]) {
-                    events[event].data = dataThru; // find a better way to pass data when firing a function                        
+                    events[event].data = dataThru;                    
             }
             // call the handler function manually and pass in the data
             if (events[event] && events[event].handler) {
