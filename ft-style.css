@@ -1,17 +1,19 @@
 .ft-container {
-
-}
-.ft-trinomial {
     position:relative;
-    float:left;
-    
+    width:800px;
 }
+
+.ft-trinomial {
+    width:100%;
+    clear:both;
+}
+    
+
 .ft-rectangle {
+    /* these css properties are getting defined in rectangle.js */
+}
+
+.ft-diamond {
     position:relative;
     float:right;
-}
-.ft-diamond {
-    border: 1px solid black;
-    width: 200px;
-    height: 200px;
 }

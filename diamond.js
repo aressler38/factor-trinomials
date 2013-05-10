@@ -127,33 +127,40 @@ Diamond = (function() {
                 // textCoords is where the text will go
                 var textCoords=[null,null];
                 
+
+                var svg_container_offset = $(".ft-svg-container").offset();
+                
+                var localLeft = svg_container_offset.left;
+                var localTop = svg_container_offset.top;
+                
+
+
                 switch (parseInt(diamondNumber)) {
                         // Don't ask about these ratios... they're for positioning         
                     case 1:
-                        textCoords = [17.0/35.0*View_MAX, 30.0/35.0*View_MAX];
+                        textCoords = [17.0/35.0*View_MAX, 25.0/35.0*View_MAX];
                         break;
                     case 2:
-                        textCoords = [8.0/35.0*View_MAX, 22.0/35.0*View_MAX];                           
+                        textCoords = [8.0/35.0*View_MAX, 17.0/35.0*View_MAX];
                         break;
                     case 3:
-                        textCoords = [17.0/35.0*View_MAX, 121.0/350.0*View_MAX]
+                        textCoords = [17.0/35.0*View_MAX, 71.0/350.0*View_MAX]
                         break;
                     case 4:
-                        textCoords = [26.0/35.0*View_MAX, 22.0/35.0*View_MAX];
+                        textCoords = [26.0/35.0*View_MAX, 17.0/35.0*View_MAX];
                         break;
                     default:
                         throw "something's wrong with the diamond number."
-                    
                 }
                 this.expression.setAttribute("id", "ft-diamond-text-"+diamondNumber);
                 this.expression.setAttribute("style",
                                            "position:absolute;"+ 
-                                           "top:"+textCoords[1]+"px;"+
-                                           "left:"+textCoords[0]+"px;"
+                                           "top:"+(textCoords[1])+"px;"+
+                                           "left:"+(textCoords[0])+"px;"
                 );
                 // now write the LaTeX string to the expression and append to body
                 this.expression.textContent = "\\(\\Large "+text+"\\)"
-                $("body").append(this.expression);
+                $(".ft-diamond").append(this.expression);
                 $(this.inputBox).remove();
                 // store what the user just entered in diamondInputs array
                 // store text in a 1-1 fashion matching the diamondNumber
