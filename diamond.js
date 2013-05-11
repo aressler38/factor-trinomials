@@ -310,22 +310,16 @@ Diamond = (function() {
 
             clearDiamondInput: function(n) {
                 if (typeof(n) == "undefined") {
-                    Messenger.send("ft-d-eval", "clear all");
+                    Messenger.send("ft-d-eval", {message:"clear all"});
                     for (var i=1; i<5; i++) {
-                        $("#ft-diamond-text-"+i).remove()
-                        $(diamondBoxes[i-1]).css("fill", "None");
-                        return null;
+                        $("#ft-diamond-text-"+i).remove();
+                        $(diamondBoxes[i-1]).css("fill", "white");
                     }
                 }
                 else if (typeof(n) == "number") {
-                    Messenger.send("ft-d-eval", "clear "+n);
-                    for (var i=0; i<4; i++) {
-                        if (diamondBoxes[i].match('['+n+']') != null) {
-                            $("#ft-diamond-text-"+i).remove()
-                            $(diamondBoxes[i]).css("fill", "None");
-                        }
-                    }
-                    return null;
+                    Messenger.send("ft-d-eval", {message:"clear "+n});
+                    $("#ft-diamond-text-"+n).remove()
+                    $(diamondBoxes[n]).css("fill", "white");
                 }
             },
             
