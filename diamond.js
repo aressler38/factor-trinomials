@@ -62,8 +62,6 @@ Diamond = (function() {
                 return coefficients;
             }());
         };
-        
-
 
         // TODO: these event bindings need to be implemented somewhere else... also, modularize this code... at least follow
         // a functional approach. This is ridiculous, think modular ... like oreos.
@@ -79,7 +77,6 @@ Diamond = (function() {
                     createInputBox(e);
                 });
         };
-
         
         // This is the function that will create the input for LaTeX when you click on the diamond.
         // * should only be responsible for creating the input box and printing the MathJax
@@ -126,14 +123,11 @@ Diamond = (function() {
                 }
                 // textCoords is where the text will go
                 var textCoords=[null,null];
-                
 
                 var svg_container_offset = $(".ft-svg-container").offset();
                 
                 var localLeft = svg_container_offset.left;
                 var localTop = svg_container_offset.top;
-                
-
 
                 switch (parseInt(diamondNumber)) {
                         // Don't ask about these ratios... they're for positioning         
@@ -205,21 +199,22 @@ Diamond = (function() {
             for (var i=0; i<4; i++) {
                 if (!dFormatted[i] || !dFormatted[i].match('x')) {
                     Messenger.send("ft-guide", "Make sure you are using the correct variable.");
-                    continue;
+                    //continue;
                 }
                 switch (i) {
                     // bottom square --- match middle term
                     case 0:
+                        if (dFormatted[0] == undefined){break;}
                         if (dFormatted[0] != (parameters[1]+'x')) {
                             Messenger.send("ft-guide", "That is not the correct value for the sum.");
                             Messenger.send("ft-d-eval", {0:false});
-                            break;
                         }
                         else {
                             Messenger.send("ft-d-eval", {0:true});
                         }
                         break;
                     case 1:
+                        if (dFormatted[1] == undefined || dFormatted[3] == undefined){break;}
                         if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') != (parameters[1]+'x')) {
                             Messenger.send("ft-guide", "The left and right diamond inputs don't add up to the correct value.");
                             Messenger.send("ft-d-eval", {1:false, 3:false});
@@ -231,6 +226,7 @@ Diamond = (function() {
                         break;
                     // top square --- if product isn't correct
                     case 2:
+                        if (dFormatted[2] == undefined){break;}
                         if (dFormatted[2] != ((parameters[0]*parameters[2])+"x^2")) {
                             Messenger.send("ft-d-eval", {2:false});
                         }
@@ -241,9 +237,11 @@ Diamond = (function() {
                         break;
                     // right square --- if sum doesn't add up
                     case 3:
+                        if (dFormatted[1] == undefined || dFormatted[3] == undefined){break;}
                         if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') != (parameters[1]+'x')) {
                             Messenger.send("ft-guide", "The left and right diamond inputs don't add up to the correct value.");
                             Messenger.send("ft-d-eval", {1:false, 3:false});
+                            break;
                         }
                         else {
                             Messenger.send("ft-d-eval", {1:true, 3:true});
@@ -324,12 +322,12 @@ Diamond = (function() {
             },
             
             colorDiamondInput: function(n, color, alpha) {
-                if (typeof(n) == "undefined") {throw new Error("Expecting to color a specific diamond.");}
+                if (typeof(n) == "undefined") {throw new Error("Expecting 'n' a specific diamond.");}
                 if (typeof(color) == "undefined") {throw new Error("Expecting a color.");}
                 var opacity = (typeof(alpha) == "undefined") ? 0.6 : alpha;
                 if (n > 0 && n < 5) {
-                        $(diamondBoxes[n-1]).css("fill", color);
-                        $(diamondBoxes[n-1]).css("fill-opacity", opacity);
+                    $(diamondBoxes[n-1]).css("fill", color);
+                    $(diamondBoxes[n-1]).css("fill-opacity", opacity);
                     return null;
                 }
                 else {

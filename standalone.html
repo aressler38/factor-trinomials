@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<!-- Copyright © 2013 All Rights Reserved. Written by Alexander Ressler. -->
+
+<html lang="en">
+
+<head>
+    <title>Factor Trinomials</title>
+    
+    <link type="text/css" rel="stylesheet" href="ft-style.css"></link>
+    
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script type="text/javascript" src="https://raw.github.com/aressler38/factor-trinomials/master/messenger.js"></script>
+    <script type="text/javascript" src="https://raw.github.com/aressler38/factor-trinomials/master/diamond.js"></script>
+    <script type="text/javascript" src="https://raw.github.com/aressler38/factor-trinomials/master/rectangle.js"></script>
+    <script type="text/javascript" src="https://raw.github.com/aressler38/factor-trinomials/master/ft-messenger-central.js"></script>
+
+    
+    
+</head>
+
+<body>
+<div class="ft-container">
+    
+    <div class="ft-trinomial">
+        Trinomial container
+    </div> 
+    
+    <div id="ft-rectangle"></div>   
+
+    <div class="ft-diamond">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+             style="width:200px; height:200px;"     
+             version="1.1" class="ft-svg-container" 
+             viewBox="0 0 200 200">
+        </svg>
+    </div>
+    
+
+    
+</div>
+
+    
+<script type="text/javascript">
+        Diamond.initialize();
+        Rectangle();
+</script>
+    
+    
+</body>
+
+
+</html>
