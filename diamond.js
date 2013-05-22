@@ -241,7 +241,6 @@ Diamond = (function() {
                         if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') != (parameters[1]+'x')) {
                             Messenger.send("ft-guide", "The left and right diamond inputs don't add up to the correct value.");
                             Messenger.send("ft-d-eval", {1:false, 3:false});
-                            break;
                         }
                         else {
                             Messenger.send("ft-d-eval", {1:true, 3:true});
