@@ -153,7 +153,9 @@ Diamond = (function() {
                                            "left:"+(textCoords[0])+"px;"
                 );
                 // now write the LaTeX string to the expression and append to body
-                this.expression.textContent = "\\(\\Large "+text+"\\)"
+ //               this.expression.textContent = "\\(\\Large "+text+"\\)";
+                $(this.expression).html(renderMath(text));
+
                 $(".ft-diamond").append(this.expression);
                 $(this.inputBox).remove();
                 // store what the user just entered in diamondInputs array
@@ -166,8 +168,25 @@ Diamond = (function() {
 
                 diamondInputs = formatDiamondInput(diamondInputs);
                 checkDiamondInputs(diamondInputs);
-                // Lastly, render the LaTeX via MathJax...yes!
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, String("ft-diamond-text-"+diamondNumber)]);
+                
+                
+                // instead of relying on MathJax to resolve x^2... just do a regex to match
+                // that style of expression and use native html x<sup> whatever </sup>
+                function renderMath(diamondText) {
+                    if (diamondText && diamondText.match) {
+                        if (diamondText.match(/\^/)) {
+                            var pre = diamondText.match(/(.*)\^/)[1];
+                            var exponent = diamondText.match(/\^(.*)/)[1];
+                            return pre + "<sup>" + exponent + "</sup>";
+                        }
+                        else {
+                            return diamondText;
+                        }
+                    }
+                    else {
+                        throw new Error("The text is supposed to have a regex match method.");
+                    }
+                }
         };
         
         function formatDiamondInput(data) {
