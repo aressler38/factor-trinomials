@@ -43,19 +43,19 @@ echo "<head>" | cat >> $output
 
 echo "<script type='text/javascript' src='http://code.jquery.com/jquery-1.9.1.min.js'></script>" | cat >> $output
 
-echo "<script type'text/javascript'>" | cat >> $output
+echo "<script type='text/javascript'>" | cat >> $output
 cat $messenger_js >> $output
 echo "</script>" | cat >> $output
 
-echo "<script type'text/javascript'>" | cat >> $output
+echo "<script type='text/javascript'>" | cat >> $output
 cat $diamond_js >> $output
 echo "</script>" | cat >> $output
 
-echo "<script type'text/javascript'>" | cat >> $output
+echo "<script type='text/javascript'>" | cat >> $output
 cat $rectangle_js >> $output
 echo "</script>" | cat >> $output
 
-echo "<script type'text/javascript'>" | cat >> $output;
+echo "<script type='text/javascript'>" | cat >> $output;
 cat $messenger_central_js >> $output
 echo "</script>" | cat >> $output
 
