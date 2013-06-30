@@ -128,6 +128,28 @@ Diamond = (function() {
                 
                 var localLeft = svg_container_offset.left;
                 var localTop = svg_container_offset.top;
+                // instead of relying on MathJax to resolve x^2... just do a regex to match
+                // that style of expression and use native html x<sup> whatever </sup>
+                function renderMath(diamondText) {
+                    var output = '';
+                    if (diamondText && diamondText.match) {
+                        if (diamondText.match(/\^/)) {
+                            var pre = diamondText.match(/(.*)\^/)[1];
+                            var exponent = diamondText.match(/\^(.*)/)[1];
+                            output = pre + "<sup>" + exponent + "</sup>";
+                            output = output.replace("x", "<i>x</i>");
+                            return output;
+                        }
+                        else {
+                            output = diamondText;
+                            output = output.replace("x", "<i>x</i>");
+                            return output;
+                        }
+                    }
+                    else {
+                        throw new Error("The text is supposed to have a regex match method.");
+                    }
+                };
 
                 switch (parseInt(diamondNumber)) {
                         // Don't ask about these ratios... they're for positioning         
@@ -145,7 +167,7 @@ Diamond = (function() {
                         break;
                     default:
                         throw "something's wrong with the diamond number."
-                }
+                };
                 this.expression.setAttribute("id", "ft-diamond-text-"+diamondNumber);
                 this.expression.setAttribute("style",
                                            "position:absolute;"+ 
@@ -153,7 +175,6 @@ Diamond = (function() {
                                            "left:"+(textCoords[0])+"px;"
                 );
                 // now write the LaTeX string to the expression and append to body
- //               this.expression.textContent = "\\(\\Large "+text+"\\)";
                 $(this.expression).html(renderMath(text));
 
                 $(".ft-diamond").append(this.expression);
@@ -168,25 +189,6 @@ Diamond = (function() {
 
                 diamondInputs = formatDiamondInput(diamondInputs);
                 checkDiamondInputs(diamondInputs);
-                
-                
-                // instead of relying on MathJax to resolve x^2... just do a regex to match
-                // that style of expression and use native html x<sup> whatever </sup>
-                function renderMath(diamondText) {
-                    if (diamondText && diamondText.match) {
-                        if (diamondText.match(/\^/)) {
-                            var pre = diamondText.match(/(.*)\^/)[1];
-                            var exponent = diamondText.match(/\^(.*)/)[1];
-                            return pre + "<sup>" + exponent + "</sup>";
-                        }
-                        else {
-                            return diamondText;
-                        }
-                    }
-                    else {
-                        throw new Error("The text is supposed to have a regex match method.");
-                    }
-                }
         };
         
         function formatDiamondInput(data) {
