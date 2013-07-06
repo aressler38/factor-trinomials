@@ -16,7 +16,7 @@
         2:null,
         3:null
     };
-    
+     
     function evaluateDiamond(dInput) {
         console.log("you are running evaluateDiamond")
         $.extend(diamond, dInput);
@@ -52,15 +52,52 @@
                 Diamond.colorDiamondInput(3, "red"); 
             }
         }
-    }
+    };
     
     function guide(msg) {
         console.log("you are logging to ft-guide: "+msg)
+    };
+
+    // return a random integer in [min, max]
+    function randomInt(min,max, withZero) {
+        if (withZero) {
+            var rand = Math.random();
+            var randInt = Math.round(min + rand*(max-min));
+            return randInt;
+        }
+        else {
+            var rand = Math.random();
+            var randInt = Math.round(min + rand*(max-min));
+            while (randInt == 0) {
+                rand = Math.random();
+                randInt = Math.round(min + rand*(max-min));
+            }
+            return randInt;
+        }
+    };
+    
+    function randomTrinomial() {
+            
+
     }
+
+
+    Messenger.on("ft-randomize", function() {
+        // (ax + b)(cx + d) = (ac)x^2 + (ad + bc)x + bd
+        var a = randomInt(1,1, false);
+        var b = randomInt(-10,10, false);
+        var c = randomInt(1,2, false); 
+        var d = randomInt(-10,10, false);
+        console.log((a*c), (a*d+b*c), (b*d))
+        Diamond.initialize((a*c), (a*d+b*c), (b*d));
+    });
 
     Messenger.on("ft-guide", guide);
     Messenger.on("ft-d-eval", evaluateDiamond);
 
-    
+
+
+
+    Messenger.on("test", function(x){console.log(x);console.log(x.length);});
     
 }());

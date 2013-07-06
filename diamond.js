@@ -39,28 +39,68 @@ Diamond = (function() {
                     a:parameters[0],
                     b:parameters[1],
                     c:parameters[2]
-                   }
-            return (function() {
-                
-                for (var c in coefficients) {
-                    switch (coefficients[c]) {
-                        case 1:
-                            coefficients[c] = "";
-                            break;
-                        case -1:
-                            coefficients[c] = "- ";
-                            break;
-                        default:
-                            if (coefficients[c] > 0) {
-                                coefficients[c] = "+ "+coefficients[c];
-                            }
-                            else {
-                                coefficients[c] = "- "+-1*coefficients[c];
-                            }
+                   };
+
+            function ifOneOrNegOne(x, showOne) {
+                if (x == 1) {
+                    if (showOne) { 
+                        return "+ 1";
+                    }
+                    else {
+                        return "+ ";
                     }
                 }
-                return coefficients;
-            }());
+                if (x == -1) {
+                    if (showOne) {
+                        return "- 1";
+                    }
+                    else {
+                        return "- ";
+                    }
+                }
+                // otherwise return 
+                return x;
+            };
+            function prettifySign(x) {
+                if (typeof x == "string") {
+                    var _x = x.replace(/ /g, ''); // remove whitespace
+                    _x = parseInt(_x);
+                    if (isNaN(_x)){return x;};
+                }
+                else {
+                    var _x = x;
+                }
+                console.log(" the _x is: " + _x);
+                if ((_x) >= 0) {
+                    return "+ "+ _x;
+                }
+                else {
+                    return "- " + (-1*_x);
+                }
+                return x;
+            };
+
+            for (var c in coefficients) {
+                switch (c) {
+                    case "a":
+                        coefficients[c] = ifOneOrNegOne(coefficients[c], false);
+                        if (typeof coefficients[c] == "string") {
+                            coefficients[c] = coefficients[c].replace('+', '');
+                        }
+                        break;
+                    case "b":
+                        coefficients[c] = ifOneOrNegOne(coefficients[c], false);
+                        coefficients[c] = prettifySign(coefficients[c]);
+                        break;
+                    case "c":
+                        coefficients[c] = ifOneOrNegOne(coefficients[c], true);
+                        coefficients[c] = prettifySign(coefficients[c]);
+                        break;
+                    default:
+                        throw new Error("unexpected coefficents prameter");
+                }
+            }
+            return coefficients;
         };
 
         // TODO: these event bindings need to be implemented somewhere else... also, modularize this code... at least follow
