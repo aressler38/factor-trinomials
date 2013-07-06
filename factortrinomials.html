@@ -20,7 +20,14 @@ Messenger = (function(){
         this.event.initEvent(this.trigger, true, true);
         this.data = {};
         return this.event;
-    }
+    };
+
+    Array.prototype.popFirst = function () {
+        this.reverse();
+        this.pop();
+        this.reverse();
+        return this;
+    };
     
     var events = {}; // store events created by makeEvent
     
@@ -39,8 +46,17 @@ Messenger = (function(){
         
         // fire the event and pass the event handler custom data 
         send: function(event, dataThru) {
+            if (dataThru) {
+                var argLen = arguments.length;
+                var dataThrus = new Array(argLen);
+                
+                for (var i=0; i<argLen; i++) {
+                    dataThrus[i] = arguments[i];
+                }
+                dataThrus.popFirst();
+            }
             if (events[event]) {
-                    events[event].data = dataThru;                    
+                    events[event].data = dataThrus;                    
             }
             // call the handler function manually and pass in the data
             if (events[event] && events[event].handler) {
@@ -92,28 +108,68 @@ Diamond = (function() {
                     a:parameters[0],
                     b:parameters[1],
                     c:parameters[2]
-                   }
-            return (function() {
-                
-                for (var c in coefficients) {
-                    switch (coefficients[c]) {
-                        case 1:
-                            coefficients[c] = "";
-                            break;
-                        case -1:
-                            coefficients[c] = "- ";
-                            break;
-                        default:
-                            if (coefficients[c] > 0) {
-                                coefficients[c] = "+ "+coefficients[c];
-                            }
-                            else {
-                                coefficients[c] = "- "+-1*coefficients[c];
-                            }
+                   };
+
+            function ifOneOrNegOne(x, showOne) {
+                if (x == 1) {
+                    if (showOne) { 
+                        return "+ 1";
+                    }
+                    else {
+                        return "+ ";
                     }
                 }
-                return coefficients;
-            }());
+                if (x == -1) {
+                    if (showOne) {
+                        return "- 1";
+                    }
+                    else {
+                        return "- ";
+                    }
+                }
+                // otherwise return 
+                return x;
+            };
+            function prettifySign(x) {
+                if (typeof x == "string") {
+                    var _x = x.replace(/ /g, ''); // remove whitespace
+                    _x = parseInt(_x);
+                    if (isNaN(_x)){return x;};
+                }
+                else {
+                    var _x = x;
+                }
+                console.log(" the _x is: " + _x);
+                if ((_x) >= 0) {
+                    return "+ "+ _x;
+                }
+                else {
+                    return "- " + (-1*_x);
+                }
+                return x;
+            };
+
+            for (var c in coefficients) {
+                switch (c) {
+                    case "a":
+                        coefficients[c] = ifOneOrNegOne(coefficients[c], false);
+                        if (typeof coefficients[c] == "string") {
+                            coefficients[c] = coefficients[c].replace('+', '');
+                        }
+                        break;
+                    case "b":
+                        coefficients[c] = ifOneOrNegOne(coefficients[c], false);
+                        coefficients[c] = prettifySign(coefficients[c]);
+                        break;
+                    case "c":
+                        coefficients[c] = ifOneOrNegOne(coefficients[c], true);
+                        coefficients[c] = prettifySign(coefficients[c]);
+                        break;
+                    default:
+                        throw new Error("unexpected coefficents prameter");
+                }
+            }
+            return coefficients;
         };
 
         // TODO: these event bindings need to be implemented somewhere else... also, modularize this code... at least follow
@@ -508,7 +564,7 @@ Rectangle = (function() {
         2:null,
         3:null
     };
-    
+     
     function evaluateDiamond(dInput) {
         console.log("you are running evaluateDiamond")
         $.extend(diamond, dInput);
@@ -544,16 +600,53 @@ Rectangle = (function() {
                 Diamond.colorDiamondInput(3, "red"); 
             }
         }
-    }
+    };
     
     function guide(msg) {
         console.log("you are logging to ft-guide: "+msg)
+    };
+
+    // return a random integer in [min, max]
+    function randomInt(min,max, withZero) {
+        if (withZero) {
+            var rand = Math.random();
+            var randInt = Math.round(min + rand*(max-min));
+            return randInt;
+        }
+        else {
+            var rand = Math.random();
+            var randInt = Math.round(min + rand*(max-min));
+            while (randInt == 0) {
+                rand = Math.random();
+                randInt = Math.round(min + rand*(max-min));
+            }
+            return randInt;
+        }
+    };
+    
+    function randomTrinomial() {
+            
+
     }
+
+
+    Messenger.on("ft-randomize", function() {
+        // (ax + b)(cx + d) = (ac)x^2 + (ad + bc)x + bd
+        var a = randomInt(1,1, false);
+        var b = randomInt(-10,10, false);
+        var c = randomInt(1,2, false); 
+        var d = randomInt(-10,10, false);
+        console.log((a*c), (a*d+b*c), (b*d))
+        Diamond.initialize((a*c), (a*d+b*c), (b*d));
+    });
 
     Messenger.on("ft-guide", guide);
     Messenger.on("ft-d-eval", evaluateDiamond);
 
-    
+
+
+
+    Messenger.on("test", function(x){console.log(x);console.log(x.length);});
     
 }());
 </script>
