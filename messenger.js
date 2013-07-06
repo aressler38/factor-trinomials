@@ -14,7 +14,14 @@ Messenger = (function(){
         this.event.initEvent(this.trigger, true, true);
         this.data = {};
         return this.event;
-    }
+    };
+
+    Array.prototype.popFirst = function () {
+        this.reverse();
+        this.pop();
+        this.reverse();
+        return this;
+    };
     
     var events = {}; // store events created by makeEvent
     
@@ -33,8 +40,17 @@ Messenger = (function(){
         
         // fire the event and pass the event handler custom data 
         send: function(event, dataThru) {
+            if (dataThru) {
+                var argLen = arguments.length;
+                var dataThrus = new Array(argLen);
+                
+                for (var i=0; i<argLen; i++) {
+                    dataThrus[i] = arguments[i];
+                }
+                dataThrus.popFirst();
+            }
             if (events[event]) {
-                    events[event].data = dataThru;                    
+                    events[event].data = dataThrus;                    
             }
             // call the handler function manually and pass in the data
             if (events[event] && events[event].handler) {
