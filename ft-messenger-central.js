@@ -19,7 +19,9 @@
      
     function evaluateDiamond(dInput) {
         console.log("you are running evaluateDiamond")
-        $.extend(diamond, dInput);
+        console.log(dInput[0])
+        console.log(dInput[1])
+        $.extend(diamond, dInput[0]);
         
         // check the middle terms (1) and (3)
         if (diamond['1'] && diamond['3']) {
@@ -52,6 +54,7 @@
                 Diamond.colorDiamondInput(3, "red"); 
             }
         }
+
     };
     
     function guide(msg) {
@@ -76,27 +79,21 @@
         }
     };
     
-    function randomTrinomial() {
-            
-
-    }
-
-
     Messenger.on("ft-randomize", function() {
         // (ax + b)(cx + d) = (ac)x^2 + (ad + bc)x + bd
         var a = randomInt(1,1, false);
         var b = randomInt(-10,10, false);
         var c = randomInt(1,2, false); 
         var d = randomInt(-10,10, false);
-        console.log((a*c), (a*d+b*c), (b*d))
         Diamond.initialize((a*c), (a*d+b*c), (b*d));
+    });
+
+    Messenger.on("createInputBox", function(args) {
+        args[1](args[0]);
     });
 
     Messenger.on("ft-guide", guide);
     Messenger.on("ft-d-eval", evaluateDiamond);
-
-
-
 
     Messenger.on("test", function(x){console.log(x);console.log(x.length);});
     

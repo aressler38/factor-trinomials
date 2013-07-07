@@ -103,35 +103,21 @@ Diamond = (function() {
             return coefficients;
         };
 
-        // TODO: these event bindings need to be implemented somewhere else... also, modularize this code... at least follow
-        // a functional approach. This is ridiculous, think modular ... like oreos.
-        //
-        // Watch for diamond clicks, this is the hook for the mouse click event on the diamond
-        // 
-        function events() {
-            $(diamondBox1 + ','
-              + diamondBox2 + ','
-              + diamondBox3 + ','
-              + diamondBox4)
-                .click(function(e) {
-                    createInputBox(e);
-                });
-        };
         
         // This is the function that will create the input for LaTeX when you click on the diamond.
         // * should only be responsible for creating the input box and printing the MathJax
         function createInputBox(e) {
-            $(this.inputBox).remove();
+            $(Diamond.inputBox).remove();
             var svgTarget = e.currentTarget;
             diamondNumber = svgTarget.className.baseVal.replace("ft-diamondBox-", "");
             var coords = [e.clientX, e.clientY];
 
             $("#ft-diamond-text-"+diamondNumber).remove()
 
-            this.inputBox = document.createElement("input");
-            this.expression = document.createElement("span");
+            Diamond.inputBox = document.createElement("input");
+            Diamond.expression = document.createElement("span");
 
-            this.inputBox.setAttribute("style",
+            Diamond.inputBox.setAttribute("style",
                                 "position:absolute;" +
                                 "top:"+coords[1] +"px;"+
                                 "left:"+coords[0]+"px;"+
@@ -139,9 +125,9 @@ Diamond = (function() {
                                 "width:100px;"+
                                 "font-size:22px;"
             );
-            this.inputBox.setAttribute("class", "ft-d-input-box")
-            $("body").append(this.inputBox);
-            this.inputBox.focus();
+            Diamond.inputBox.setAttribute("class", "ft-d-input-box")
+            $("body").append(Diamond.inputBox);
+            Diamond.inputBox.focus();
             // binding a keyup event to the input box
             // use the event to figure out what diamond you clicked and run through a switch
             // CONTINUE ON ENTER (KEY VAL 13)
@@ -154,7 +140,7 @@ Diamond = (function() {
         };
 
         function setInputBox(e) {
-                var text = $(this.inputBox).val();
+                var text = $(Diamond.inputBox).val();
                 // Get rid of all the spaces in the user's input text
                 if (text.indexOf(" ") != -1) {
                     while (text.indexOf(" ") != -1) {
@@ -208,17 +194,17 @@ Diamond = (function() {
                     default:
                         throw "something's wrong with the diamond number."
                 };
-                this.expression.setAttribute("id", "ft-diamond-text-"+diamondNumber);
-                this.expression.setAttribute("style",
+                Diamond.expression.setAttribute("id", "ft-diamond-text-"+diamondNumber);
+                Diamond.expression.setAttribute("style",
                                            "position:absolute;"+ 
                                            "top:"+(textCoords[1])+"px;"+
                                            "left:"+(textCoords[0])+"px;"
                 );
                 // now write the LaTeX string to the expression and append to body
-                $(this.expression).html(renderMath(text));
+                $(Diamond.expression).html(renderMath(text));
 
-                $(".ft-diamond").append(this.expression);
-                $(this.inputBox).remove();
+                $(".ft-diamond").append(Diamond.expression);
+                $(Diamond.inputBox).remove();
                 // store what the user just entered in diamondInputs array
                 // store text in a 1-1 fashion matching the diamondNumber
                 diamondInputs[parseInt(diamondNumber)-1] = text;
@@ -321,6 +307,8 @@ Diamond = (function() {
                     parameters = [_p1, _p2, _p3];
                 }           
                
+                this.clearDiamondInput(); 
+
                 var coefficients = clean_parameters();
                 $(".ft-trinomial").html("Factor the following trinomial: &nbsp;"
                                         + "<span class='ft-trinomial-equation' style='font-size:22px'>"                          
@@ -361,8 +349,17 @@ Diamond = (function() {
                 // Event Binding
                 // =============
 
-                events();
 
+                $(diamondBox1 + ','
+                  + diamondBox2 + ','
+                  + diamondBox3 + ','
+                  + diamondBox4)
+                    .click(function(e) {
+                        Messenger.send("createInputBox", e, createInputBox); 
+                        //createInputBox(e);
+                    });
+
+                
                 return null;
             },
 
