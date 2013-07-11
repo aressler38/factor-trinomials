@@ -49,18 +49,19 @@ Messenger = (function(){
             if (dataThru) {
                 var argLen = arguments.length;
                 var dataThrus = new Array(argLen);
-                
                 for (var i=0; i<argLen; i++) {
                     dataThrus[i] = arguments[i];
                 }
                 dataThrus.popFirst();
             }
+            // if the event is regestered, then store the incomming dataThru
             if (events[event]) {
-                    events[event].data = dataThrus;                    
+                events[event].data = dataThrus;                    
             }
             // call the handler function manually and pass in the data
+            // return the result
             if (events[event] && events[event].handler) {
-                events[event].handler((events[event].data));
+                return events[event].handler((events[event].data));
             }
         }       
     });    
@@ -374,7 +375,9 @@ Diamond = (function() {
             initialize: function(_p1, _p2, _p3) {
                 if (typeof(_p1) == "number" && typeof(_p2) == "number" && typeof(_p3) == "number") {
                     parameters = [_p1, _p2, _p3];
+                    Messenger.send("setParameters", _p1, _p2, _p3);
                 }           
+                Messenger.send("setParameters", parameters[0], parameters[1], parameters[2]);
                
                 this.clearDiamondInput(); 
 
@@ -484,53 +487,111 @@ Diamond = (function() {
 
 
 
-Rectangle = (function() {
+Rectangle = new function() {
 
-    var x,y,z;
-
-
-
-    function drawRectangle() {
+    var outerSpace = {
+        //   a b
+        // c w x
+        // d y z
         
 
-        var rectangleId = "ft-rectangle";
-        var rectangle_parent = document.getElementById(rectangleId);  
-        var container = document.createElement("div");
+    };
 
-        var containerStyleAttributes = function(attributes){
-            var string = "";
-            var attributes = {
-                "float":"left",
-                "width":"350px",
-                "height":"350px",
-                "border":"2px solid black"
+    // add <input> to rectangle divs
+    var container = document.getElementsByClassName("ft-rectangle")[0];
+    
+    // setup 
+    var inputs = [
+
+    ];
+
+    function showAltDiagonal() {
+        
+    };
+
+    $(function(){
+        var parameters = Messenger.send("getParameters");
+        var polynomial = clean_parameters(parameters);
+        
+        $(".fta").html("<span>"+polynomial.a+"<i>x</i><sup>2</sup></span>");
+        $(".ftd").html("<span>"+parameters[2]+"</span>");
+    });
+
+    Messenger.on("showAltRectangle", showAltDiagonal); 
+
+    
+    
+    //copied from diamond.js... maybe you should make a helpers file 
+    function clean_parameters(parameters) {  // for presentational purposes only
+        var coefficients =
+               {
+                a:parameters[0],
+                b:parameters[1],
+                c:parameters[2]
+               };
+
+        function ifOneOrNegOne(x, showOne) {
+            if (x == 1) {
+                if (showOne) { 
+                    return "+ 1";
+                }
+                else {
+                    return "+ ";
+                }
             }
-            for (var i in attributes) {
-                string += i+':'+attributes[i]+';'; 
+            if (x == -1) {
+                if (showOne) {
+                    return "- 1";
+                }
+                else {
+                    return "- ";
+                }
             }
-            return string;
+            // otherwise return 
+            return x;
+        };
+        function prettifySign(x) {
+            if (typeof x == "string") {
+                var _x = x.replace(/ /g, ''); // remove whitespace
+                _x = parseInt(_x);
+                if (isNaN(_x)){return x;};
+            }
+            else {
+                var _x = x;
+            }
+            console.log(" the _x is: " + _x);
+            if ((_x) >= 0) {
+                return "+ "+ _x;
+            }
+            else {
+                return "- " + (-1*_x);
+            }
+            return x;
         };
 
-
-
-
-        rectangle_parent.appendChild(container);
-        container.setAttribute("style", containerStyleAttributes());
-    }
-
-
-    return function() {
-
-        $(function(){
-            drawRectangle();
-        });
-    }
-
-
-
-
-
-}())
+        for (var c in coefficients) {
+            switch (c) {
+                case "a":
+                    coefficients[c] = ifOneOrNegOne(coefficients[c], false);
+                    if (typeof coefficients[c] == "string") {
+                        coefficients[c] = coefficients[c].replace('+', '');
+                    }
+                    break;
+                case "b":
+                    coefficients[c] = ifOneOrNegOne(coefficients[c], false);
+                    coefficients[c] = prettifySign(coefficients[c]);
+                    break;
+                case "c":
+                    coefficients[c] = ifOneOrNegOne(coefficients[c], true);
+                    coefficients[c] = prettifySign(coefficients[c]);
+                    break;
+                default:
+                    throw new Error("unexpected coefficents prameter");
+            }
+        }
+        return coefficients;
+    };
+};
 
 
 
@@ -562,10 +623,12 @@ Rectangle = (function() {
         3:null
     };
      
+    var polynomial = [1,2,1];
+
+
+
+
     function evaluateDiamond(dInput) {
-        console.log("you are running evaluateDiamond")
-        console.log(dInput[0])
-        console.log(dInput[1])
         $.extend(diamond, dInput[0]);
         
         // check the middle terms (1) and (3)
@@ -623,7 +686,22 @@ Rectangle = (function() {
             return randInt;
         }
     };
+
+    function getParameters() {
+        return polynomial;
+    };
+
+    function setParameters(x) {
+        if (x.length != 3) {throw new Error("Error -- bad parameters?!!!");}
+        else {
+            for(var i=0; i<3; i++) {
+                polynomial[i] = x[i];
+            }
+        } 
+        return polynomial; 
+    }
     
+    // ===========================================================================================
     Messenger.on("ft-randomize", function() {
         // (ax + b)(cx + d) = (ac)x^2 + (ad + bc)x + bd
         var a = randomInt(1,1, false);
@@ -632,20 +710,34 @@ Rectangle = (function() {
         var d = randomInt(-10,10, false);
         Diamond.initialize((a*c), (a*d+b*c), (b*d));
     });
+    
+    // give this an array... params := Array(a,b,c)
+    Messenger.on("ft-initialize", function(params) {
+        if (!params) {
+            Diamond.initialize();
+        }
+        else {
+            Diamond.initialize(params[0],params[1],params[2]);
+        }
+    });
 
     Messenger.on("createInputBox", function(args) {
-        args[1](args[0]);
+        args[1](args[0]); // Wow this isn't human-readable, but it's something in diamond.js.
     });
 
     Messenger.on("ft-guide", guide);
     Messenger.on("ft-d-eval", evaluateDiamond);
+    Messenger.on("getParameters", getParameters);
+    Messenger.on("setParameters", setParameters);
 
+    //TODO: test
     Messenger.on("test", function(x){console.log(x);console.log(x.length);});
-    
+
 }());
 </script>
 <style>
 .ft-container {
+    margin:10px;
     position:relative;
     width:800px;
 }
@@ -655,15 +747,89 @@ Rectangle = (function() {
     clear:both;
 }
     
-
-.ft-rectangle {
-    /* these css properties are getting defined in rectangle.js */
-}
-
 .ft-diamond {
     position:relative;
     float:right;
 }
+
+.ft-diamond span {
+    font-size:1.5em;
+}
+
+#ft-diamond-text-3 {
+    margin-left:-15px;
+}
+
+.ft-rectangle {
+    position:relative;
+    float:left;
+    height:350px;
+    width:400px; 
+    /*background:rgba(0,0,255,0.5);*/
+    margin-left:10px;
+}
+
+.ft-rectangle div {
+    float:left;
+    position:relative;
+    border:1px solid black;
+    width: 100px;
+    height:100px;
+    line-height:100px;
+    font-size:1.5em;
+}
+
+.ft-rectangle {
+    display:inline-block;
+    text-align:center;
+    vertical-align:middle;
+}
+
+.ftx2 {
+    margin-top:40px;
+    margin-left:102px;
+}
+
+.ftk2 {
+    margin-top:40px;
+}
+
+.ftx1 {
+    clear:both;
+}
+
+.fta {
+
+}
+.fta span {
+    vertical-align:middle;
+}
+
+.ftb { 
+
+}
+
+.ftk1 {
+    clear:both;
+}
+
+.ftc {
+
+}
+
+.ftd {
+
+}
+.ftd span {
+    vertical-align:middle;
+}
+
+.show {
+    display:visible;
+}
+
+
+
 </style>
 </head>
 <body>
