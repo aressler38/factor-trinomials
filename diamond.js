@@ -305,7 +305,9 @@ Diamond = (function() {
             initialize: function(_p1, _p2, _p3) {
                 if (typeof(_p1) == "number" && typeof(_p2) == "number" && typeof(_p3) == "number") {
                     parameters = [_p1, _p2, _p3];
+                    Messenger.send("setParameters", _p1, _p2, _p3);
                 }           
+                Messenger.send("setParameters", parameters[0], parameters[1], parameters[2]);
                
                 this.clearDiamondInput(); 
 
