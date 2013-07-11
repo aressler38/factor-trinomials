@@ -43,18 +43,19 @@ Messenger = (function(){
             if (dataThru) {
                 var argLen = arguments.length;
                 var dataThrus = new Array(argLen);
-                
                 for (var i=0; i<argLen; i++) {
                     dataThrus[i] = arguments[i];
                 }
                 dataThrus.popFirst();
             }
+            // if the event is regestered, then store the incomming dataThru
             if (events[event]) {
-                    events[event].data = dataThrus;                    
+                events[event].data = dataThrus;                    
             }
             // call the handler function manually and pass in the data
+            // return the result
             if (events[event] && events[event].handler) {
-                events[event].handler((events[event].data));
+                return events[event].handler((events[event].data));
             }
         }       
     });    
