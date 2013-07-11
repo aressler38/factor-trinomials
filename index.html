@@ -2,7 +2,7 @@
 
 <!-- Copyright © 2013 All Rights Reserved. Written by Alexander Ressler. -->
 
-<html lang="en">
+<html>
 
 <head>
     <title>Factor Trinomials</title>
@@ -15,8 +15,6 @@
     <script type="text/javascript" src="rectangle.js"></script>
     <script type="text/javascript" src="ft-messenger-central.js"></script>
 
-    
-    
 </head>
 
 <body>
@@ -26,7 +24,28 @@
         Trinomial container
     </div> 
     
-    <div id="ft-rectangle"></div>   
+    <div class="ft-rectangle">
+        <!--
+                    LAYOUT
+               -----------------              
+               |               |
+               |      x2 | k2  |
+               |     --------- |
+               |  x1 | a | b | |
+               |  ------------ |
+               |  k1 | c | d | |
+               |     --------- |
+               -----------------
+        -->
+        <div class="ftx2"></div> 
+        <div class="ftk2"></div> 
+        <div class="ftx1"></div> 
+        <div class="fta"></div> 
+        <div class="ftb"></div> 
+        <div class="ftk1"></div>  
+        <div class="ftc"></div> 
+        <div class="ftd"></div>   
+    </div>   
 
     <div class="ft-diamond">
         <svg xmlns="http://www.w3.org/2000/svg" 
@@ -35,15 +54,11 @@
              viewBox="0 0 200 200">
         </svg>
     </div>
-    
-
-    
 </div>
-
     
 <script type="text/javascript">
-        Diamond.initialize();
-        Rectangle();
+        //Diamond.initialize();
+        Messenger.send("ft-initialize");
 </script>
     
     

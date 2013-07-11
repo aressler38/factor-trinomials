@@ -17,10 +17,12 @@
         3:null
     };
      
+    var polynomial = [1,2,1];
+
+
+
+
     function evaluateDiamond(dInput) {
-        console.log("you are running evaluateDiamond")
-        console.log(dInput[0])
-        console.log(dInput[1])
         $.extend(diamond, dInput[0]);
         
         // check the middle terms (1) and (3)
@@ -78,7 +80,22 @@
             return randInt;
         }
     };
+
+    function getParameters() {
+        return polynomial;
+    };
+
+    function setParameters(x) {
+        if (x.length != 3) {throw new Error("Error -- bad parameters?!!!");}
+        else {
+            for(var i=0; i<3; i++) {
+                polynomial[i] = x[i];
+            }
+        } 
+        return polynomial; 
+    }
     
+    // ===========================================================================================
     Messenger.on("ft-randomize", function() {
         // (ax + b)(cx + d) = (ac)x^2 + (ad + bc)x + bd
         var a = randomInt(1,1, false);
@@ -87,14 +104,27 @@
         var d = randomInt(-10,10, false);
         Diamond.initialize((a*c), (a*d+b*c), (b*d));
     });
+    
+    // give this an array... params := Array(a,b,c)
+    Messenger.on("ft-initialize", function(params) {
+        if (!params) {
+            Diamond.initialize();
+        }
+        else {
+            Diamond.initialize(params[0],params[1],params[2]);
+        }
+    });
 
     Messenger.on("createInputBox", function(args) {
-        args[1](args[0]);
+        args[1](args[0]); // Wow this isn't human-readable, but it's something in diamond.js.
     });
 
     Messenger.on("ft-guide", guide);
     Messenger.on("ft-d-eval", evaluateDiamond);
+    Messenger.on("getParameters", getParameters);
+    Messenger.on("setParameters", setParameters);
 
+    //TODO: test
     Messenger.on("test", function(x){console.log(x);console.log(x.length);});
-    
+
 }());
