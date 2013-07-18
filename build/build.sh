@@ -41,6 +41,7 @@ echo "<!doctype html5>" | cat >> $output
 echo "<html>" | cat >> $output
 echo "<head>" | cat >> $output
 
+echo "<meta charset='UTF-8'>" | cat >> $output
 echo "<script type='text/javascript' src='http://code.jquery.com/jquery-1.9.1.min.js'></script>" | cat >> $output
 
 echo "<script type='text/javascript'>" | cat >> $output
