@@ -38,7 +38,7 @@ function primeFactors(n) {
     }
 
     // didn't return primeFactors? then n is a prime.
-    return [n,1];
+    return [ [n,1] ];
 
 
 
