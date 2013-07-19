@@ -24,10 +24,10 @@ function primeFactors(n) {
 
 
     for (var i=2; i<upperBound; i++) {
-        testFactor = multiplicity(i,n);
-
         // check if i is prime
         if (!isPrime(i)) continue;
+
+        testFactor = multiplicity(i,n);
 
         if (testFactor != 0) {
             primeFactors.push([i,testFactor]);
