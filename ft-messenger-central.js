@@ -10,22 +10,19 @@
 
 (function() {
     
+    // diamond get's reset by initialize
     var diamond = {
         0:null,
         1:null,
         2:null,
         3:null
     };
-     
     var polynomial = [1,2,1];
-
-
-
 
     function evaluateDiamond(dInput) {
         $.extend(diamond, dInput[0]);
         
-        // check the middle terms (1) and (3)
+        // Check the middle terms (1) and (3)
         if (diamond['1'] && diamond['3']) {
             Diamond.colorDiamondInput(2, "green");
             Diamond.colorDiamondInput(4, "green");
@@ -56,9 +53,37 @@
                 Diamond.colorDiamondInput(3, "red"); 
             }
         }
+        
+        // Check all the terms
+        if (diamond['0'] && diamond['1'] && diamond['2'] && diamond['3']) {
+            Messenger.off("createInputBox");
+            Messenger.send("diamondCorrect");
+        }
 
     };
     
+    function diamondCorrect() {
+        $(".ftH span").removeClass("hide");  
+        $(".ftx1,.ftk1,.ftx2,.ftk2").bind("click", createRectangleInput);
+    };
+
+
+    function createRectangleInput(e) {
+        var target = e.currentTarget;
+        var input = document.createElement("input");
+        $(target).html(input);
+        $(input).focus();
+        
+        $(input).bind("keyup", function(e){
+            if (e.which == 13) {
+                $(target).html(this.value)
+            }
+        });
+        $(input).bind("blur", function(e){
+            $(target).html(this.value)
+        });
+    };
+
     function guide(msg) {
         console.log("you are logging to ft-guide: "+msg)
     };
@@ -93,38 +118,52 @@
             }
         } 
         return polynomial; 
-    }
+    };
+    function createInputBox(args) {
+        args[1](args[0]);// Wow this isn't human-readable, but it's something in diamond.js.
+
+    };
     
     // ===========================================================================================
     Messenger.on("ft-randomize", function() {
+        diamond = {
+                0:null,
+                1:null,
+                2:null,
+                3:null
+        };
         // (ax + b)(cx + d) = (ac)x^2 + (ad + bc)x + bd
         var a = randomInt(1,1, false);
         var b = randomInt(-10,10, false);
         var c = randomInt(1,2, false); 
         var d = randomInt(-10,10, false);
-        Diamond.initialize((a*c), (a*d+b*c), (b*d));
+        Messenger.send("ft-initialize", (a*c), (a*d+b*c), (b*d));
     });
     
     // give this an array... params := Array(a,b,c)
     Messenger.on("ft-initialize", function(params) {
-        if (!params) {
+        diamond = {
+                0:null,
+                1:null,
+                2:null,
+                3:null
+        };
+        if (!params || params.length != 3) {
             Diamond.initialize();
         }
         else {
             Diamond.initialize(params[0],params[1],params[2]);
         }
-    });
-
-    Messenger.on("createInputBox", function(args) {
-        args[1](args[0]); // Wow this isn't human-readable, but it's something in diamond.js.
+        $(".ftH span").addClass("hide");  
+        Messenger.on("createInputBox", createInputBox);
     });
 
     Messenger.on("ft-guide", guide);
     Messenger.on("ft-d-eval", evaluateDiamond);
     Messenger.on("getParameters", getParameters);
     Messenger.on("setParameters", setParameters);
+    Messenger.on("diamondCorrect", diamondCorrect);
 
     //TODO: test
     Messenger.on("test", function(x){console.log(x);console.log(x.length);});
-
 }());
