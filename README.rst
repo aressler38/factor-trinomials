@@ -1,7 +1,7 @@
 factor-trinomials
 =================
 
-Use a generic rectangle and diamond to a factor trinomial
+Use a generic rectangle and a diamond to factor a trinomial.
     By Alexander Ressler.
 
 About
