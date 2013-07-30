@@ -32,10 +32,10 @@
 }
 
 .ft-rectangle div {
-    float:left;
-    position:relative;
+    position: relative;
+    float: left;
     width: 100px;
-    height:100px;
+    height: 100px;
 }
 
 .ft-rectangle {
@@ -61,6 +61,7 @@
 }
 .hide {
     opacity:0.0;
+}
 
 .ftx2 {
     border:1px solid black;
