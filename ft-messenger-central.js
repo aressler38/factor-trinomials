@@ -64,6 +64,9 @@
     
     function diamondCorrect() {
         $(".ftH span").removeClass("hide");  
+        // show inner rectangle
+        $(".ftb, .ftc");
+        
         $(".ftx1,.ftk1,.ftx2,.ftk2").bind("click", createRectangleInput);
     };
 
@@ -155,14 +158,28 @@
             Diamond.initialize(params[0],params[1],params[2]);
         }
         $(".ftH span").addClass("hide");  
+        $(".fta span, .ftd span").addClass("hide");
         Messenger.on("createInputBox", createInputBox);
+        Messenger.send("onLoad");
     });
+
+    
 
     Messenger.on("ft-guide", guide);
     Messenger.on("ft-d-eval", evaluateDiamond);
     Messenger.on("getParameters", getParameters);
     Messenger.on("setParameters", setParameters);
     Messenger.on("diamondCorrect", diamondCorrect);
+
+    Messenger.on("onLoad", function(){
+        $(function(){
+            $(".ftH span").css({
+                "-webkit-transition"    : "all 1s;",
+                "-moz-transition"       : "all 1s",
+                "transition"            : "all 1s"
+            });
+        });
+    });
 
     //TODO: test
     Messenger.on("test", function(x){console.log(x);console.log(x.length);});

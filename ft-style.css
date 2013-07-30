@@ -54,9 +54,6 @@
     font-size:1em;
     top:25px;
     vertical-align:middle;
-    -webkit-transition: all 1s;
-    -moz-transition: all 1s;
-    transition: all 1s;
 }
 .ftH span:hover {
     color:red;
@@ -64,10 +61,6 @@
 }
 .hide {
     opacity:0.0;
-}
-
-
-
 
 .ftx2 {
     border:1px solid black;
