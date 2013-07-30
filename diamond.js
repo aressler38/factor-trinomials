@@ -70,7 +70,6 @@ Diamond = (function() {
                 else {
                     var _x = x;
                 }
-                console.log(" the _x is: " + _x);
                 if ((_x) >= 0) {
                     return "+ "+ _x;
                 }
@@ -135,6 +134,9 @@ Diamond = (function() {
                 if(e.which == 13) {
                     setInputBox(e);  
                 }
+            });
+             $(".ft-d-input-box").blur(function(e) {
+                 setInputBox(e);  
             });
              
         };

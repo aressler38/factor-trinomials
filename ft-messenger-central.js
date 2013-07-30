@@ -65,7 +65,8 @@
     function diamondCorrect() {
         $(".ftH span").removeClass("hide");  
         // show inner rectangle
-        $(".ftb, .ftc");
+        $(".fta span").removeClass("hide");
+        $(".ftd span").removeClass("hide");
         
         $(".ftx1,.ftk1,.ftx2,.ftk2").bind("click", createRectangleInput);
     };
@@ -79,7 +80,7 @@
         
         $(input).bind("keyup", function(e){
             if (e.which == 13) {
-                $(target).html(this.value)
+                $(target).html(renderMath(this.value))
             }
         });
         $(input).bind("blur", function(e){
@@ -126,6 +127,27 @@
         args[1](args[0]);// Wow this isn't human-readable, but it's something in diamond.js.
 
     };
+
+    function renderMath(diamondText) {
+        var output = '';
+        if (diamondText && diamondText.match) {
+            if (diamondText.match(/\^/)) {
+                var pre = diamondText.match(/(.*)\^/)[1];
+                var exponent = diamondText.match(/\^(.*)/)[1];
+                output = pre + "<sup>" + exponent + "</sup>";
+                output = output.replace("x", "<i>x</i>");
+                return output;
+            }
+            else {
+                output = diamondText;
+                output = output.replace("x", "<i>x</i>");
+                return output;
+            }
+        }
+        else {
+            throw new Error("The text is supposed to have a regex match method.");
+        }
+    };
     
     // ===========================================================================================
     Messenger.on("ft-randomize", function() {
@@ -157,8 +179,7 @@
         else {
             Diamond.initialize(params[0],params[1],params[2]);
         }
-        $(".ftH span").addClass("hide");  
-        $(".fta span, .ftd span").addClass("hide");
+        
         Messenger.on("createInputBox", createInputBox);
         Messenger.send("onLoad");
     });
@@ -173,11 +194,16 @@
 
     Messenger.on("onLoad", function(){
         $(function(){
-            $(".ftH span").css({
-                "-webkit-transition"    : "all 1s;",
-                "-moz-transition"       : "all 1s",
-                "transition"            : "all 1s"
-            });
+            $(".ftH span").addClass("hide");  
+            $(".fta span").addClass("hide");
+            $(".ftd span").addClass("hide");
+            window.setTimeout(function(){
+                $(".ftH span, .fta span, .ftd span").css({
+                    "-webkit-transition"    : "all 1s;",
+                    "-moz-transition"       : "all 1s",
+                    "transition"            : "all 1s"
+                });
+            },1);
         });
     });
 

@@ -80,7 +80,6 @@ Rectangle = new function() {
             else {
                 var _x = x;
             }
-            console.log(" the _x is: " + _x);
             if ((_x) >= 0) {
                 return "+ "+ _x;
             }
