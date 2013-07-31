@@ -18,6 +18,8 @@
         3:null
     };
     var polynomial = [1,2,1];
+    var rectangleElements = ["x1", "k1", "x2", "k2"];
+    var diamondElements = ["1", "2", "3", "4"];
 
     function evaluateDiamond(dInput) {
         $.extend(diamond, dInput[0]);
@@ -81,16 +83,54 @@
         var input = document.createElement("input");
         $(target).html(input);
         $(input).focus();
-        
         $(input).bind("keyup", function(e){
             if (e.which == 13) {
-                $(target).html(renderMath(this.value))
+                setRectangleInput.call(this,target);
             }
         });
         $(input).bind("blur", function(e){
-            $(target).html(this.value)
+            setRectangleInput.call(this,target);
         });
     };
+
+    function setRectangleInput(target) {
+        $(target).html(renderMath(this.value));
+        setRectangleElement(this.value, $(target).attr("class"));
+        checkRectangleElements();
+    };
+
+    function checkRectangleElements() {
+        // check the GCF slot in $(".ftx1")
+        var formattedRectEls = formatInput(rectangleElements);
+        var rectPrimeFactorization = Math.primeFactors(parseInt(formattedRectEls[0]));
+        console.log(rectPrimeFactorization);
+
+    };
+
+    // array in ... array out
+    function formatInput(data) {
+        for (var i=0; i<4; i++) {
+            if (typeof data[i] == "undefined") {
+                continue;
+            }
+            // Handle the case if the coefficient is an implied 1 or an implied -1.
+            if (isNaN(parseInt(data[i]))) {
+                switch (data[i][0]) {
+                    case "x": //implied 1
+                        data[i] = "1"+data[i];
+                        break;
+                    case "-": //implied -1
+                        data[i] = data[i].replace("-","-1");
+                        break;
+                    default:
+                        Messenger.send("ft-guide", "There's something wrong with what you entered. "
+                                + "I was expecting the expression to start with x or -x");
+                }
+            }
+        }
+        return data;
+    };
+
 
     function guide(msg) {
         console.log("you are logging to ft-guide: "+msg)
@@ -114,6 +154,25 @@
         }
     };
 
+    function setRectangleElement(str, className) {
+        switch (className) {
+            case ("ftx1"):
+                rectangleElements[0] = str;
+                break;
+            case ("ftk1"):
+                rectangleElements[1] = str;
+                break;
+            case ("ftx2"):
+                rectangleElements[2] = str;
+                break;
+            case ("ftk2"):
+                rectangleElements[3] = str;
+                break;
+            default:
+                throw new Error("there's no matching class name when setting rectangle inputs");
+        }
+    };
+
     function getParameters() {
         return polynomial;
     };
@@ -127,9 +186,9 @@
         } 
         return polynomial; 
     };
+
     function createInputBox(args) {
         args[1](args[0]);// Wow this isn't human-readable, but it's something in diamond.js.
-
     };
 
     function renderMath(diamondText) {
@@ -149,9 +208,16 @@
             }
         }
         else {
-            throw new Error("The text is supposed to have a regex match method.");
+            //throw new Error("The text is supposed to have a regex match method.");
         }
     };
+
+    function getDiamondElements() {
+        for (var i=0; i<4; i++) {
+            diamondElements[i] = $("#ft-diamond-text-"+(i+1)).html();
+        }
+        return diamondElements;
+    }
     
     // ===========================================================================================
     Messenger.on("ft-randomize", function() {
@@ -171,6 +237,8 @@
     
     // give this an array... params := Array(a,b,c)
     Messenger.on("ft-initialize", function(params) {
+        rectangleElements = ["x1", "k1", "x2", "k2"];
+        diamondElements = ["1", "2", "3", "4"];
         diamond = {
                 0:null,
                 1:null,

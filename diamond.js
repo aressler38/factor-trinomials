@@ -215,8 +215,6 @@ Diamond = (function() {
                 // Check Values
                 // ============
                 
-                for (var i=0;i<4;i++){console.log(diamondInputs[i]);}
-
                 diamondInputs = formatDiamondInput(diamondInputs);
                 checkDiamondInputs(diamondInputs);
         };
@@ -314,6 +312,7 @@ Diamond = (function() {
                 }           
                 Messenger.send("setParameters", parameters[0], parameters[1], parameters[2]);
                
+                diamondInputs=[]; 
                 this.clearDiamondInput(); 
 
                 var coefficients = clean_parameters();
@@ -402,11 +401,6 @@ Diamond = (function() {
         }
     
 }());
-// TODO: 
-/*
-    * Make the area of the diamond fill green when the user's input is correct, and make the diamond fill red when the user input is incorrect.
-    * Once the two numbers that satisfy the product-sum rule are entered correctly:
-        - animate those two numbers to the generic rectangle cells.
-    * Students could enter the factors on the outer part of the generic rectangle.
-    * Finally, students could enter their factored expression and click a submit button to see if they      are correct.
-*/
+// I am very sorry that this app has been written in a very non-standard pattern. 
+// I used this program to learn as I go. I should have stuck to a framework like backbone.
+// There's css rules in the JS; there's event bindings all over; the horror, the horror. I'm sorry. 
