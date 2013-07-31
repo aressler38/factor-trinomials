@@ -21,7 +21,7 @@
 Diamond = (function() {
 
         var parameters = [1, -17, 30]; // these are the a,b,c that go in ax^2 + bx + c -- set by initialize
-        var diamondNumber = {};
+        var diamondNumber = 0;
         var diamondInputs = [];
         var View_MAX = 350;   // set the max pixels for the diamond's box container
 
@@ -214,24 +214,28 @@ Diamond = (function() {
                 // ============
                 // Check Values
                 // ============
+                
+                for (var i=0;i<4;i++){console.log(diamondInputs[i]);}
 
                 diamondInputs = formatDiamondInput(diamondInputs);
                 checkDiamondInputs(diamondInputs);
         };
         
+
+        // array in ... array out
         function formatDiamondInput(data) {
             for (var i=0; i<4; i++) {
-                if (typeof(data[i]) == "undefined") {
+                if (typeof data[i] == "undefined") {
                     continue;
                 }
                 // Handle the case if the coefficient is an implied 1 or an implied -1.
                 if (isNaN(parseInt(data[i]))) {
                     switch (data[i][0]) {
-                        case "x":
-                            return "-1"+data[i];
+                        case "x": //implied 1
+                            data[i] = "1"+data[i];
                             break;
-                        case "-":
-                            return data[i].replace("-","-1");
+                        case "-": //implied -1
+                            data[i] = data[i].replace("-","-1");
                             break;
                         default:
                             Messenger.send("ft-guide", "There's something wrong with what you entered. "
@@ -248,7 +252,6 @@ Diamond = (function() {
             for (var i=0; i<4; i++) {
                 if (!dFormatted[i] || !dFormatted[i].match('x')) {
                     Messenger.send("ft-guide", "Make sure you are using the correct variable.");
-                    //continue;
                 }
                 switch (i) {
                     // bottom square --- match middle term

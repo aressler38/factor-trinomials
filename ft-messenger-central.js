@@ -59,15 +59,19 @@
             Messenger.off("createInputBox");
             Messenger.send("diamondCorrect");
         }
-
     };
     
     function diamondCorrect() {
         $(".ftH span").removeClass("hide");  
+        $(".ftb span").html($("#ft-diamond-text-2").html());
+        $(".ftc span").html($("#ft-diamond-text-4").html());
         // show inner rectangle
         $(".fta span").removeClass("hide");
         $(".ftd span").removeClass("hide");
+        $(".ftb span").removeClass("hide");
+        $(".ftc span").removeClass("hide");
         
+
         $(".ftx1,.ftk1,.ftx2,.ftk2").bind("click", createRectangleInput);
     };
 
@@ -181,7 +185,9 @@
         }
         
         Messenger.on("createInputBox", createInputBox);
+        Messenger.send("setMainDiagonal");
         Messenger.send("onLoad");
+        
     });
 
     
@@ -197,16 +203,16 @@
             $(".ftH span").addClass("hide");  
             $(".fta span").addClass("hide");
             $(".ftd span").addClass("hide");
+            $(".ftb span").addClass("hide");
+            $(".ftc span").addClass("hide");
             window.setTimeout(function(){
-                $(".ftH span, .fta span, .ftd span").css({
+                $(".ftH span, .fta span, .ftb span, .ftc span, .ftd span").css({
                     "-webkit-transition"    : "all 1s;",
                     "-moz-transition"       : "all 1s",
                     "transition"            : "all 1s"
                 });
-            },1);
+            }, 1);
         });
     });
 
-    //TODO: test
-    Messenger.on("test", function(x){console.log(x);console.log(x.length);});
 }());

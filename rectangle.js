@@ -26,11 +26,8 @@ Rectangle = new function() {
 
     ];
 
-    function showAltDiagonal() {
-        
-    };
 
-    $(function(){
+    Messenger.on("setMainDiagonal", function(){
         var parameters = Messenger.send("getParameters");
         var polynomial = clean_parameters(parameters);
         
@@ -38,9 +35,6 @@ Rectangle = new function() {
         $(".ftd").html("<span>"+parameters[2]+"</span>");
     });
 
-    Messenger.on("showAltRectangle", showAltDiagonal); 
-
-    
     
     //copied from diamond.js... maybe you should make a helpers file 
     function clean_parameters(parameters) {  // for presentational purposes only
