@@ -92,7 +92,7 @@ Messenger = (function(){
 Diamond = (function() {
 
         var parameters = [1, -17, 30]; // these are the a,b,c that go in ax^2 + bx + c -- set by initialize
-        var diamondNumber = {};
+        var diamondNumber = 0;
         var diamondInputs = [];
         var View_MAX = 350;   // set the max pixels for the diamond's box container
 
@@ -141,7 +141,6 @@ Diamond = (function() {
                 else {
                     var _x = x;
                 }
-                console.log(" the _x is: " + _x);
                 if ((_x) >= 0) {
                     return "+ "+ _x;
                 }
@@ -206,6 +205,9 @@ Diamond = (function() {
                 if(e.which == 13) {
                     setInputBox(e);  
                 }
+            });
+             $(".ft-d-input-box").blur(function(e) {
+                 setInputBox(e);  
             });
              
         };
@@ -283,24 +285,26 @@ Diamond = (function() {
                 // ============
                 // Check Values
                 // ============
-
+                
                 diamondInputs = formatDiamondInput(diamondInputs);
                 checkDiamondInputs(diamondInputs);
         };
         
+
+        // array in ... array out
         function formatDiamondInput(data) {
             for (var i=0; i<4; i++) {
-                if (typeof(data[i]) == "undefined") {
+                if (typeof data[i] == "undefined") {
                     continue;
                 }
                 // Handle the case if the coefficient is an implied 1 or an implied -1.
                 if (isNaN(parseInt(data[i]))) {
                     switch (data[i][0]) {
-                        case "x":
-                            return "-1"+data[i];
+                        case "x": //implied 1
+                            data[i] = "1"+data[i];
                             break;
-                        case "-":
-                            return data[i].replace("-","-1");
+                        case "-": //implied -1
+                            data[i] = data[i].replace("-","-1");
                             break;
                         default:
                             Messenger.send("ft-guide", "There's something wrong with what you entered. "
@@ -317,7 +321,6 @@ Diamond = (function() {
             for (var i=0; i<4; i++) {
                 if (!dFormatted[i] || !dFormatted[i].match('x')) {
                     Messenger.send("ft-guide", "Make sure you are using the correct variable.");
-                    //continue;
                 }
                 switch (i) {
                     // bottom square --- match middle term
@@ -380,6 +383,7 @@ Diamond = (function() {
                 }           
                 Messenger.send("setParameters", parameters[0], parameters[1], parameters[2]);
                
+                diamondInputs=[]; 
                 this.clearDiamondInput(); 
 
                 var coefficients = clean_parameters();
@@ -468,14 +472,9 @@ Diamond = (function() {
         }
     
 }());
-// TODO: 
-/*
-    * Make the area of the diamond fill green when the user's input is correct, and make the diamond fill red when the user input is incorrect.
-    * Once the two numbers that satisfy the product-sum rule are entered correctly:
-        - animate those two numbers to the generic rectangle cells.
-    * Students could enter the factors on the outer part of the generic rectangle.
-    * Finally, students could enter their factored expression and click a submit button to see if they      are correct.
-*/
+// I am very sorry that this app has been written in a very non-standard pattern. 
+// I used this program to learn as I go. I should have stuck to a framework like backbone.
+// There's css rules in the JS; there's event bindings all over; the horror, the horror. I'm sorry. 
 </script>
 <script type='text/javascript'>
 // rectangle.js is a file associated with the factor-trinomial 
@@ -506,11 +505,8 @@ Rectangle = new function() {
 
     ];
 
-    function showAltDiagonal() {
-        
-    };
 
-    $(function(){
+    Messenger.on("setMainDiagonal", function(){
         var parameters = Messenger.send("getParameters");
         var polynomial = clean_parameters(parameters);
         
@@ -518,9 +514,6 @@ Rectangle = new function() {
         $(".ftd").html("<span>"+parameters[2]+"</span>");
     });
 
-    Messenger.on("showAltRectangle", showAltDiagonal); 
-
-    
     
     //copied from diamond.js... maybe you should make a helpers file 
     function clean_parameters(parameters) {  // for presentational purposes only
@@ -560,7 +553,6 @@ Rectangle = new function() {
             else {
                 var _x = x;
             }
-            console.log(" the _x is: " + _x);
             if ((_x) >= 0) {
                 return "+ "+ _x;
             }
@@ -617,22 +609,21 @@ Rectangle = new function() {
 
 (function() {
     
+    // diamond get's reset by initialize
     var diamond = {
         0:null,
         1:null,
         2:null,
         3:null
     };
-     
     var polynomial = [1,2,1];
-
-
-
+    var rectangleElements = ["x1", "k1", "x2", "k2"];
+    var diamondElements = ["1", "2", "3", "4"];
 
     function evaluateDiamond(dInput) {
         $.extend(diamond, dInput[0]);
         
-        // check the middle terms (1) and (3)
+        // Check the middle terms (1) and (3)
         if (diamond['1'] && diamond['3']) {
             Diamond.colorDiamondInput(2, "green");
             Diamond.colorDiamondInput(4, "green");
@@ -663,9 +654,83 @@ Rectangle = new function() {
                 Diamond.colorDiamondInput(3, "red"); 
             }
         }
-
+        
+        // Check all the terms
+        if (diamond['0'] && diamond['1'] && diamond['2'] && diamond['3']) {
+            Messenger.off("createInputBox");
+            Messenger.send("diamondCorrect");
+        }
     };
     
+    function diamondCorrect() {
+        $(".ftH span").removeClass("hide");  
+        $(".ftb span").html($("#ft-diamond-text-2").html());
+        $(".ftc span").html($("#ft-diamond-text-4").html());
+        // show inner rectangle
+        $(".fta span").removeClass("hide");
+        $(".ftd span").removeClass("hide");
+        $(".ftb span").removeClass("hide");
+        $(".ftc span").removeClass("hide");
+        
+
+        $(".ftx1,.ftk1,.ftx2,.ftk2").bind("click", createRectangleInput);
+    };
+
+
+    function createRectangleInput(e) {
+        var target = e.currentTarget;
+        var input = document.createElement("input");
+        $(target).html(input);
+        $(input).focus();
+        $(input).bind("keyup", function(e){
+            if (e.which == 13) {
+                setRectangleInput.call(this,target);
+            }
+        });
+        $(input).bind("blur", function(e){
+            setRectangleInput.call(this,target);
+        });
+    };
+
+    function setRectangleInput(target) {
+        $(target).html(renderMath(this.value));
+        setRectangleElement(this.value, $(target).attr("class"));
+        checkRectangleElements();
+    };
+
+    function checkRectangleElements() {
+        // check the GCF slot in $(".ftx1")
+        var formattedRectEls = formatInput(rectangleElements);
+        var rectPrimeFactorization = Math.primeFactors(parseInt(formattedRectEls[0]));
+        console.log(rectPrimeFactorization);
+
+    };
+
+    // array in ... array out
+    function formatInput(data) {
+        for (var i=0; i<4; i++) {
+            if (typeof data[i] == "undefined") {
+                continue;
+            }
+            // Handle the case if the coefficient is an implied 1 or an implied -1.
+            if (isNaN(parseInt(data[i]))) {
+                switch (data[i][0]) {
+                    case "x": //implied 1
+                        data[i] = "1"+data[i];
+                        break;
+                    case "-": //implied -1
+                        data[i] = data[i].replace("-","-1");
+                        break;
+                    default:
+                        Messenger.send("ft-guide", "There's something wrong with what you entered. "
+                                + "I was expecting the expression to start with x or -x");
+                }
+            }
+        }
+        return data;
+    };
+
+
     function guide(msg) {
         console.log("you are logging to ft-guide: "+msg)
     };
@@ -688,6 +753,25 @@ Rectangle = new function() {
         }
     };
 
+    function setRectangleElement(str, className) {
+        switch (className) {
+            case ("ftx1"):
+                rectangleElements[0] = str;
+                break;
+            case ("ftk1"):
+                rectangleElements[1] = str;
+                break;
+            case ("ftx2"):
+                rectangleElements[2] = str;
+                break;
+            case ("ftk2"):
+                rectangleElements[3] = str;
+                break;
+            default:
+                throw new Error("there's no matching class name when setting rectangle inputs");
+        }
+    };
+
     function getParameters() {
         return polynomial;
     };
@@ -700,39 +784,103 @@ Rectangle = new function() {
             }
         } 
         return polynomial; 
+    };
+
+    function createInputBox(args) {
+        args[1](args[0]);// Wow this isn't human-readable, but it's something in diamond.js.
+    };
+
+    function renderMath(diamondText) {
+        var output = '';
+        if (diamondText && diamondText.match) {
+            if (diamondText.match(/\^/)) {
+                var pre = diamondText.match(/(.*)\^/)[1];
+                var exponent = diamondText.match(/\^(.*)/)[1];
+                output = pre + "<sup>" + exponent + "</sup>";
+                output = output.replace("x", "<i>x</i>");
+                return output;
+            }
+            else {
+                output = diamondText;
+                output = output.replace("x", "<i>x</i>");
+                return output;
+            }
+        }
+        else {
+            //throw new Error("The text is supposed to have a regex match method.");
+        }
+    };
+
+    function getDiamondElements() {
+        for (var i=0; i<4; i++) {
+            diamondElements[i] = $("#ft-diamond-text-"+(i+1)).html();
+        }
+        return diamondElements;
     }
     
     // ===========================================================================================
     Messenger.on("ft-randomize", function() {
+        diamond = {
+                0:null,
+                1:null,
+                2:null,
+                3:null
+        };
         // (ax + b)(cx + d) = (ac)x^2 + (ad + bc)x + bd
         var a = randomInt(1,1, false);
         var b = randomInt(-10,10, false);
         var c = randomInt(1,2, false); 
         var d = randomInt(-10,10, false);
-        Diamond.initialize((a*c), (a*d+b*c), (b*d));
+        Messenger.send("ft-initialize", (a*c), (a*d+b*c), (b*d));
     });
     
     // give this an array... params := Array(a,b,c)
     Messenger.on("ft-initialize", function(params) {
-        if (!params) {
+        rectangleElements = ["x1", "k1", "x2", "k2"];
+        diamondElements = ["1", "2", "3", "4"];
+        diamond = {
+                0:null,
+                1:null,
+                2:null,
+                3:null
+        };
+        if (!params || params.length != 3) {
             Diamond.initialize();
         }
         else {
             Diamond.initialize(params[0],params[1],params[2]);
         }
+        
+        Messenger.on("createInputBox", createInputBox);
+        Messenger.send("setMainDiagonal");
+        Messenger.send("onLoad");
+        
     });
 
-    Messenger.on("createInputBox", function(args) {
-        args[1](args[0]); // Wow this isn't human-readable, but it's something in diamond.js.
-    });
+    
 
     Messenger.on("ft-guide", guide);
     Messenger.on("ft-d-eval", evaluateDiamond);
     Messenger.on("getParameters", getParameters);
     Messenger.on("setParameters", setParameters);
+    Messenger.on("diamondCorrect", diamondCorrect);
 
-    //TODO: test
-    Messenger.on("test", function(x){console.log(x);console.log(x.length);});
+    Messenger.on("onLoad", function(){
+        $(function(){
+            $(".ftH span").addClass("hide");  
+            $(".fta span").addClass("hide");
+            $(".ftd span").addClass("hide");
+            $(".ftb span").addClass("hide");
+            $(".ftc span").addClass("hide");
+            window.setTimeout(function(){
+                $(".ftH span, .fta span, .ftb span, .ftc span, .ftd span").css({
+                    "-webkit-transition"    : "all 1s;",
+                    "-moz-transition"       : "all 1s",
+                    "transition"            : "all 1s"
+                });
+            }, 1);
+        });
+    });
 
 }());
 </script>
@@ -771,10 +919,10 @@ Rectangle = new function() {
 }
 
 .ft-rectangle div {
-    float:left;
-    position:relative;
+    position: relative;
+    float: left;
     width: 100px;
-    height:100px;
+    height: 100px;
 }
 
 .ft-rectangle {
@@ -788,15 +936,19 @@ Rectangle = new function() {
     margin-top:40px;
 }
 .ftH span {
-    
     position:relative;
     line-height:0.75em;
     font-size:1em;
     top:25px;
     vertical-align:middle;
 }
-
-
+.ftH span:hover {
+    color:red;
+    cursor:pointer;
+}
+.hide {
+    opacity:0.0;
+}
 
 .ftx2 {
     border:1px solid black;
@@ -829,6 +981,9 @@ Rectangle = new function() {
     line-height:100px;
     font-size:1.5em;
     border:1px solid black;
+    -webkit-transition: all 1s;
+    -moz-transition: all 1s;
+    transition: all 1s;
 }
 .ftk1 {
     line-height:100px;
@@ -840,6 +995,9 @@ Rectangle = new function() {
     line-height:100px;
     border:1px solid black;
     font-size:1.5em;
+    -webkit-transition: all 1s;
+    -moz-transition: all 1s;
+    transition: all 1s;
 }
 
 .ftd {
@@ -850,6 +1008,14 @@ Rectangle = new function() {
 .ftd span {
     vertical-align:middle;
 }
+
+.ftx2 input, .ftx1 input, .ftk1 input, .ftk2 input {
+    max-width:90%;
+    font-size:2em;
+    height:1.95em;
+}
+
+
 .show {
     display:visible;
 }
