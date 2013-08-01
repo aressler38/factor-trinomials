@@ -102,9 +102,73 @@
     function checkRectangleElements() {
         // check the GCF slot in $(".ftx1")
         var formattedRectEls = formatInput(rectangleElements);
-        var rectPrimeFactorization = Math.primeFactors(parseInt(formattedRectEls[0]));
-        console.log(rectPrimeFactorization);
+        var formattedX = parseInt(formattedRectEls[0]);
+        var multiplier = 1;
 
+        if (Math.abs(formattedX) <= 1) {// if 1 or -1
+            if (formattedX < 1) {// if -1
+                multiplier = -1;
+                PFRect = [[1,1]];
+            }
+            else { // if +1
+                multiplier = 1;
+                PFRect = [[1,1]];
+            }
+            console.log("checkRectangleElements IF: ");console.log(PFRect);
+        }
+        else if (formattedX < 0) {// if negative
+            var PFRect = Math.primeFactors(-1*formattedX);
+            multiplier = -1;
+            console.log("checkRectangleElements IF ELSE: ");console.log(PFRect);
+        }
+        else { // if x>1
+            var PFRect = Math.primeFactors(formattedX);
+            console.log("checkRectangleElements ELSE: ");console.log(PFRect);
+        }
+    };
+
+    function getGCF(a1,a2) {
+
+        var bases1 = [];
+        var bases2 = [];
+    
+        var a1len = a1.length;
+        var a2len = a2.length;
+
+        var a1lenLessThanA2 = (a1len<a2len) ? true : false;
+
+        function findMatchingElements(ar1, ar2) {
+            var matches = [];
+            for (var i=0; i<a1len; i++) {
+                for (var j=0; j<a2len; j++) {
+                    if (ar1[i] == ar2[j]) {
+                        matches[i] = ar1[i];  
+                    }
+                }
+            }
+            return matches;
+        };
+        
+        console.log("FINISH THIS METHOD!");
+        function findLowestExponent(ar1,ar2,num) {
+            var minimum = 1;
+            throw new Error("FINISH THIS METHOD")
+            return minimum;
+        };
+    
+        //==========================================================
+        for (var i=0; i<a1len; i++) {
+            bases1[i] = a1[i][0];
+        }
+        for (var i=0; i<a2len; i++) {
+            bases2[i] = a2[i][0];
+        }
+        var matches = findMatchingElements(bases1,bases2);
+        var maxBase = Math.max.apply(this,matches));
+
+        
+        //==========================================================
+        
     };
 
     // array in ... array out
@@ -129,11 +193,6 @@
             }
         }
         return data;
-    };
-
-
-    function guide(msg) {
-        console.log("you are logging to ft-guide: "+msg)
     };
 
     // return a random integer in [min, max]
@@ -218,6 +277,10 @@
         }
         return diamondElements;
     }
+
+    function guide(msg) {
+        console.log("you are logging to ft-guide: "+msg)
+    };
     
     // ===========================================================================================
     Messenger.on("ft-randomize", function() {
