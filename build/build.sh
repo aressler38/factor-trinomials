@@ -17,6 +17,7 @@ diamond_js="../diamond.js"
 messenger_js="../messenger.js"
 messenger_central_js="../ft-messenger-central.js"
 rectangle_js="../rectangle.js"
+prime_factorization_js="../prime-factorization.js"
 
 # CSS
 ft_style_css="../ft-style.css"
@@ -41,6 +42,10 @@ echo "<!doctype html5>" | cat >> $output
 echo "<html>" | cat >> $output
 echo "<head>" | cat >> $output
 
+echo "<style>" | cat >> $output
+cat $ft_style_css >> $output
+echo "</style>" | cat >> $output
+
 echo "<meta charset='UTF-8'>" | cat >> $output
 echo "<script type='text/javascript' src='http://code.jquery.com/jquery-1.9.1.min.js'></script>" | cat >> $output
 
@@ -60,20 +65,44 @@ echo "<script type='text/javascript'>" | cat >> $output;
 cat $messenger_central_js >> $output
 echo "</script>" | cat >> $output
 
-echo "<style>" | cat >> $output
-cat $ft_style_css >> $output
-echo "</style>" | cat >> $output
+echo "<script type='text/javascript'>" | cat >> $output;
+cat $prime_factorization_js >> $output
+echo "</script>" | cat >> $output
+
 echo "</head>" | cat >> $output
 
 # BODY BUILDER
 echo "<body>" | cat >> $output
 
 echo '<div class="ft-container">' | cat >> $output
-echo '    <div class="ft-trinomial">
+echo '<div class="ft-trinomial">
         Trinomial container
-    </div>
-
-    <div id="ft-rectangle"></div>
+    </div> 
+    
+    <div class="ft-rectangle">
+        <!--
+                    LAYOUT
+               -----------------
+               |               |
+               |   H  x2 | k2  |
+               |     --------- |
+               |  x1 | a | b | |
+               |  ------------ |
+               |  k1 | c | d | |
+               |     --------- |
+               -----------------
+            (H := hint)
+        -->
+        <div class="ftH"><span>The GCF of the top<br>row goes here<br>&#x25BC;</span></div> 
+        <div class="ftx2"></div> 
+        <div class="ftk2"></div> 
+        <div class="ftx1"></div> 
+        <div class="fta"></div> 
+        <div class="ftb"><span></span></div> 
+        <div class="ftk1"></div>  
+        <div class="ftc"><span></span></div> 
+        <div class="ftd"></div>   
+    </div>   
 
     <div class="ft-diamond">
         <svg xmlns="http://www.w3.org/2000/svg" 
@@ -87,8 +116,7 @@ echo "</div>" | cat >> $output;
 
 
 echo '<script type="text/javascript">
-        Diamond.initialize();
-        Rectangle();
+        Messenger.send("ft-initialize");
         </script>' | cat >> $output;
 
 
