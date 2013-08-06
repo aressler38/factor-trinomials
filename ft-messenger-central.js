@@ -131,29 +131,32 @@
 
         var bases1 = [];
         var bases2 = [];
-    
-        var a1len = a1.length;
-        var a2len = a2.length;
+        var a1Len = a1.length;
+        var a2Len = a2.length;
+        var a1lenLessThanA2 = (a1Len<a2Len) ? true : false;
 
-        var a1lenLessThanA2 = (a1len<a2len) ? true : false;
-
-        function findMatchingElements(ar1, ar2) {
+        function findMatchingElements(array1, array2) {
             var matches = [];
             for (var i=0; i<a1len; i++) {
                 for (var j=0; j<a2len; j++) {
-                    if (ar1[i] == ar2[j]) {
-                        matches[i] = ar1[i];  
+                    if (array1[i] == array2[j]) {
+                        matches[i] = array1[i];  
                     }
                 }
             }
             return matches;
         };
         
-        console.log("FINISH THIS METHOD!");
-        function findLowestExponent(ar1,ar2,num) {
-            var minimum = 1;
-            throw new Error("FINISH THIS METHOD")
-            return minimum;
+        function findBaseExp(array,base) {
+            var arrayLen = array.length;
+            for (var i=0; i<arrayLen; i++) {
+                if (array[i][0] == base) {
+                    return array[i][1];
+                }
+                else {
+                    continue;
+                }
+            }
         };
     
         //==========================================================
@@ -163,12 +166,35 @@
         for (var i=0; i<a2len; i++) {
             bases2[i] = a2[i][0];
         }
-        var matches = findMatchingElements(bases1,bases2);
-        var maxBase = Math.max.apply(this,matches));
 
+        // here's the array of bases that are common to a1 and a2
+        var matchingBases = findMatchingElements(bases1,bases2);
+        var matchingBasesLen = matchingBasesLen.length;
         
+        
+        // time to go through the matches, and compare the associated exponents 
+        // we're taking the shortest route... if a1Len < a2Len then ..., else ... 
+        for (var i=0; i<matchingBasesLen; i++) {
+            if (a1lenLessThanA2) {
+                for (var j=0; j<a1Len; j++) {
+                    if (a1[j][0] == matchingBases[i]) {
+                        // we have a match...
+                        
+                        // now compare the exponnents: min(a1[j][1], findBaseExp(a2,a1[j][0]))
+
+                    }
+                }
+            }
+            else {
+                for (var j=0; j<a2Len; j++) {
+                    if (a2[j][0] == matchingBases[i]) {
+                        // we have a match...
+
+                    }
+                }
+            }
+        }
         //==========================================================
-        
     };
 
     // array in ... array out
