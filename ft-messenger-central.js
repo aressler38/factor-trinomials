@@ -137,8 +137,8 @@
 
         function findMatchingElements(array1, array2) {
             var matches = [];
-            for (var i=0; i<a1len; i++) {
-                for (var j=0; j<a2len; j++) {
+            for (var i=0; i<a1Len; i++) {
+                for (var j=0; j<a2Len; j++) {
                     if (array1[i] == array2[j]) {
                         matches[i] = array1[i];  
                     }
@@ -160,17 +160,21 @@
         };
     
         //==========================================================
-        for (var i=0; i<a1len; i++) {
+        for (var i=0; i<a1Len; i++) {
             bases1[i] = a1[i][0];
         }
-        for (var i=0; i<a2len; i++) {
+        for (var i=0; i<a2Len; i++) {
             bases2[i] = a2[i][0];
         }
 
         // here's the array of bases that are common to a1 and a2
         var matchingBases = findMatchingElements(bases1,bases2);
-        var matchingBasesLen = matchingBasesLen.length;
+        var matchingBasesLen = matchingBases.length;
+        var matchedBase = 1;
         
+        var minExp = 1;
+        var GCF = 1;
+        var testGCF = 1;
         
         // time to go through the matches, and compare the associated exponents 
         // we're taking the shortest route... if a1Len < a2Len then ..., else ... 
@@ -179,9 +183,16 @@
                 for (var j=0; j<a1Len; j++) {
                     if (a1[j][0] == matchingBases[i]) {
                         // we have a match...
-                        
+                        matchedBase = a1[j][0] 
                         // now compare the exponnents: min(a1[j][1], findBaseExp(a2,a1[j][0]))
-
+                        minExp = Math.min(matchedBase, findBaseExp(a2, matchedBase));
+                        testGCF = Math.pow(matchedBase, minExp);
+                        if (testGCF > GCF) {
+                            GCF = testGCF;
+                        }
+                        else {
+                            continue;
+                        }
                     }
                 }
             }
@@ -189,14 +200,24 @@
                 for (var j=0; j<a2Len; j++) {
                     if (a2[j][0] == matchingBases[i]) {
                         // we have a match...
-
+                        matchedBase = a2[j][0] 
+                        // now compare the exponnents: min(a1[j][1], findBaseExp(a2,a1[j][0]))
+                        minExp = Math.min(matchedBase, findBaseExp(a1, matchedBase));
+                        testGCF = Math.pow(matchedBase, minExp);
+                        if (testGCF > GCF) {
+                            GCF = testGCF;
+                        }
+                        else {
+                            continue;
+                        }
                     }
                 }
             }
         }
+        return GCF;
         //==========================================================
     };
-
+    Math.getGCF = getGCF;
     // array in ... array out
     function formatInput(data) {
         for (var i=0; i<4; i++) {
