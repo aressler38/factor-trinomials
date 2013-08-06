@@ -129,10 +129,10 @@
 
     function getGCF(a1,a2) {
 
-        var bases1 = [];
-        var bases2 = [];
-        var a1Len = a1.length;
-        var a2Len = a2.length;
+        var bases1          = [];
+        var bases2          = [];
+        var a1Len           = a1.length;
+        var a2Len           = a2.length;
         var a1lenLessThanA2 = (a1Len<a2Len) ? true : false;
 
         function findMatchingElements(array1, array2) {
@@ -168,13 +168,12 @@
         }
 
         // here's the array of bases that are common to a1 and a2
-        var matchingBases = findMatchingElements(bases1,bases2);
-        var matchingBasesLen = matchingBases.length;
-        var matchedBase = 1;
-        
-        var minExp = 1;
-        var GCF = 1;
-        var testGCF = 1;
+        var matchingBases       = findMatchingElements(bases1,bases2);
+        var matchingBasesLen    = matchingBases.length;
+        var matchedBase         = 1;
+        var minExp              = 1;
+        var GCF                 = 1;
+        var testGCF             = 1;
         
         // time to go through the matches, and compare the associated exponents 
         // we're taking the shortest route... if a1Len < a2Len then ..., else ... 
@@ -215,9 +214,8 @@
             }
         }
         return GCF;
-        //==========================================================
     };
-    Math.getGCF = getGCF;
+
     // array in ... array out
     function formatInput(data) {
         for (var i=0; i<4; i++) {
