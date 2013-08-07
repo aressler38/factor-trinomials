@@ -18,7 +18,7 @@
         3:null
     };
     var polynomial = [1,2,1];
-    var rectangleElements = ["x1", "k1", "x2", "k2"];
+    var rectangleElements = [null, null, null, null];
     var diamondElements = ["1", "2", "3", "4"];
 
     function evaluateDiamond(dInput) {
@@ -64,6 +64,7 @@
     };
     
     function diamondCorrect() {
+        console.log("calling diamondCorrect");
         $(".ftH span").removeClass("hide");  
         $(".ftb span").html($("#ft-diamond-text-2").html());
         $(".ftc span").html($("#ft-diamond-text-4").html());
@@ -100,39 +101,144 @@
     };
 
     function setRectangleInput(target) {
-        $(target).html(renderMath(this.value));
-        setRectangleElement(this.value, $(target).attr("class"));
+        var parsedValue = this.value.replace(/\+/g,"").replace(/ /g,"");
+        $(target).html(renderMath(parsedValue));
+        setRectangleElement(parsedValue, $(target).attr("class"));
         checkRectangleElements();
     };
-
+     
     // START CHECKING THE RECTANGLE
     function checkRectangleElements() {
-        // check the GCF slot in $(".ftx1")
         var formattedRectEls = formatInput(rectangleElements);
-        var formattedX = parseInt(formattedRectEls[0]);
-        var multiplier = 1;
+        var formattedX1 = parseInt(formattedRectEls[0]);
+        var formattedX2 = formattedRectEls[2];
+        var topRowGCF = getTopRowGCF();
+        var parameters = Messenger.send("getParameters");
+        var aIsNegative = (parameters[0] < 0) ? true : false;
+        var diamondElements = Messenger.send("getDiamondElements");
+        
 
-        if (Math.abs(formattedX) <= 1) {// if 1 or -1
-            if (formattedX < 1) {// if -1
-                multiplier = -1;
-                PFRect = [[1,1]];
+        var correctness = [false, false, false, false]; // x1, k1, x2, k2
+
+        console.log(formattedRectEls);
+        
+        // check the GCF slot in $(".ftx1")
+        if (formattedX1 == topRowGCF) {
+            if (rectangleElements[0] == (topRowGCF+"x")) {
+                correctness[0] = true;
+                colorRectangleInput(".ftx1", true);
             }
-            else { // if +1
-                multiplier = 1;
-                PFRect = [[1,1]];
+            else {
+                colorRectangleInput(".ftx1", false);
             }
-            console.log("checkRectangleElements IF: ");console.log(PFRect);
         }
-        else if (formattedX < 0) {// if negative
-            var PFRect = Math.primeFactors(-1*formattedX);
-            multiplier = -1;
-            console.log("checkRectangleElements IF ELSE: ");console.log(PFRect);
+        else if (!isNaN(formattedX1)) {
+            colorRectangleInput(".ftx1", false);
         }
-        else { // if x>1
-            var PFRect = Math.primeFactors(formattedX);
-            console.log("checkRectangleElements ELSE: ");console.log(PFRect);
+        // check the x2 slot
+        if (!isNaN(parseInt(formattedX2)) && !isNaN(formattedX1)) { // is it empty?
+            console.log(parseInt(formattedX2)*parseInt(formattedX1) )
+            if (parseInt(formattedX2)*parseInt(formattedX1) == parameters[0]) { // does x1*x2 = ax^2?
+                console.log(formattedX2);
+                console.log(formattedX2.replace(parseInt(formattedX2), "").replace(/x/,"") )
+                if (formattedX2.replace(parseInt(formattedX2), "").replace(/x/,"") == "" && formattedX2.match(/x/)) { // is there only numbers and an x?
+                    correctness[2] = true;
+                    colorRectangleInput(".ftx2", true);
+                }
+                else {
+                    colorRectangleInput(".ftx2", false);
+                    correctness[2] = false;
+                }
+            } 
+            else {
+                colorRectangleInput(".ftx2", false);
+            }
+        }
+
+        // check the k1 slot... it needs to have numbers only. k1*x2 = c, that is, cell c from the grid layout
+        console.log(diamondElements);console.log(correctness);
+        if (!isNaN(parseInt(formattedX2)) && formattedRectEls[1] != null) {
+            if (formattedRectEls[1].replace(parseInt(formattedRectEls[1]), "") == "" && correctness[2]) { // is there only numbers?
+                // and is the x2 slot correct?
+                if ((parseInt(formattedRectEls[1])*parseInt(formattedX2)+"x") == (diamondElements[3])){
+                    correctness[1] = true;
+                    colorRectangleInput(".ftk1", true);
+                }
+                else {
+                    colorRectangleInput(".ftk1", false);
+                }
+            }
+            else {
+                colorRectangleInput(".ftk1", false);
+            }
+        }
+        
+        // Lastly, like checking for k1, but check for k2
+        if (!isNaN(parseInt(formattedX2)) && formattedRectEls[3] != null) {
+            if (formattedRectEls[3].replace(parseInt(formattedRectEls[3]), "") == "" && correctness[0]) { // is there only numbers?
+                // and is the x2 slot correct?
+                if ((parseInt(formattedRectEls[3])*parseInt(formattedX1)+"x") == (diamondElements[1])){
+                    correctness[3] = true;
+                    colorRectangleInput(".ftk2", true);
+                }
+                else {
+                    colorRectangleInput(".ftk2", false);
+                }
+            }
+            else {
+                colorRectangleInput(".ftk2", false);
+            }
+        }
+        
+        //  all correct?
+        if (correctness[0] && correctness[1] && correctness[2] && correctness[3]) {
+        //YES!!!
+            Messenger.send("genericRectangleComplete");
         }
     };
+
+    function genericRectangleComplete() {
+        console.log("YAYAA!!!");
+        var rectEls = Messenger.send("getRectangleElements");
+        rectEls[0] = checkSimpleCases(rectEls[0]);
+        rectEls[2] = checkSimpleCases(rectEls[2]);
+       
+        if (parseInt(rectEls[1]) >= 0){rectEls[1] = "+"+rectEls[1];}
+        if (parseInt(rectEls[3]) >= 0){rectEls[3] = "+"+rectEls[3];}
+        
+        
+        $(".ft-finalContainer").show();
+        $(".ft-finalContainer .explanationArea").html("Great! The factors are exactly: "
+            + "<br>"
+            + "(" + rectEls[0] + rectEls[1] + ") (" + rectEls[2] + rectEls[3] + ") = " + $(".ft-trinomial span").html()
+            + "<br>"
+        );
+
+        setTimeout(function(){
+            $(".ft-finalContainer button").attr("disabled", false);
+        },1000)
+        
+        function checkSimpleCases(str) {
+            if (str == "1x"){return "x";}
+            if (str == "-1x"){return "-x";}
+            return str;
+        }
+        
+    };
+    
+    function colorRectangleInput($selector, bool) {
+        if (bool) {
+            $($selector).css({"background":"rgba(0,255,0,0.6)"})
+        }
+        else {
+            $($selector).css({"background":"rgba(255,0,0,0.6)"})
+        }
+    }
+
+    function clearRectangleInputs() {
+        $(".ftx1, .ftx2, .ftk1, .ftk2").css({"background":"None"});
+        $(".ftx1, .ftx2, .ftk1, .ftk2").html("");
+    }
 
     function getTopRowGCF() {
         var a11 = Math.abs( Messenger.send("getParameters")[0] ); // this is a number 
@@ -247,18 +353,18 @@
     // array in ... array out
     function formatInput(data) {
         for (var i=0; i<4; i++) {
-            if (typeof data[i] == "undefined") {
+            if (typeof data[i] == "undefined" || data[i] == null) {
                 continue;
             }
             else {
-                while (data[i].match(/</) || data[i].match(/>/)) {
-                    data[i] = data[i].replace("<sup>2</sup>","");
-                    data[i] = data[i].replace("<","");    
-                    data[i] = data[i].replace(">","");    
-                    data[i] = data[i].replace("/","");    
-                    data[i] = data[i].replace("i","");    
-                }
+                data[i] = data[i].replace("<sup>2</sup>","");
+                data[i] = data[i].replace(/</g,"");    
+                data[i] = data[i].replace(/>/g,"");    
+                data[i] = data[i].replace("/","");    
+                data[i] = data[i].replace(/i/g,"");    
+                data[i] = data[i].replace(/\+/g, "");
             }
+            console.log(data[i]);
             // Handle the case if the coefficient is an implied 1 or an implied -1.
             if (isNaN(parseInt(data[i]))) {
                 switch (data[i][0]) {
@@ -382,7 +488,7 @@
     
     // give this an array... params := Array(a,b,c)
     Messenger.on("ft-initialize", function(params) {
-        rectangleElements = ["x1", "k1", "x2", "k2"];
+        rectangleElements = [null,null,null,null];
         diamondElements = ["1", "2", "3", "4"];
         diamond = {
                 0:null,
@@ -400,6 +506,7 @@
         Messenger.on("createInputBox", createInputBox);
         Messenger.send("setMainDiagonal");
         Messenger.send("onLoad");
+        Messenger.send("clearRectangle");
         
     });
 
@@ -411,6 +518,9 @@
     Messenger.on("setParameters", setParameters);
     Messenger.on("diamondCorrect", diamondCorrect);
     Messenger.on("getDiamondElements", function(){return diamondElements;});
+    Messenger.on("getRectangleElements", function(){return rectangleElements;});
+    Messenger.on("clearRectangle", clearRectangleInputs);
+    Messenger.on("genericRectangleComplete", genericRectangleComplete);
 
     Messenger.on("onLoad", function() {
         $(function() {
@@ -419,6 +529,9 @@
             $(".ftd span").addClass("hide");
             $(".ftb span").addClass("hide");
             $(".ftc span").addClass("hide");
+            $(".ft-finalContainer button").attr("disabled", true);
+            $(".ft-finalContainer").hide();
+            $(".ftx1,.ftk1,.ftx2,.ftk2").unbind("click", createRectangleInput);
             window.setTimeout(function() {
                 $(".ftH span, .fta span, .ftb span, .ftc span, .ftd span").css({
                     "-webkit-transition"    : "all 1s;",

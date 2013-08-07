@@ -16,7 +16,7 @@
     Math.primeFactors = primeFactors;
 
     function primeFactors(n) {
-        if (n%1 != 0 || n<2){throw new Error("primeFactors expected a natural number other than 1.");}
+        if (n%1 != 0 || n<2){throw new Error("primeFactors expected a natural number other than 1. throw: "+n);}
 
         var primeFactors    = [];
         var upperBound      = Math.floor(n/2)+1;

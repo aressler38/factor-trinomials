@@ -175,7 +175,9 @@ Diamond = (function() {
                         }
                     }
                     else {
-                        throw new Error("The text is supposed to have a regex match method.");
+                        console.log("");
+                        console.log("The text is supposed to have a regex match method.");
+                        throw new Error();
                     }
                 };
 
