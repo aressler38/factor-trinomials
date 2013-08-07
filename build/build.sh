@@ -46,20 +46,24 @@ echo "<style>" | cat >> $output
 cat $ft_style_css >> $output
 echo "</style>" | cat >> $output
 
-echo "<meta charset='UTF-8'>" | cat >> $output
-echo "<script type='text/javascript' src='http://code.jquery.com/jquery-1.9.1.min.js'></script>" | cat >> $output
+echo "<meta charset='UTF-8'>" | cat >> $output;
+#echo "<script type='text/javascript' src='http://code.jquery.com/jquery-1.9.1.min.js'></script>" | cat >> $output
+echo "<script type='text/javascript'>" | cat >> $output;
+cat ../jquery/jquery-min.js >> $output;
+echo "</script> " | cat >> $output;
 
-echo "<script type='text/javascript'>" | cat >> $output
-cat $messenger_js >> $output
-echo "</script>" | cat >> $output
 
-echo "<script type='text/javascript'>" | cat >> $output
-cat $diamond_js >> $output
-echo "</script>" | cat >> $output
+echo "<script type='text/javascript'>" | cat >> $output;
+cat $messenger_js >> $output;
+echo "</script>" | cat >> $output;
 
-echo "<script type='text/javascript'>" | cat >> $output
-cat $rectangle_js >> $output
-echo "</script>" | cat >> $output
+echo "<script type='text/javascript'>" | cat >> $output;
+cat $diamond_js >> $output;
+echo "</script>" | cat >> $output;
+
+echo "<script type='text/javascript'>" | cat >> $output;
+cat $rectangle_js >> $output;
+echo "</script>" | cat >> $output;
 
 echo "<script type='text/javascript'>" | cat >> $output;
 cat $messenger_central_js >> $output
@@ -111,12 +115,21 @@ echo '<div class="ft-trinomial">
              viewBox="0 0 200 200">
         </svg>
     </div>' | cat >> $output;
+echo '
+
+    <div class="clear"></div>
+     <div class="ft-finalContainer">
+        <div class="explanationArea"></div>
+        <div class="clear"></div>
+        <button onclick=Messenger.send("ft-randomize")>TRY ANOTHER!!!</button>
+    </div> ' | cat >> $output;
+
 
 echo "</div>" | cat >> $output;
 
 
 echo '<script type="text/javascript">
-        Messenger.send("ft-initialize");
+        Messenger.send("ft-randomize");
         </script>' | cat >> $output;
 
 
