@@ -73,6 +73,12 @@
         $(".ftb span").removeClass("hide");
         $(".ftc span").removeClass("hide");
         
+        diamondElements = formatInput( getDiamondElements() );
+        console.log("")
+        console.log(diamondElements);
+        console.log("")
+        console.log("")
+        console.log("the GCF of the top row is: "+getTopRowGCF());
 
         $(".ftx1,.ftk1,.ftx2,.ftk2").bind("click", createRectangleInput);
     };
@@ -99,6 +105,7 @@
         checkRectangleElements();
     };
 
+    // START CHECKING THE RECTANGLE
     function checkRectangleElements() {
         // check the GCF slot in $(".ftx1")
         var formattedRectEls = formatInput(rectangleElements);
@@ -127,8 +134,25 @@
         }
     };
 
-    function getGCF(a1,a2) {
+    function getTopRowGCF() {
+        var a11 = Math.abs( Messenger.send("getParameters")[0] ); // this is a number 
+        var a12 = diamondElements[1]; // this is a string... need to parseInt
+        var a12Parsed = Math.abs( parseInt(a12) );
 
+         
+        if (a11 == 1 || a12Parsed == 1) { 
+            return 1;
+        }
+        else {
+            var a11p = Math.primeFactors(Math.abs(a11));
+            var a12p = Math.primeFactors(a12Parsed);
+            console.log(a11p);console.log(a12p);
+            return getGCF(a11p, a12p); 
+        }
+    };
+
+    function getGCF(a1,a2) {
+        // computes the GCF of 2 numbers that have been processed by Math.primeFactors
         var bases1          = [];
         var bases2          = [];
         var a1Len           = a1.length;
@@ -175,6 +199,7 @@
         var GCF                 = 1;
         var testGCF             = 1;
         
+        console.log(matchingBases);
         // time to go through the matches, and compare the associated exponents 
         // we're taking the shortest route... if a1Len < a2Len then ..., else ... 
         for (var i=0; i<matchingBasesLen; i++) {
@@ -184,8 +209,10 @@
                         // we have a match...
                         matchedBase = a1[j][0] 
                         // now compare the exponnents: min(a1[j][1], findBaseExp(a2,a1[j][0]))
-                        minExp = Math.min(matchedBase, findBaseExp(a2, matchedBase));
+                        minExp = Math.min(a1[j][1], findBaseExp(a2, matchedBase));
                         testGCF = Math.pow(matchedBase, minExp);
+
+                        console.log(testGCF);console.log(minExp);
                         if (testGCF > GCF) {
                             GCF = testGCF;
                         }
@@ -201,8 +228,9 @@
                         // we have a match...
                         matchedBase = a2[j][0] 
                         // now compare the exponnents: min(a1[j][1], findBaseExp(a2,a1[j][0]))
-                        minExp = Math.min(matchedBase, findBaseExp(a1, matchedBase));
+                        minExp = Math.min(a2[j][1], findBaseExp(a1, matchedBase));
                         testGCF = Math.pow(matchedBase, minExp);
+                        console.log(testGCF);console.log(minExp);
                         if (testGCF > GCF) {
                             GCF = testGCF;
                         }
@@ -221,6 +249,15 @@
         for (var i=0; i<4; i++) {
             if (typeof data[i] == "undefined") {
                 continue;
+            }
+            else {
+                while (data[i].match(/</) || data[i].match(/>/)) {
+                    data[i] = data[i].replace("<sup>2</sup>","");
+                    data[i] = data[i].replace("<","");    
+                    data[i] = data[i].replace(">","");    
+                    data[i] = data[i].replace("/","");    
+                    data[i] = data[i].replace("i","");    
+                }
             }
             // Handle the case if the coefficient is an implied 1 or an implied -1.
             if (isNaN(parseInt(data[i]))) {
@@ -373,15 +410,16 @@
     Messenger.on("getParameters", getParameters);
     Messenger.on("setParameters", setParameters);
     Messenger.on("diamondCorrect", diamondCorrect);
+    Messenger.on("getDiamondElements", function(){return diamondElements;});
 
-    Messenger.on("onLoad", function(){
-        $(function(){
+    Messenger.on("onLoad", function() {
+        $(function() {
             $(".ftH span").addClass("hide");  
             $(".fta span").addClass("hide");
             $(".ftd span").addClass("hide");
             $(".ftb span").addClass("hide");
             $(".ftc span").addClass("hide");
-            window.setTimeout(function(){
+            window.setTimeout(function() {
                 $(".ftH span, .fta span, .ftb span, .ftc span, .ftd span").css({
                     "-webkit-transition"    : "all 1s;",
                     "-moz-transition"       : "all 1s",
