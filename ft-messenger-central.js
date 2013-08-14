@@ -22,7 +22,7 @@
     var diamondElements = ["1", "2", "3", "4"];
 
     function evaluateDiamond(dInput) {
-        $.extend(diamond, dInput[0]);
+        $.extend(diamond, dInput);
         
         // Check the middle terms (1) and (3)
         if (diamond['1'] && diamond['3']) {
@@ -75,11 +75,7 @@
         $(".ftc span").removeClass("hide");
         
         diamondElements = formatInput( getDiamondElements() );
-        console.log("")
         console.log(diamondElements);
-        console.log("")
-        console.log("")
-        console.log("the GCF of the top row is: "+getTopRowGCF());
 
         $(".ftx1,.ftk1,.ftx2,.ftk2").bind("click", createRectangleInput);
     };
@@ -120,7 +116,6 @@
 
         var correctness = [false, false, false, false]; // x1, k1, x2, k2
 
-        console.log(formattedRectEls);
         
         // check the GCF slot in $(".ftx1")
         if (formattedX1 == topRowGCF) {
@@ -137,10 +132,7 @@
         }
         // check the x2 slot
         if (!isNaN(parseInt(formattedX2)) && !isNaN(formattedX1)) { // is it empty?
-            console.log(parseInt(formattedX2)*parseInt(formattedX1) )
             if (parseInt(formattedX2)*parseInt(formattedX1) == parameters[0]) { // does x1*x2 = ax^2?
-                console.log(formattedX2);
-                console.log(formattedX2.replace(parseInt(formattedX2), "").replace(/x/,"") )
                 if (formattedX2.replace(parseInt(formattedX2), "").replace(/x/,"") == "" && formattedX2.match(/x/)) { // is there only numbers and an x?
                     correctness[2] = true;
                     colorRectangleInput(".ftx2", true);
@@ -156,7 +148,6 @@
         }
 
         // check the k1 slot... it needs to have numbers only. k1*x2 = c, that is, cell c from the grid layout
-        console.log(diamondElements);console.log(correctness);
         if (!isNaN(parseInt(formattedX2)) && formattedRectEls[1] != null) {
             if (formattedRectEls[1].replace(parseInt(formattedRectEls[1]), "") == "" && correctness[2]) { // is there only numbers?
                 // and is the x2 slot correct?
@@ -203,6 +194,7 @@
         rectEls[0] = checkSimpleCases(rectEls[0]);
         rectEls[2] = checkSimpleCases(rectEls[2]);
        
+    console.log(rectEls)
         if (parseInt(rectEls[1]) >= 0){rectEls[1] = "+"+rectEls[1];}
         if (parseInt(rectEls[3]) >= 0){rectEls[3] = "+"+rectEls[3];}
         
@@ -252,7 +244,6 @@
         else {
             var a11p = Math.primeFactors(Math.abs(a11));
             var a12p = Math.primeFactors(a12Parsed);
-            console.log(a11p);console.log(a12p);
             return getGCF(a11p, a12p); 
         }
     };
@@ -305,7 +296,6 @@
         var GCF                 = 1;
         var testGCF             = 1;
         
-        console.log(matchingBases);
         // time to go through the matches, and compare the associated exponents 
         // we're taking the shortest route... if a1Len < a2Len then ..., else ... 
         for (var i=0; i<matchingBasesLen; i++) {
@@ -318,7 +308,6 @@
                         minExp = Math.min(a1[j][1], findBaseExp(a2, matchedBase));
                         testGCF = Math.pow(matchedBase, minExp);
 
-                        console.log(testGCF);console.log(minExp);
                         if (testGCF > GCF) {
                             GCF = testGCF;
                         }
@@ -336,7 +325,6 @@
                         // now compare the exponnents: min(a1[j][1], findBaseExp(a2,a1[j][0]))
                         minExp = Math.min(a2[j][1], findBaseExp(a1, matchedBase));
                         testGCF = Math.pow(matchedBase, minExp);
-                        console.log(testGCF);console.log(minExp);
                         if (testGCF > GCF) {
                             GCF = testGCF;
                         }
@@ -364,7 +352,6 @@
                 data[i] = data[i].replace(/i/g,"");    
                 data[i] = data[i].replace(/\+/g, "");
             }
-            console.log(data[i]);
             // Handle the case if the coefficient is an implied 1 or an implied -1.
             if (isNaN(parseInt(data[i]))) {
                 switch (data[i][0]) {
@@ -424,18 +411,16 @@
         return polynomial;
     };
 
-    function setParameters(x) {
-        if (x.length != 3) {throw new Error("Error -- bad parameters?!!!");}
+    function setParameters(a,b,c) {
+        if (arguments.length != 3) {throw new Error("Error -- bad parameters?!!!");}
         else {
-            for(var i=0; i<3; i++) {
-                polynomial[i] = x[i];
-            }
+            polynomial = arguments;
         } 
         return polynomial; 
     };
 
-    function createInputBox(args) {
-        args[1](args[0]);// Wow this isn't human-readable, but it's something in diamond.js.
+    function createInputBox(arg0,arg1) {
+        arg1(arg0);// Wow this isn't human-readable, but it's something in diamond.js.
     };
 
     function renderMath(diamondText) {
@@ -486,8 +471,8 @@
         Messenger.send("ft-initialize", (a*c), (a*d+b*c), (b*d));
     });
     
-    // give this an array... params := Array(a,b,c)
-    Messenger.on("ft-initialize", function(params) {
+    // give this a,b,c
+    Messenger.on("ft-initialize", function(a,b,c) {
         rectangleElements = [null,null,null,null];
         diamondElements = ["1", "2", "3", "4"];
         diamond = {
@@ -496,11 +481,11 @@
                 2:null,
                 3:null
         };
-        if (!params || params.length != 3) {
+        if (!a || !b || !c) {
             Diamond.initialize();
         }
         else {
-            Diamond.initialize(params[0],params[1],params[2]);
+            Diamond.initialize(a,b,c);
         }
         
         Messenger.on("createInputBox", createInputBox);

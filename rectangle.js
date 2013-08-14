@@ -10,22 +10,9 @@
 
 Rectangle = new function() {
 
-    var outerSpace = {
-        //   a b
-        // c w x
-        // d y z
-        
-
-    };
-
     // add <input> to rectangle divs
     var container = document.getElementsByClassName("ft-rectangle")[0];
     
-    // setup 
-    var inputs = [
-
-    ];
-
 
     Messenger.on("setMainDiagonal", function(){
         var parameters = Messenger.send("getParameters");
@@ -35,6 +22,7 @@ Rectangle = new function() {
         $(".ftd").html("<span>"+parameters[2]+"</span>");
     });
 
+        
     
     //copied from diamond.js... maybe you should make a helpers file 
     function clean_parameters(parameters) {  // for presentational purposes only
