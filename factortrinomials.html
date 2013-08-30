@@ -157,12 +157,18 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
 //
 // copyright (c) 2013 By Alexander Ressler
     
-Messenger = (function(){
+var Messenger = (function(){
+    String.prototype.hashCode = function(){
+        var hash = 0, i, char, l;
+        if (this.length == 0) return hash;
+        for (i = 0, l = this.length; i < l; i++) {
+            char  = this.charCodeAt(i);
+            hash  = ((hash<<5)-hash)+char;
+            hash |= 0; // Convert to 32bit integer
+        }
+        return String(hash);
+    };
 
-    // the home base
-    var cloud = document.createElement("div");
-
-    // use the new keyword and this function to register a new event
     function customEvent(trigger) {
         this.event = document.createEvent("Event");
         this.event.initEvent(this.trigger, true, true);
@@ -174,18 +180,23 @@ Messenger = (function(){
 
     return ({
         on: function(trigger, handler, context) {
-            var handle = handler;
-            events[trigger] = new customEvent(trigger); // bind the trigger to a method
-            events[trigger].handler = handle;
-            events[trigger].context = context;
-            cloud.addEventListener(trigger, handle, false);
+            if (typeof handler != "function") {throw new Error("Messenger can't bind an undefined method");}
+            if (!events[trigger]) {
+                events[trigger] = new customEvent(trigger); // bind the trigger to a method
+                events[trigger].handlers = {};
+            }
+            events[trigger].handlers[handler.toString().hashCode()] = handler;
+            events[trigger].handlers[handler.toString().hashCode()].context = context;
         },
         off: function(trigger, handler) {
-            cloud.removeEventListener(trigger, handler, false);
-            events[trigger]={data:null, handler:function(){}};
+            delete events[trigger].handlers[handler.toString().hashCode()];
+        },
+        allOff: function(trigger) {
+            delete events[trigger];
         },
         // fire the event and pass the event handler custom data
         send: function(event, dataThru) {
+            var result;
             if (dataThru) {
                 var argLen = arguments.length;
                 var dataThrus = new Array(argLen);
@@ -198,13 +209,21 @@ Messenger = (function(){
                     events[event].data = dataThrus;
             }
             // call the handler function manually and pass in the data
-            if (events[event] && events[event].handler) {
-                if (events[event].context) {
-                    return events[event].handler.apply(events[event].context, events[event].data);
+            if (events[event] && events[event].handlers) {
+                for (var handle in events[event].handlers) {
+                    var context = events[event].handlers[handle].context;
+                    if (context) {
+                        result = (function() {
+                            return events[event].handlers[handle].apply(context, events[event].data);
+                        }());
+                    }
+                    else {
+                        result = (function() {
+                            return events[event].handlers[handle].apply(this, events[event].data);
+                        }());
+                    }
                 }
-                else {
-                    return events[event].handler.apply(this, events[event].data);
-                }
+                return result; // returns the last item in the event handler stack. 
             }
         }
     });
@@ -789,7 +808,8 @@ Rectangle = new function() {
         
         // Check all the terms
         if (diamond['0'] && diamond['1'] && diamond['2'] && diamond['3']) {
-            Messenger.off("createInputBox");
+            console.log("diamond ready");
+            Messenger.off("createInputBox", createInputBox);
             Messenger.send("diamondCorrect");
         }
     };

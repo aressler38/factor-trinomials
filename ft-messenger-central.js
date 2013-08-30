@@ -58,7 +58,8 @@
         
         // Check all the terms
         if (diamond['0'] && diamond['1'] && diamond['2'] && diamond['3']) {
-            Messenger.off("createInputBox");
+            console.log("diamond ready");
+            Messenger.off("createInputBox", createInputBox);
             Messenger.send("diamondCorrect");
         }
     };
