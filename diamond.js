@@ -18,7 +18,7 @@
 // ================================================================================================
 
 
-
+/** IIFE returns diamond object ready for use */
 Diamond = (function() {
     var parameters = [1, -17, 30]; // these are the a,b,c that go in ax^2 + bx + c -- set by initialize
     var diamondNumber = 0;
@@ -44,12 +44,14 @@ Diamond = (function() {
            };
 
         function ifOneOrNegOne(x, showOne) {
-            (x === 1 && showOne) ? //if
-                return "+ 1"
-                : return "+ ";
-            (x === -1 && showOne) ? //if
-                return "- 1" 
-                : return "- ";
+            if (x === 1) {
+                if (showOne) return "+ 1";
+                else return "+ ";
+            }
+            if (x === -1) {
+                if (showOne) return "- 1";
+                else return "- ";
+            }
             // otherwise return 
             return x;
         };
@@ -63,9 +65,9 @@ Diamond = (function() {
             else {
                 _x = x;
             }
-            ((_x) >= 0) ?
+            if ((_x) >= 0) 
                 return "+ "+ _x
-                : return "- " + (-1*_x);
+            else return "- " + (-1*_x);
         };
 
         for (c in coefficients) {
@@ -94,11 +96,11 @@ Diamond = (function() {
     
     // This is the function that will create the input for LaTeX when you click on the diamond.
     // * should only be responsible for creating the input box and printing the MathJax
-    function createInputBox(e) {
+    function createInputBox(event) {
         $(Diamond.inputBox).remove();
-        var svgTarget = e.currentTarget;
+        var svgTarget = event.currentTarget;
         diamondNumber = svgTarget.className.baseVal.replace("ft-diamondBox-", "");
-        var coords = [e.clientX, e.clientY];
+        var coords = [event.clientX, event.clientY];
 
         $("#ft-diamond-text-"+diamondNumber).remove()
 
@@ -119,22 +121,23 @@ Diamond = (function() {
         // binding a keyup event to the input box
         // use the event to figure out what diamond you clicked and run through a switch
         // CONTINUE ON ENTER (KEY VAL 13)
-         $(".ft-d-input-box").keydown(function(e) {
-            if(e.which == 13) {
-                setInputBox(e);  
+         $(".ft-d-input-box").keydown(function(event) {
+            if(event.which === 13) {
+                setInputBox(event);  
             }
         });
-         $(".ft-d-input-box").blur(function(e) {
-             setInputBox(e);  
+         $(".ft-d-input-box").blur(function(event) {
+             setInputBox(event);  
         });
          
     };
 
-    function setInputBox(e) {
+    function setInputBox(event) {
+        console.log(event);
             var text = $(Diamond.inputBox).val();
             // Get rid of all the spaces in the user's input text
-            if (text.indexOf(" ") != -1) {
-                while (text.indexOf(" ") != -1) {
+            if (text.indexOf(" ") !== -1) {
+                while (text.indexOf(" ") !== -1) {
                     text = text.replace(" ", "");
                 }
             }
@@ -164,9 +167,8 @@ Diamond = (function() {
                     }
                 }
                 else {
-                    console.log("");
+                    console.log("FIX ME ON BLUR LINE 129");
                     console.log("The text is supposed to have a regex match method.");
-                    throw new Error();
                 }
             };
 
@@ -346,29 +348,25 @@ Diamond = (function() {
             // Event Binding
             // =============
 
-
             $(diamondBox1 + ','
               + diamondBox2 + ','
               + diamondBox3 + ','
               + diamondBox4)
-                .click(function(e) {
-                    Messenger.send("createInputBox", e, createInputBox); 
-                    //createInputBox(e);
+                .click(function(event) {
+                    Messenger.send("createInputBox", event, createInputBox);  // wow, i can't believe i did this
                 });
-
-            
             return null;
         },
 
         clearDiamondInput: function(n) {
-            if (typeof(n) == "undefined") {
+            if (typeof(n) === "undefined") {
                 Messenger.send("ft-d-eval", {message:"clear all"});
                 for (var i=1; i<5; i++) {
                     $("#ft-diamond-text-"+i).remove();
                     $(diamondBoxes[i-1]).css("fill", "white");
                 }
             }
-            else if (typeof(n) == "number") {
+            else if (typeof(n) === "number") {
                 Messenger.send("ft-d-eval", {message:"clear "+n});
                 $("#ft-diamond-text-"+n).remove()
                 $(diamondBoxes[n]).css("fill", "white");
@@ -376,8 +374,8 @@ Diamond = (function() {
         },
         
         colorDiamondInput: function(n, color, alpha) {
-            if (typeof(n) == "undefined") {throw new Error("Expecting 'n' a specific diamond.");}
-            if (typeof(color) == "undefined") {throw new Error("Expecting a color.");}
+            if (typeof(n) === "undefined") {throw new Error("Expecting 'n' a specific diamond.");}
+            if (typeof(color) === "undefined") {throw new Error("Expecting a color.");}
             var opacity = (typeof(alpha) == "undefined") ? 0.6 : alpha;
             if (n > 0 && n < 5) {
                 $(diamondBoxes[n-1]).css("fill", color);
@@ -390,8 +388,5 @@ Diamond = (function() {
 
         }
     };
-    
 }());
-// I am very sorry that this app has been written in a very non-standard pattern. 
-// I used this program to learn as I go. I should have stuck to a framework like backbone.
-// There's css rules in the JS; there's event bindings all over; the horror, the horror. I'm sorry. 
+// it's ok.
