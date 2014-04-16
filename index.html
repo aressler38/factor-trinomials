@@ -39,13 +39,27 @@ THE SOFTWARE.
 </head>
 
 <body>
-<div class="ft-container">
+<div id="page-wrapper">
+	
+	<div id="header">
+		<h1 id="name">Factor Trinomials</h1>
+		<h4 id="slogan">A great tool for anyone studying math!</h4>
+		
+		<ul id="nav">
+			<li><a href="#">Home</a></li>
+			<li><a href="#">About</a></li>
+			<li><a href="#">Examples</a></li>
+		</ul>
+
+	</div><!-- End of header -->
+
+	<div class="ft-container">
     
-    <div class="ft-trinomial">
+	<div class="ft-trinomial">
         Trinomial container
-    </div> 
+	</div> 
     
-    <div class="ft-rectangle">
+	<div class="ft-rectangle">
         <!--
                     LAYOUT
                -----------------
@@ -87,6 +101,8 @@ THE SOFTWARE.
     </div> 
     
 </div>
+
+</div> <!--End of page-wrapper -->
 <script type="text/javascript">
     Messenger.send("ft-initialize");
 </script>
