@@ -1,0 +1,3 @@
+[submodule "js/messenger"]
+	path = js/messenger
+	url = https://github.com/aressler38/messenger.git
