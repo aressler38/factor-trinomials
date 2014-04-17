@@ -9,10 +9,13 @@
 define(
   [
     "jquery",
-    "appMessenger"
-  ], function($, Messenger) {
+    "js/appMessenger",
+    "js/diamond",
+    "js/rectangle",
+    "js/var/randomInt"
+  ], function($, Messenger, Diamond, Rectangle, randomInt) {
 
-    return (function() {
+    return (new function() {
         
         // diamond get's reset by initialize
         var diamond = {
@@ -25,6 +28,9 @@ define(
         var rectangleElements = [null, null, null, null];
         var diamondElements = ["1", "2", "3", "4"];
 
+        this.on     = function() {Messenger.on.apply(this, arguments)};
+        this.off    = function() {Messenger.off.apply(this, arguments)};
+        this.send   = function() {Messenger.send.apply(this, arguments)};
         function evaluateDiamond(dInput) {
             $.extend(diamond, dInput);
             
@@ -199,7 +205,6 @@ define(
             rectEls[0] = checkSimpleCases(rectEls[0]);
             rectEls[2] = checkSimpleCases(rectEls[2]);
            
-        console.log(rectEls)
             if (parseInt(rectEls[1]) >= 0){rectEls[1] = "+"+rectEls[1];}
             if (parseInt(rectEls[3]) >= 0){rectEls[3] = "+"+rectEls[3];}
             
@@ -375,24 +380,6 @@ define(
             return data;
         };
 
-        // return a random integer in [min, max]
-        function randomInt(min,max, withZero) {
-            if (withZero) {
-                var rand = Math.random();
-                var randInt = Math.round(min + rand*(max-min));
-                return randInt;
-            }
-            else {
-                var rand = Math.random();
-                var randInt = Math.round(min + rand*(max-min));
-                while (randInt == 0) {
-                    rand = Math.random();
-                    randInt = Math.round(min + rand*(max-min));
-                }
-                return randInt;
-            }
-        };
-
         function setRectangleElement(str, className) {
             switch (className) {
                 case ("ftx1"):
@@ -461,7 +448,7 @@ define(
         };
         
         // ===========================================================================================
-        Messenger.on("ft-randomize", function() {
+        Messenger.on("randomize", function() {
             diamond = {
                     0:null,
                     1:null,
@@ -473,11 +460,11 @@ define(
             var b = randomInt(-10,10, false);
             var c = randomInt(1,2, false); 
             var d = randomInt(-10,10, false);
-            Messenger.send("ft-initialize", (a*c), (a*d+b*c), (b*d));
+            Messenger.send("initialize", (a*c), (a*d+b*c), (b*d));
         });
         
         // give this a,b,c
-        Messenger.on("ft-initialize", function(a,b,c) {
+        Messenger.on("initialize", function(a,b,c) {
             rectangleElements = [null,null,null,null];
             diamondElements = ["1", "2", "3", "4"];
             diamond = {
@@ -497,10 +484,7 @@ define(
             Messenger.send("setMainDiagonal");
             Messenger.send("onLoad");
             Messenger.send("clearRectangle");
-            
         });
-
-        
 
         Messenger.on("ft-guide", guide);
         Messenger.on("ft-d-eval", evaluateDiamond);
@@ -511,7 +495,6 @@ define(
         Messenger.on("getRectangleElements", function(){return rectangleElements;});
         Messenger.on("clearRectangle", clearRectangleInputs);
         Messenger.on("genericRectangleComplete", genericRectangleComplete);
-
         Messenger.on("onLoad", function() {
             $(function() {
                 $(".ftH span").addClass("hide");  
@@ -532,5 +515,5 @@ define(
             });
         });
 
-    }());
+    });
 });

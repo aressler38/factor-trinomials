@@ -27,14 +27,6 @@ THE SOFTWARE.
     <title>Factor Trinomials</title>
     
     <link type="text/css" rel="stylesheet" href="css/ft-style.css"></link>
-    
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="js/messenger.js"></script>
-    <script type="text/javascript" src="js/ft-messenger-central.js"></script>
-    <script type="text/javascript" src="js/diamond.js"></script>
-    <script type="text/javascript" src="js/rectangle.js"></script>
-    <script type="text/javascript" src="js/prime-factorization.js"></script>
-
 </head>
 
 <body>
@@ -96,14 +88,25 @@ THE SOFTWARE.
     <div class="ft-finalContainer">
         <div class="explanationArea"></div>
         <div class="clear"></div>
-        <button onclick=Messenger.send("ft-randomize")>TRY ANOTHER!!!</button>
+        <button id="next-button" >TRY ANOTHER!!!</button>
     </div>
 
 </div>
 
 </div> <!--End of page-wrapper -->
+<script src="js/require.js"></script>
 <script type="text/javascript">
-    Messenger.send("ft-initialize");
+    require.config({
+        paths: {
+            "jquery"    : "js/jquery/jquery-min",
+            "messenger" : "js/messenger/messenger_amd"
+        }
+    });
+    require(["js/ft-messenger-central"], function(brain) {
+        var nextButton      = document.getElementById("next-button");
+        nextButton.onclick  = function() {brain.send("randomize"); }
+        brain.send("initialize");
+    });
 </script>
 </body>
 </html>

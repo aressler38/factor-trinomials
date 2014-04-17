@@ -21,9 +21,11 @@
 define(
   [
     "jquery", 
-    "appMessenger", 
-    "ft-messenger-central"
-  ],function($, Messenger, brain) {
+    "js/appMessenger", 
+    "js/ft-messenger-central",
+    "js/var/ifOneOrNegOne",
+    "js/var/prettifySign"
+  ],function($, Messenger, brain, ifOneOrNegOne, prettifySign) {
 
     /** IIFE returns diamond object ready for use */
     Diamond = (function() {
@@ -50,32 +52,6 @@ define(
                 c:parameters[2]
                };
 
-            function ifOneOrNegOne(x, showOne) {
-                if (x === 1) {
-                    if (showOne) return "+ 1";
-                    else return "+ ";
-                }
-                if (x === -1) {
-                    if (showOne) return "- 1";
-                    else return "- ";
-                }
-                // otherwise return 
-                return x;
-            };
-            function prettifySign(x) {
-                var _x = null;
-                if (typeof x === "string") {
-                    _x = x.replace(/ /g, ''); // remove whitespace
-                    _x = parseInt(_x);
-                    if (Number.isNaN(_x)){return x;};
-                }
-                else {
-                    _x = x;
-                }
-                if ((_x) >= 0) 
-                    return "+ "+ _x
-                else return "- " + (-1*_x);
-            };
 
             for (c in coefficients) {
                 switch (c) {
@@ -136,87 +112,85 @@ define(
              $(".ft-d-input-box").blur(function(event) {
                  setInputBox(event);  
             });
-             
         };
 
         function setInputBox(event) {
-            console.log(event);
-                var text = $(Diamond.inputBox).val();
-                // Get rid of all the spaces in the user's input text
-                if (text.indexOf(" ") !== -1) {
-                    while (text.indexOf(" ") !== -1) {
-                        text = text.replace(" ", "");
-                    }
+            var text = $(Diamond.inputBox).val();
+            // Get rid of all the spaces in the user's input text
+            if (text.indexOf(" ") !== -1) {
+                while (text.indexOf(" ") !== -1) {
+                    text = text.replace(" ", "");
                 }
-                // textCoords is where the text will go
-                var textCoords=[null,null];
+            }
+            // textCoords is where the text will go
+            var textCoords=[null,null];
 
-                var svg_container_offset = $(".ft-svg-container").offset();
-                
-                var localLeft = svg_container_offset.left;
-                var localTop = svg_container_offset.top;
-                // instead of relying on MathJax to resolve x^2... just do a regex to match
-                // that style of expression and use native html x<sup> whatever </sup>
-                function renderMath(diamondText) {
-                    var output = '';
-                    if (diamondText && diamondText.match) {
-                        if (diamondText.match(/\^/)) {
-                            var pre = diamondText.match(/(.*)\^/)[1];
-                            var exponent = diamondText.match(/\^(.*)/)[1];
-                            output = pre + "<sup>" + exponent + "</sup>";
-                            output = output.replace("x", "<i>x</i>");
-                            return output;
-                        }
-                        else {
-                            output = diamondText;
-                            output = output.replace("x", "<i>x</i>");
-                            return output;
-                        }
+            var svg_container_offset = $(".ft-svg-container").offset();
+            
+            var localLeft = svg_container_offset.left;
+            var localTop = svg_container_offset.top;
+            // instead of relying on MathJax to resolve x^2... just do a regex to match
+            // that style of expression and use native html x<sup> whatever </sup>
+            function renderMath(diamondText) {
+                var output = '';
+                if (diamondText && diamondText.match) {
+                    if (diamondText.match(/\^/)) {
+                        var pre = diamondText.match(/(.*)\^/)[1];
+                        var exponent = diamondText.match(/\^(.*)/)[1];
+                        output = pre + "<sup>" + exponent + "</sup>";
+                        output = output.replace("x", "<i>x</i>");
+                        return output;
                     }
                     else {
-                        console.log("FIX ME ON BLUR LINE 129");
-                        console.log("The text is supposed to have a regex match method.");
+                        output = diamondText;
+                        output = output.replace("x", "<i>x</i>");
+                        return output;
                     }
-                };
+                }
+                else {
+                    console.log("TODO");
+                    console.log("The text is supposed to have a regex match method.");
+                }
+            };
 
-                switch (parseInt(diamondNumber)) {
-                        // Don't ask about these ratios... they're for positioning         
-                    case 1:
-                        textCoords = [17.0/35.0*View_MAX, 25.0/35.0*View_MAX];
-                        break;
-                    case 2:
-                        textCoords = [8.0/35.0*View_MAX, 17.0/35.0*View_MAX];
-                        break;
-                    case 3:
-                        textCoords = [17.0/35.0*View_MAX, 71.0/350.0*View_MAX]
-                        break;
-                    case 4:
-                        textCoords = [26.0/35.0*View_MAX, 17.0/35.0*View_MAX];
-                        break;
-                    default:
-                        throw "something's wrong with the diamond number."
-                };
-                Diamond.expression.setAttribute("id", "ft-diamond-text-"+diamondNumber);
-                Diamond.expression.setAttribute("style",
-                                           "position:absolute;"+ 
-                                           "top:"+(textCoords[1])+"px;"+
-                                           "left:"+(textCoords[0])+"px;"
-                );
-                // now write the LaTeX string to the expression and append to body
-                $(Diamond.expression).html(renderMath(text));
+            switch (parseInt(diamondNumber)) {
+                    // Don't ask about these ratios... they're for positioning         
+                case 1:
+                    textCoords = [17.0/35.0*View_MAX, 25.0/35.0*View_MAX];
+                    break;
+                case 2:
+                    textCoords = [8.0/35.0*View_MAX, 17.0/35.0*View_MAX];
+                    break;
+                case 3:
+                    textCoords = [17.0/35.0*View_MAX, 71.0/350.0*View_MAX]
+                    break;
+                case 4:
+                    textCoords = [26.0/35.0*View_MAX, 17.0/35.0*View_MAX];
+                    break;
+                default:
+                    throw "something's wrong with the diamond number."
+            };
+            Diamond.expression.setAttribute("id", "ft-diamond-text-"+diamondNumber);
+            Diamond.expression.setAttribute("style",
+                                       "position:absolute;"+ 
+                                       "top:"+(textCoords[1])+"px;"+
+                                       "left:"+(textCoords[0])+"px;"
+            );
+            // now write the LaTeX string to the expression and append to body
+            $(Diamond.expression).html(renderMath(text));
 
-                $(".ft-diamond").append(Diamond.expression);
-                $(Diamond.inputBox).remove();
-                // store what the user just entered in diamondInputs array
-                // store text in a 1-1 fashion matching the diamondNumber
-                diamondInputs[parseInt(diamondNumber)-1] = text;
-                
-                // ============
-                // Check Values
-                // ============
-                
-                diamondInputs = formatDiamondInput(diamondInputs);
-                checkDiamondInputs(diamondInputs);
+            $(".ft-diamond").append(Diamond.expression);
+            $(Diamond.inputBox).remove();
+            // store what the user just entered in diamondInputs array
+            // store text in a 1-1 fashion matching the diamondNumber
+            diamondInputs[parseInt(diamondNumber)-1] = text;
+            
+            // ============
+            // Check Values
+            // ============
+            
+            diamondInputs = formatDiamondInput(diamondInputs);
+            checkDiamondInputs(diamondInputs);
         };
         
 
