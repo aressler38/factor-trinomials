@@ -835,6 +835,12 @@ ul#nav {
     top: 191px;
 }
 
+.btn-wrapper {
+    position: absolute;
+    top: 20px;
+    left: 717px;
+}
+
 .btn-small {
     line-height: 36px;
     width: 78px;
@@ -844,32 +850,87 @@ ul#nav {
 .btn {
     float: left;
     position: relative;
-    top:50px;
-    left: 50px;
     cursor: pointer;
-    border-radius: 3px;
+    border-radius: 24px;
     margin: 0 7px 11px 0;
     text-align: center;
     transition: all 0.2s ease0;
     font: bold 14px Arial, sans-serif;
-
+    padding-top: 5px;
+    width: 150px;
 }
 
 .submit {
-    background: #b7de01;
-    box-shadow: 0px 5px #687c00;
-    color: #087c00;
+    background: #787878;
+    box-shadow: 0px 5px #333333;
+    color: black;
 }
 
 .submit:hover {
-    background: #99ba01;
-    box-shadow: 0px 4px #435100;
-    color: #687e00;
+    background: #AAAAAA;
+    box-shadow: 0px 4px #333333;
+    color: black;
 }
 
 .submit:active {
-    top:55px;
+    top: 5px; 
 }
+
+.button {
+    background: gray;
+    border: 0;
+    line-height: 2.5em;
+    padding: 0 0 0 1em;
+    margin-bottom: 1em;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    left: 50px;
+    top: 10px;
+}
+
+.arrow {
+    display: inline-block;
+    line-height: 2.5em;
+    background: gray;
+    color: black;
+    font-size: 1em;
+    width: 2.5em;
+    transition: margin 200ms;
+    margin-left: 1em;
+}
+
+.arrow:hover {
+    background: #ddd;
+    margin-left: 1.5em;
+    background-color: darken(#333,5%);
+    }
+
+.button:active {
+    background: #CCC;
+}
+
+.arrow:active {
+    margin-left: 1.5em;
+}
+
+.button.button-forward {
+    left: 700px;
+}
+
+.arrow-previous {
+    left:-115px;
+    position: relative;
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+
+
+
+
+
 
 
 
