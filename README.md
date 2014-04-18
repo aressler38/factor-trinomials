@@ -10,6 +10,13 @@ About
       with a generic rectangle for factoring quadratic expressions (ax^2 + bx +c).
     * Initialize the trinomial by calling Messenger.send("ft-initialize", a,b,c), where a, b, c are the 
       leading coefficients of the trinimial.  
+
+Development Notes
+-----------------
+```
+    git submodule init;
+    git submodule update --recursive;    
+```
     
 License
 -------
