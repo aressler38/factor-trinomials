@@ -5,7 +5,7 @@ body {
 #page-wrapper {
 	width: 1003px;
 	height: auto;
-	background: tan;
+	background: burlywood;
 	margin-left: auto;
 	margin-right: auto;
 	padding-bottom: 25px;
@@ -16,6 +16,10 @@ body {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
 }
 
 #header {
@@ -841,12 +845,6 @@ ul#nav {
     left: 717px;
 }
 
-.btn-small {
-    line-height: 36px;
-    width: 78px;
-    height: 36px;
-}
-
 .btn {
     float: left;
     position: relative;
@@ -856,81 +854,29 @@ ul#nav {
     text-align: center;
     transition: all 0.2s ease0;
     font: bold 14px Arial, sans-serif;
-    padding-top: 5px;
     width: 150px;
+    line-height: 36px;
+    height: auto;
+    vertical-align: middle;
+    border: 1px solid black;
 }
 
 .submit {
-    background: #787878;
-    box-shadow: 0px 5px #333333;
+    background: #D16382;
     color: black;
+    box-shadow: 0px -3px #333333;
+    text-shadow: 0px 1px 1px #000;
 }
 
 .submit:hover {
-    background: #AAAAAA;
-    box-shadow: 0px 4px #333333;
+    background: violet;
     color: black;
 }
 
 .submit:active {
-    top: 5px; 
+    top: -5px; 
+    box-shadow: none;
 }
-
-.button {
-    background: gray;
-    border: 0;
-    line-height: 2.5em;
-    padding: 0 0 0 1em;
-    margin-bottom: 1em;
-    outline: none;
-    cursor: pointer;
-    position: relative;
-    left: 50px;
-    top: 10px;
-}
-
-.arrow {
-    display: inline-block;
-    line-height: 2.5em;
-    background: gray;
-    color: black;
-    font-size: 1em;
-    width: 2.5em;
-    transition: margin 200ms;
-    margin-left: 1em;
-}
-
-.arrow:hover {
-    background: #ddd;
-    margin-left: 1.5em;
-    background-color: darken(#333,5%);
-    }
-
-.button:active {
-    background: #CCC;
-}
-
-.arrow:active {
-    margin-left: 1.5em;
-}
-
-.button.button-forward {
-    left: 700px;
-}
-
-.arrow-previous {
-    left:-115px;
-    position: relative;
-    -webkit-transform: rotate(180deg);
-    -ms-transform: rotate(180deg);
-    transform: rotate(180deg);
-}
-
-
-
-
-
-
 
 
 
