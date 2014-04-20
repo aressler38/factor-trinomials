@@ -1,4 +1,4 @@
-define(["ft-messenger-central", "rectangle"], function(FTMessengerCentral, Rectangle) {
+define(["./ft-messenger-central", "./rectangle"], function(FTMessengerCentral, Rectangle) {
 
 
     function run() {

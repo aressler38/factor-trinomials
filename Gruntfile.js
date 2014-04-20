@@ -14,11 +14,11 @@ module.exports = function(grunt) {
             // uglify the "main.js" file
             main: { 
                 files: {
-                    "dist/main.min.js": [ "dist/main.js" ]
+                    "dist/js/main.min.js": [ "dist/js/main.js" ]
                 },
                 options: {
                     preserveComments: false,
-                    sourceMap: "dist/main.js",
+                    sourceMap: "dist/js/main.js",
                     sourceMappingURL: "main.min.map",
                     report: "min",
                     beautify: {
@@ -33,14 +33,8 @@ module.exports = function(grunt) {
             }
         },
 
-        build: {
-            all: {
-                dest: "dist/main.js",
-                minimum: [
-                    "main",
-                ]
-            }
-        },
+        /* Configured in build task file */
+        build: { all: { } }
         
     });
 
@@ -52,6 +46,6 @@ module.exports = function(grunt) {
 
     grunt.loadTasks( "build/tasks" );
 
-    grunt.registerTask("dist", ["jshint", "build:*:*", "uglify:main"]);
+    grunt.registerTask("dist", ["jshint", "build:all", "uglify:main"]);
     grunt.registerTask("default", ["dist"]);
 }; 

@@ -8,10 +8,10 @@
 
 define(
   [
-    "var/appMessenger",
-    "diamond",
-    "rectangle",
-    "var/randomInt"
+    "./var/appMessenger",
+    "./diamond",
+    "./rectangle",
+    "./var/randomInt"
   ], function(appMessenger, Diamond, Rectangle, randomInt) {
 
     function FTMessengerCentral() {

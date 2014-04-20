@@ -26,7 +26,6 @@ THE SOFTWARE.
     <meta charset="UTF-8">
     <title>Factor Trinomials</title>
     
-    <link type="text/css" rel="stylesheet" href="css/main.css"></link>
 </head>
 
 <body>
@@ -94,20 +93,28 @@ THE SOFTWARE.
 
 <script src="js/jquery/jquery-min.js"></script>
 <script>
-    var script;
-    script = $("<script>");
+    var $script, $link;
 
+    $script = $("<script>");
+    $link   = $("<link>");
+    $link.attr("type", "text/css");
+    $link.attr("rel", "stylesheet");
 
-    if (1) {
+    // true  : minified css/js (doesn't use requirejs loader), with source maps.
+    // false : non-minified css/js (uses requirejs loader).
+    if (true) {
         console.log("DIST MODE");
-        script.attr("src", "dist/main.min.js");
+        $script.attr("src", "dist/js/main.min.js");
+        $link.attr("href", "dist/css/main.css");
     }
     else {
         console.log("DEV MODE");
-        script.attr("src", "js/require.js");
-        script.attr("data-main", "js/main");
+        $script.attr("src", "js/require.js");
+        $script.attr("data-main", "js/main");
+        $link.attr("href", "css/main.css");
     }
-    $(document.body).append(script);
+    $(document.body).append($link);
+    $(document.body).append($script);
 </script>
 
 </body>

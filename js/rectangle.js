@@ -8,10 +8,10 @@
 
 
 define([
-        "var/appMessenger", 
-        "diamond",
-        "var/ifOneOrNegOne",
-        "var/prettifySign"
+        "./var/appMessenger", 
+        "./diamond",
+        "./var/ifOneOrNegOne",
+        "./var/prettifySign"
     ], function(appMessenger, Diamond, ifOneOrNegOne, prettifySign) {
 
     var Rectangle = function() {

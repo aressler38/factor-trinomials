@@ -5,10 +5,12 @@ module.exports = function( grunt ) {
     var rdefineEnd = /\}\);[^}\w]*$/;
 
     var config = {
-        baseUrl: "js",
-        name: "main",
-        out: "dist/main.js",
+        baseUrl: "./",
+        name: "js/main",
+        /*out: "dist/main.js",*/
+        dir: "dist/",
         optimize: "none",
+        optimizeCss: "standard",
         mainConfigFile: "js/main.js",
         // Include dependencies loaded with require
         findNestedDependencies: true,
@@ -18,8 +20,8 @@ module.exports = function( grunt ) {
             startFile: "js/header.part",
             endFile: "js/footer.part"
         },
-        paths: {
-        },
+        fileExclusionRegExp:/^\.|node_modules\/*\/*.js|node_modules\/*|build|Gruntfile.js|package.json/,
+        preserveLicenseComments: false,
         onBuildWrite: convert
     };
 
@@ -68,13 +70,14 @@ module.exports = function( grunt ) {
         return contents;
     }
 
-    grunt.registerMultiTask(
+    grunt.registerTask(
         "build",
         "run a build",
     function() {
         var done = this.async();
         // Trace dependencies and concatenate files
         requirejs.optimize(config, function( response ) {
+            console.log(response);
             done();
         }, function( err ) {
             done( err );

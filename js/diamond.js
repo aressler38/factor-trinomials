@@ -20,10 +20,10 @@
 
 define(
   [
-    "var/appMessenger", 
-    "ft-messenger-central",
-    "var/ifOneOrNegOne",
-    "var/prettifySign"
+    "./var/appMessenger", 
+    "./ft-messenger-central",
+    "./var/ifOneOrNegOne",
+    "./var/prettifySign"
   ],function(appMessenger, brain, ifOneOrNegOne, prettifySign) {
 
     /** IIFE returns diamond object ready for use */
