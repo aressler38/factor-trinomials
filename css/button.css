@@ -1,0 +1,41 @@
+.btn-wrapper {
+    position: absolute;
+    top: 20px;
+    left: 717px;
+}
+
+.btn {
+    float: left;
+    position: relative;
+    cursor: pointer;
+    border-radius: 24px;
+    margin: 0 7px 11px 0;
+    text-align: center;
+    transition: all 0.2s ease0;
+    font: bold 14px Arial, sans-serif;
+    width: 150px;
+    line-height: 36px;
+    height: auto;
+    vertical-align: middle;
+    border: 1px solid black;
+}
+
+
+.nav-buttons .btn:nth-child(1) span:before {
+    content: "\e4ad\20";
+}
+
+.nav-buttons .btn:nth-child(2) span:after {
+    content: "\20\e4ae";
+}
+
+/* nav button colors and other styles */
+.nav-buttons .btn {
+    background:violet; 
+}
+.nav-buttons .btn:hover {
+    background:purple; 
+}
+.nav-buttons .btn:active {
+    background:yellow; 
+}
