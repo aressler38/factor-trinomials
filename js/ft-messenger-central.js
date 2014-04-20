@@ -8,14 +8,13 @@
 
 define(
   [
-    "jquery",
-    "js/appMessenger",
-    "js/diamond",
-    "js/rectangle",
-    "js/var/randomInt"
-  ], function($, Messenger, Diamond, Rectangle, randomInt) {
+    "var/appMessenger",
+    "diamond",
+    "rectangle",
+    "var/randomInt"
+  ], function(appMessenger, Diamond, Rectangle, randomInt) {
 
-    return (new function() {
+    function FTMessengerCentral() {
         
         // diamond get's reset by initialize
         var diamond = {
@@ -28,9 +27,9 @@ define(
         var rectangleElements = [null, null, null, null];
         var diamondElements = ["1", "2", "3", "4"];
 
-        this.on     = function() {Messenger.on.apply(this, arguments)};
-        this.off    = function() {Messenger.off.apply(this, arguments)};
-        this.send   = function() {Messenger.send.apply(this, arguments)};
+        this.on     = function() {appMessenger.on.apply(this, arguments);};
+        this.off    = function() {appMessenger.off.apply(this, arguments);};
+        this.send   = function() {appMessenger.send.apply(this, arguments);};
         function evaluateDiamond(dInput) {
             $.extend(diamond, dInput);
             
@@ -40,14 +39,14 @@ define(
                 Diamond.colorDiamondInput(4, "green");
             }
             else {
-                if (diamond['1'] != null && diamond['3'] != null) {
+                if (diamond['1'] !== null && diamond['3'] !== null) {
                     Diamond.colorDiamondInput(2, "red");
                     Diamond.colorDiamondInput(4, "red");
                 }
             }
 
             // Check the SUM term... the bottom one
-            if (diamond['0'] != null) {
+            if (diamond['0'] !== null) {
                 if (diamond['0']) {
                     Diamond.colorDiamondInput(1, "green");
                 }
@@ -57,7 +56,7 @@ define(
             }
             
             // Check the PRODUCT term... the top one
-            if (diamond['2'] != null) {
+            if (diamond['2'] !== null) {
                 if (diamond['2']) {
                     Diamond.colorDiamondInput(3, "green");
                 }
@@ -69,10 +68,10 @@ define(
             // Check all the terms
             if (diamond['0'] && diamond['1'] && diamond['2'] && diamond['3']) {
                 console.log("diamond ready");
-                Messenger.off("createInputBox", createInputBox);
-                Messenger.send("diamondCorrect");
+                appMessenger.off("createInputBox", createInputBox);
+                appMessenger.send("diamondCorrect");
             }
-        };
+        }
         
         function diamondCorrect() {
             console.log("calling diamondCorrect");
@@ -89,7 +88,7 @@ define(
             console.log(diamondElements);
 
             $(".ftx1,.ftk1,.ftx2,.ftk2").bind("click", createRectangleInput);
-        };
+        }
 
 
         function createRectangleInput(e) {
@@ -105,14 +104,14 @@ define(
             $(input).bind("blur", function(e){
                 setRectangleInput.call(this,target);
             });
-        };
+        }
 
         function setRectangleInput(target) {
             var parsedValue = this.value.replace(/\+/g,"").replace(/ /g,"");
             $(target).html(renderMath(parsedValue));
             setRectangleElement(parsedValue, $(target).attr("class"));
             checkRectangleElements();
-        };
+        }
          
         // START CHECKING THE RECTANGLE
         function checkRectangleElements() {
@@ -120,9 +119,9 @@ define(
             var formattedX1 = parseInt(formattedRectEls[0]);
             var formattedX2 = formattedRectEls[2];
             var topRowGCF = getTopRowGCF();
-            var parameters = Messenger.send("getParameters");
+            var parameters = appMessenger.send("getParameters");
             var aIsNegative = (parameters[0] < 0) ? true : false;
-            var diamondElements = Messenger.send("getDiamondElements");
+            var diamondElements = appMessenger.send("getDiamondElements");
             
 
             var correctness = [false, false, false, false]; // x1, k1, x2, k2
@@ -144,7 +143,7 @@ define(
             // check the x2 slot
             if (!isNaN(parseInt(formattedX2)) && !isNaN(formattedX1)) { // is it empty?
                 if (parseInt(formattedX2)*parseInt(formattedX1) == parameters[0]) { // does x1*x2 = ax^2?
-                    if (formattedX2.replace(parseInt(formattedX2), "").replace(/x/,"") == "" && formattedX2.match(/x/)) { // is there only numbers and an x?
+                    if (formattedX2.replace(parseInt(formattedX2), "").replace(/x/,"") === "" && formattedX2.match(/x/)) { // is there only numbers and an x?
                         correctness[2] = true;
                         colorRectangleInput(".ftx2", true);
                     }
@@ -159,8 +158,8 @@ define(
             }
 
             // check the k1 slot... it needs to have numbers only. k1*x2 = c, that is, cell c from the grid layout
-            if (!isNaN(parseInt(formattedX2)) && formattedRectEls[1] != null) {
-                if (formattedRectEls[1].replace(parseInt(formattedRectEls[1]), "") == "" && correctness[2]) { // is there only numbers?
+            if (!isNaN(parseInt(formattedX2)) && formattedRectEls[1] !== null) {
+                if (formattedRectEls[1].replace(parseInt(formattedRectEls[1]), "") === "" && correctness[2]) { // is there only numbers?
                     // and is the x2 slot correct?
                     if ((parseInt(formattedRectEls[1])*parseInt(formattedX2)+"x") == (diamondElements[3])){
                         correctness[1] = true;
@@ -176,8 +175,8 @@ define(
             }
             
             // Lastly, like checking for k1, but check for k2
-            if (!isNaN(parseInt(formattedX2)) && formattedRectEls[3] != null) {
-                if (formattedRectEls[3].replace(parseInt(formattedRectEls[3]), "") == "" && correctness[0]) { // is there only numbers?
+            if (!isNaN(parseInt(formattedX2)) && formattedRectEls[3] !== null) {
+                if (formattedRectEls[3].replace(parseInt(formattedRectEls[3]), "") === "" && correctness[0]) { // is there only numbers?
                     // and is the x2 slot correct?
                     if ((parseInt(formattedRectEls[3])*parseInt(formattedX1)+"x") == (diamondElements[1])){
                         correctness[3] = true;
@@ -195,13 +194,13 @@ define(
             //  all correct?
             if (correctness[0] && correctness[1] && correctness[2] && correctness[3]) {
             //YES!!!
-                Messenger.send("genericRectangleComplete");
+                appMessenger.send("genericRectangleComplete");
             }
-        };
+        }
 
         function genericRectangleComplete() {
             console.log("YAYAA!!!");
-            var rectEls = Messenger.send("getRectangleElements");
+            var rectEls = appMessenger.send("getRectangleElements");
             rectEls[0] = checkSimpleCases(rectEls[0]);
             rectEls[2] = checkSimpleCases(rectEls[2]);
            
@@ -210,15 +209,11 @@ define(
             
             
             $(".ft-finalContainer").show();
-            $(".ft-finalContainer .explanationArea").html("Great! The factors are exactly: "
-                + "<br>"
-                + "(" + rectEls[0] + rectEls[1] + ") (" + rectEls[2] + rectEls[3] + ") = " + $(".ft-trinomial span").html()
-                + "<br>"
-            );
+            $(".ft-finalContainer .explanationArea").html("Great! The factors are exactly: " + "<br>" + "(" + rectEls[0] + rectEls[1] + ") (" + rectEls[2] + rectEls[3] + ") = " + $(".ft-trinomial span").html() + "<br>");
 
             setTimeout(function(){
                 $(".ft-finalContainer button").attr("disabled", false);
-            },1000)
+            },1000);
             
             function checkSimpleCases(str) {
                 if (str == "1x"){return "x";}
@@ -226,14 +221,14 @@ define(
                 return str;
             }
             
-        };
+        }
         
         function colorRectangleInput($selector, bool) {
             if (bool) {
-                $($selector).css({"background":"rgba(0,255,0,0.6)"})
+                $($selector).css({"background":"rgba(0,255,0,0.6)"});
             }
             else {
-                $($selector).css({"background":"rgba(255,0,0,0.6)"})
+                $($selector).css({"background":"rgba(255,0,0,0.6)"});
             }
         }
 
@@ -243,7 +238,7 @@ define(
         }
 
         function getTopRowGCF() {
-            var a11 = Math.abs( Messenger.send("getParameters")[0] ); // this is a number 
+            var a11 = Math.abs( appMessenger.send("getParameters")[0] ); // this is a number 
             var a12 = diamondElements[1]; // this is a string... need to parseInt
             var a12Parsed = Math.abs( parseInt(a12) );
 
@@ -256,7 +251,7 @@ define(
                 var a12p = Math.primeFactors(a12Parsed);
                 return getGCF(a11p, a12p); 
             }
-        };
+        }
 
         function getGCF(a1,a2) {
             // computes the GCF of 2 numbers that have been processed by Math.primeFactors
@@ -276,7 +271,7 @@ define(
                     }
                 }
                 return matches;
-            };
+            }
             
             function findBaseExp(array,base) {
                 var arrayLen = array.length;
@@ -288,13 +283,13 @@ define(
                         continue;
                     }
                 }
-            };
+            }
         
             //==========================================================
-            for (var i=0; i<a1Len; i++) {
+            for (i=0; i<a1Len; i++) {
                 bases1[i] = a1[i][0];
             }
-            for (var i=0; i<a2Len; i++) {
+            for (i=0; i<a2Len; i++) {
                 bases2[i] = a2[i][0];
             }
 
@@ -305,15 +300,16 @@ define(
             var minExp              = 1;
             var GCF                 = 1;
             var testGCF             = 1;
+            var i=0, j=0;
             
             // time to go through the matches, and compare the associated exponents 
             // we're taking the shortest route... if a1Len < a2Len then ..., else ... 
-            for (var i=0; i<matchingBasesLen; i++) {
+            for (i=0; i<matchingBasesLen; i++) {
                 if (a1lenLessThanA2) {
-                    for (var j=0; j<a1Len; j++) {
+                    for (j=0; j<a1Len; j++) {
                         if (a1[j][0] == matchingBases[i]) {
                             // we have a match...
-                            matchedBase = a1[j][0] 
+                            matchedBase = a1[j][0];
                             // now compare the exponnents: min(a1[j][1], findBaseExp(a2,a1[j][0]))
                             minExp = Math.min(a1[j][1], findBaseExp(a2, matchedBase));
                             testGCF = Math.pow(matchedBase, minExp);
@@ -328,10 +324,10 @@ define(
                     }
                 }
                 else {
-                    for (var j=0; j<a2Len; j++) {
+                    for (j=0; j<a2Len; j++) {
                         if (a2[j][0] == matchingBases[i]) {
                             // we have a match...
-                            matchedBase = a2[j][0] 
+                            matchedBase = a2[j][0];
                             // now compare the exponnents: min(a1[j][1], findBaseExp(a2,a1[j][0]))
                             minExp = Math.min(a2[j][1], findBaseExp(a1, matchedBase));
                             testGCF = Math.pow(matchedBase, minExp);
@@ -346,12 +342,12 @@ define(
                 }
             }
             return GCF;
-        };
+        }
 
         // array in ... array out
         function formatInput(data) {
             for (var i=0; i<4; i++) {
-                if (typeof data[i] == "undefined" || data[i] == null) {
+                if (typeof data[i] === "undefined" || data[i] === null) {
                     continue;
                 }
                 else {
@@ -372,13 +368,12 @@ define(
                             data[i] = data[i].replace("-","-1");
                             break;
                         default:
-                            Messenger.send("ft-guide", "There's something wrong with what you entered. "
-                                    + "I was expecting the expression to start with x or -x");
+                            appMessenger.send("ft-guide", "There's something wrong with what you entered. " + "I was expecting the expression to start with x or -x");
                     }
                 }
             }
             return data;
-        };
+        }
 
         function setRectangleElement(str, className) {
             switch (className) {
@@ -397,11 +392,11 @@ define(
                 default:
                     throw new Error("there's no matching class name when setting rectangle inputs");
             }
-        };
+        }
 
         function getParameters() {
             return polynomial;
-        };
+        }
 
         function setParameters(a,b,c) {
             if (arguments.length != 3) {throw new Error("Error -- bad parameters?!!!");}
@@ -409,11 +404,11 @@ define(
                 polynomial = arguments;
             } 
             return polynomial; 
-        };
+        }
 
         function createInputBox(arg0,arg1) {
             arg1(arg0);// Wow this isn't human-readable, but it's something in diamond.js.
-        };
+        }
 
         function renderMath(diamondText) {
             var output = '';
@@ -434,7 +429,7 @@ define(
             else {
                 //throw new Error("The text is supposed to have a regex match method.");
             }
-        };
+        }
 
         function getDiamondElements() {
             for (var i=0; i<4; i++) {
@@ -444,11 +439,11 @@ define(
         }
 
         function guide(msg) {
-            console.log("you are logging to ft-guide: "+msg)
-        };
+            console.log("you are logging to ft-guide: "+msg);
+        }
         
         // ===========================================================================================
-        Messenger.on("randomize", function() {
+        appMessenger.on("randomize", function() {
             diamond = {
                     0:null,
                     1:null,
@@ -460,11 +455,11 @@ define(
             var b = randomInt(-10,10, false);
             var c = randomInt(1,2, false); 
             var d = randomInt(-10,10, false);
-            Messenger.send("initialize", (a*c), (a*d+b*c), (b*d));
+            appMessenger.send("initialize", (a*c), (a*d+b*c), (b*d));
         });
         
         // give this a,b,c
-        Messenger.on("initialize", function(a,b,c) {
+        appMessenger.on("initialize", function(a,b,c) {
             rectangleElements = [null,null,null,null];
             diamondElements = ["1", "2", "3", "4"];
             diamond = {
@@ -480,22 +475,22 @@ define(
                 Diamond.initialize(a,b,c);
             }
             
-            Messenger.on("createInputBox", createInputBox);
-            Messenger.send("setMainDiagonal");
-            Messenger.send("onLoad");
-            Messenger.send("clearRectangle");
+            appMessenger.on("createInputBox", createInputBox);
+            appMessenger.send("setMainDiagonal");
+            appMessenger.send("onLoad");
+            appMessenger.send("clearRectangle");
         });
 
-        Messenger.on("ft-guide", guide);
-        Messenger.on("ft-d-eval", evaluateDiamond);
-        Messenger.on("getParameters", getParameters);
-        Messenger.on("setParameters", setParameters);
-        Messenger.on("diamondCorrect", diamondCorrect);
-        Messenger.on("getDiamondElements", function(){return diamondElements;});
-        Messenger.on("getRectangleElements", function(){return rectangleElements;});
-        Messenger.on("clearRectangle", clearRectangleInputs);
-        Messenger.on("genericRectangleComplete", genericRectangleComplete);
-        Messenger.on("onLoad", function() {
+        appMessenger.on("ft-guide", guide);
+        appMessenger.on("ft-d-eval", evaluateDiamond);
+        appMessenger.on("getParameters", getParameters);
+        appMessenger.on("setParameters", setParameters);
+        appMessenger.on("diamondCorrect", diamondCorrect);
+        appMessenger.on("getDiamondElements", function(){return diamondElements;});
+        appMessenger.on("getRectangleElements", function(){return rectangleElements;});
+        appMessenger.on("clearRectangle", clearRectangleInputs);
+        appMessenger.on("genericRectangleComplete", genericRectangleComplete);
+        appMessenger.on("onLoad", function() {
             $(function() {
                 $(".ftH span").addClass("hide");  
                 $(".fta span").addClass("hide");
@@ -515,5 +510,6 @@ define(
             });
         });
 
-    });
+    }
+    return FTMessengerCentral;
 });

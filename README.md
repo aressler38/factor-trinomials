@@ -13,9 +13,16 @@ About
 
 Development Notes
 -----------------
+
+When checking out the repo for the 1st time run:
 ```
     git submodule init;
     git submodule update --recursive;    
+    npm install
+```
+To build the project run:
+```
+    grunt
 ```
     
 License

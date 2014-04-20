@@ -90,19 +90,25 @@ THE SOFTWARE.
 </div>
 
 </div> <!--End of page-wrapper -->
-<script src="js/require.js"></script>
-<script type="text/javascript">
-    require.config({
-        paths: {
-            "jquery"    : "js/jquery/jquery-min",
-            "messenger" : "js/messenger/messenger_amd"
-        }
-    });
-    require(["js/ft-messenger-central"], function(brain) {
-        var nextButton      = document.getElementById("next-button");
-        nextButton.onclick  = function() {brain.send("randomize"); }
-        brain.send("initialize");
-    });
+
+
+<script src="js/jquery/jquery-min.js"></script>
+<script>
+    var script;
+    script = $("<script>");
+
+
+    if (1) {
+        console.log("DIST MODE");
+        script.attr("src", "dist/main.min.js");
+    }
+    else {
+        console.log("DEV MODE");
+        script.attr("src", "js/require.js");
+        script.attr("data-main", "js/main");
+    }
+    $(document.body).append(script);
 </script>
+
 </body>
 </html>

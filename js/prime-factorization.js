@@ -12,7 +12,7 @@ define(function() {
     return function primeFactors(n) {
         if (n%1 !== 0 || n<2){throw new Error("primeFactors expected a natural number other than 1. throw: "+n);}
 
-        var primeFactors    = [];
+        var _primeFactors    = [];
         var upperBound      = Math.floor(n/2)+1;
         var testFactor      = 1;
 
@@ -20,10 +20,10 @@ define(function() {
             testFactor = multiplicity(i,n);
             // check if i is prime
             if (!isPrime(i)) continue;
-            if (testFactor != 0) {
-                primeFactors.push([i,testFactor]);
-                if (isCompleteFactorization(primeFactors, n)) {
-                    return primeFactors;
+            if (testFactor !== 0) {
+                _primeFactors.push([i,testFactor]);
+                if (isCompleteFactorization(_primeFactors, n)) {
+                    return _primeFactors;
                 }
             }
         }
@@ -59,7 +59,7 @@ define(function() {
                 }
                 return k;
             }
-        };
+        }
         
         /**
          * is the 2d array primesWithMult is the prime factorization of number
@@ -76,7 +76,7 @@ define(function() {
             else {
                 return false;
             }
-        };
+        }
         
         function isPrime(k) {
             if (Number.isNaN(k) || !isFinite(k) || k%1 || k<2) return false; 
@@ -88,6 +88,6 @@ define(function() {
                 if (k%(i+2)===0) return false;
             }
             return true;
-        };
+        }
     };
 });

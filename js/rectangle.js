@@ -8,26 +8,24 @@
 
 
 define([
-        "jquery",
-        "js/appMessenger", 
-        "js/diamond",
-        "js/var/ifOneOrNegOne",
-        "js/var/prettifySign"
-    ], function($, Messenger, Diamond, ifOneOrNegOne, prettifySign) {
+        "var/appMessenger", 
+        "diamond",
+        "var/ifOneOrNegOne",
+        "var/prettifySign"
+    ], function(appMessenger, Diamond, ifOneOrNegOne, prettifySign) {
 
-    var Rectangle = (new function() {
-
+    var Rectangle = function() {
         // add <input> to rectangle divs
         var container = document.getElementsByClassName("ft-rectangle")[0];
         
-        Messenger.on("setMainDiagonal", function(){
-            var parameters = Messenger.send("getParameters");
+        
+        appMessenger.on("setMainDiagonal", function(){
+            var parameters = appMessenger.send("getParameters");
             var polynomial = clean_parameters(parameters);
             
             $(".fta").html("<span>"+polynomial.a+"<i>x</i><sup>2</sup></span>");
             $(".ftd").html("<span>"+parameters[2]+"</span>");
         });
-        
         //copied from diamond.js... maybe you should make a helpers file 
         function clean_parameters(parameters) {  // for presentational purposes only
             var coefficients =
@@ -58,8 +56,8 @@ define([
                 }
             }
             return coefficients;
-        };
-    });
+        }
+    };
     return Rectangle;
 });
 

@@ -20,12 +20,11 @@
 
 define(
   [
-    "jquery", 
-    "js/appMessenger", 
-    "js/ft-messenger-central",
-    "js/var/ifOneOrNegOne",
-    "js/var/prettifySign"
-  ],function($, Messenger, brain, ifOneOrNegOne, prettifySign) {
+    "var/appMessenger", 
+    "ft-messenger-central",
+    "var/ifOneOrNegOne",
+    "var/prettifySign"
+  ],function(appMessenger, brain, ifOneOrNegOne, prettifySign) {
 
     /** IIFE returns diamond object ready for use */
     Diamond = (function() {
@@ -35,10 +34,10 @@ define(
         var View_MAX = 350;   // set the max pixels for the diamond's box container
 
         // jQuery selectors
-        var diamondBox1 = ".ft-diamondBox-1"
-        var diamondBox2 = ".ft-diamondBox-2"
-        var diamondBox3 = ".ft-diamondBox-3"
-        var diamondBox4 = ".ft-diamondBox-4"
+        var diamondBox1 = ".ft-diamondBox-1";
+        var diamondBox2 = ".ft-diamondBox-2";
+        var diamondBox3 = ".ft-diamondBox-3";
+        var diamondBox4 = ".ft-diamondBox-4";
 
         var diamondBoxes = [diamondBox1, diamondBox2, diamondBox3, diamondBox4];
 
@@ -85,7 +84,7 @@ define(
             diamondNumber = svgTarget.className.baseVal.replace("ft-diamondBox-", "");
             var coords = [event.clientX, event.clientY];
 
-            $("#ft-diamond-text-"+diamondNumber).remove()
+            $("#ft-diamond-text-"+diamondNumber).remove();
 
             Diamond.inputBox = document.createElement("input");
             Diamond.expression = document.createElement("span");
@@ -98,7 +97,7 @@ define(
                                 "width:100px;"+
                                 "font-size:22px;"
             );
-            Diamond.inputBox.setAttribute("class", "ft-d-input-box")
+            Diamond.inputBox.setAttribute("class", "ft-d-input-box");
             $("body").append(Diamond.inputBox);
             Diamond.inputBox.focus();
             // binding a keyup event to the input box
@@ -112,7 +111,7 @@ define(
              $(".ft-d-input-box").blur(function(event) {
                  setInputBox(event);  
             });
-        };
+        }
 
         function setInputBox(event) {
             var text = $(Diamond.inputBox).val();
@@ -151,7 +150,7 @@ define(
                     console.log("TODO");
                     console.log("The text is supposed to have a regex match method.");
                 }
-            };
+            }
 
             switch (parseInt(diamondNumber)) {
                     // Don't ask about these ratios... they're for positioning         
@@ -162,14 +161,14 @@ define(
                     textCoords = [8.0/35.0*View_MAX, 17.0/35.0*View_MAX];
                     break;
                 case 3:
-                    textCoords = [17.0/35.0*View_MAX, 71.0/350.0*View_MAX]
+                    textCoords = [17.0/35.0*View_MAX, 71.0/350.0*View_MAX];
                     break;
                 case 4:
                     textCoords = [26.0/35.0*View_MAX, 17.0/35.0*View_MAX];
                     break;
                 default:
-                    throw "something's wrong with the diamond number."
-            };
+                    throw "something's wrong with the diamond number.";
+            }
             Diamond.expression.setAttribute("id", "ft-diamond-text-"+diamondNumber);
             Diamond.expression.setAttribute("style",
                                        "position:absolute;"+ 
@@ -191,7 +190,7 @@ define(
             
             diamondInputs = formatDiamondInput(diamondInputs);
             checkDiamondInputs(diamondInputs);
-        };
+        }
         
 
         // array in ... array out
@@ -210,64 +209,63 @@ define(
                             data[i] = data[i].replace("-","-1");
                             break;
                         default:
-                            Messenger.send("ft-guide", "There's something wrong with what you entered. "
-                                    + "I was expecting the expression to start with x or -x");
+                            appMessenger.send("ft-guide", "There's something wrong with what you entered. " + "I was expecting the expression to start with x or -x");
                     }
                 }
             }
             return data;
-        };
+        }
 
         // This for loop is where I check the diamondInputs against the parameters.
         // I'm going to color the diamond parts here.
         function checkDiamondInputs(dFormatted) {
             for (var i=0; i<4; i++) {
                 if (!dFormatted[i] || !dFormatted[i].match('x')) {
-                    Messenger.send("ft-guide", "Make sure you are using the correct variable.");
+                    appMessenger.send("ft-guide", "Make sure you are using the correct variable.");
                 }
                 switch (i) {
                     // bottom square --- match middle term
                     case 0:
-                        if (dFormatted[0] == undefined){break;}
+                        if (dFormatted[0] === undefined){break;}
                         if (dFormatted[0] != (parameters[1]+'x')) {
-                            Messenger.send("ft-guide", "That is not the correct value for the sum.");
-                            Messenger.send("ft-d-eval", {0:false});
+                            appMessenger.send("ft-guide", "That is not the correct value for the sum.");
+                            appMessenger.send("ft-d-eval", {0:false});
                         }
                         else {
-                            Messenger.send("ft-d-eval", {0:true});
+                            appMessenger.send("ft-d-eval", {0:true});
                         }
                         break;
                     case 1:
-                        if (dFormatted[1] == undefined || dFormatted[3] == undefined){break;}
+                        if (dFormatted[1] === undefined || dFormatted[3] === undefined){break;}
                         if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') != (parameters[1]+'x')) {
-                            Messenger.send("ft-guide", "The left and right diamond inputs don't add up to the correct value.");
-                            Messenger.send("ft-d-eval", {1:false, 3:false});
+                            appMessenger.send("ft-guide", "The left and right diamond inputs don't add up to the correct value.");
+                            appMessenger.send("ft-d-eval", {1:false, 3:false});
                         }
                         else {
-                            Messenger.send("ft-d-eval", {1:true, 3:true});
-                            Messenger.send("ft-guide", "It looks like the sum is correct!")
+                            appMessenger.send("ft-d-eval", {1:true, 3:true});
+                            appMessenger.send("ft-guide", "It looks like the sum is correct!");
                         }
                         break;
                     // top square --- if product isn't correct
                     case 2:
-                        if (dFormatted[2] == undefined){break;}
+                        if (dFormatted[2] === undefined){break;}
                         if (dFormatted[2] != ((parameters[0]*parameters[2])+"x^2")) {
-                            Messenger.send("ft-d-eval", {2:false});
+                            appMessenger.send("ft-d-eval", {2:false});
                         }
                         else {
-                            Messenger.send("ft-guide", ("the product was correct: "+dFormatted[i]));
-                            Messenger.send("ft-d-eval", {2:true});
+                            appMessenger.send("ft-guide", ("the product was correct: "+dFormatted[i]));
+                            appMessenger.send("ft-d-eval", {2:true});
                         }
                         break;
                     // right square --- if sum doesn't add up
                     case 3:
-                        if (dFormatted[1] == undefined || dFormatted[3] == undefined){break;}
+                        if (dFormatted[1] === undefined || dFormatted[3] === undefined){break;}
                         if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') != (parameters[1]+'x')) {
-                            Messenger.send("ft-guide", "The left and right diamond inputs don't add up to the correct value.");
-                            Messenger.send("ft-d-eval", {1:false, 3:false});
+                            appMessenger.send("ft-guide", "The left and right diamond inputs don't add up to the correct value.");
+                            appMessenger.send("ft-d-eval", {1:false, 3:false});
                         }
                         else {
-                            Messenger.send("ft-d-eval", {1:true, 3:true});
+                            appMessenger.send("ft-d-eval", {1:true, 3:true});
                         }
                         break;
                     default:
@@ -275,29 +273,22 @@ define(
                         throw "Error while parsing index in checkDiamondInputs";
                 }
             }
-        };  
+        }  
 
         return {
 
             initialize: function(_p1, _p2, _p3) {
-                if (typeof(_p1) == "number" && typeof(_p2) == "number" && typeof(_p3) == "number") {
+                if (typeof(_p1) === "number" && typeof(_p2) === "number" && typeof(_p3) === "number") {
                     parameters = [_p1, _p2, _p3];
-                    Messenger.send("setParameters", _p1, _p2, _p3);
+                    appMessenger.send("setParameters", _p1, _p2, _p3);
                 }           
-                Messenger.send("setParameters", parameters[0], parameters[1], parameters[2]);
+                appMessenger.send("setParameters", parameters[0], parameters[1], parameters[2]);
                
                 diamondInputs=[]; 
                 this.clearDiamondInput(); 
 
                 var coefficients = cleanParameters();
-                $(".ft-trinomial").html("Factor the following trinomial: &nbsp;"
-                                        + "<span class='ft-trinomial-equation' style='font-size:22px'>"                          
-                                        + coefficients.a+"<em>x</em><sup>2</sup> "
-                                        + coefficients.b+"<em>x</em> "
-                                        + coefficients.c 
-                                        + "</span>"
-                );
-                
+                $(".ft-trinomial").html("Factor the following trinomial: &nbsp;" + "<span class='ft-trinomial-equation' style='font-size:22px'>"                          + coefficients.a+"<em>x</em><sup>2</sup> " + coefficients.b+"<em>x</em> " + coefficients.c + "</span>"); 
                 // setup for the diamond
                 var xmlns="http://www.w3.org/2000/svg";
                 var diamondPartLength =  Math.floor(View_MAX * Math.sqrt(2.0)/4.0);
@@ -329,27 +320,23 @@ define(
                 // Event Binding
                 // =============
 
-                $(diamondBox1 + ','
-                  + diamondBox2 + ','
-                  + diamondBox3 + ','
-                  + diamondBox4)
-                    .click(function(event) {
-                        Messenger.send("createInputBox", event, createInputBox);  // wow, i can't believe i did this
-                    });
+                $(diamondBox1 + ',' + diamondBox2 + ',' + diamondBox3 + ',' + diamondBox4).click(function(event) {
+                    appMessenger.send("createInputBox", event, createInputBox);  // wow, i can't believe i did this
+                });
                 return null;
             },
 
             clearDiamondInput: function(n) {
                 if (typeof(n) === "undefined") {
-                    Messenger.send("ft-d-eval", {message:"clear all"});
+                    appMessenger.send("ft-d-eval", {message:"clear all"});
                     for (var i=1; i<5; i++) {
                         $("#ft-diamond-text-"+i).remove();
                         $(diamondBoxes[i-1]).css("fill", "white");
                     }
                 }
                 else if (typeof(n) === "number") {
-                    Messenger.send("ft-d-eval", {message:"clear "+n});
-                    $("#ft-diamond-text-"+n).remove()
+                    appMessenger.send("ft-d-eval", {message:"clear "+n});
+                    $("#ft-diamond-text-"+n).remove();
                     $(diamondBoxes[n]).css("fill", "white");
                 }
             },
@@ -357,7 +344,7 @@ define(
             colorDiamondInput: function(n, color, alpha) {
                 if (typeof(n) === "undefined") {throw new Error("Expecting 'n' a specific diamond.");}
                 if (typeof(color) === "undefined") {throw new Error("Expecting a color.");}
-                var opacity = (typeof(alpha) == "undefined") ? 0.6 : alpha;
+                var opacity = (typeof(alpha) === "undefined") ? 0.6 : alpha;
                 if (n > 0 && n < 5) {
                     $(diamondBoxes[n-1]).css("fill", color);
                     $(diamondBoxes[n-1]).css("fill-opacity", opacity);
@@ -370,5 +357,6 @@ define(
             }
         };
     }());
+
     return Diamond;
 });
