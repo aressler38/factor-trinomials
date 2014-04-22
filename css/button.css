@@ -31,11 +31,11 @@
 
 /* nav button colors and other styles */
 .nav-buttons .btn {
-    background:violet; 
+    background:#C29CB4; 
 }
 .nav-buttons .btn:hover {
-    background:purple; 
+    background:#8D4775; 
 }
 .nav-buttons .btn:active {
-    background:yellow; 
+    background:#8D4775; 
 }

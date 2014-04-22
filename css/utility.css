@@ -1,7 +1,6 @@
 /* PUSHABLE ITEMS */
 .pushable {
     box-shadow: 0px -3px #333333;
-    text-shadow: 0px 1px 1px #000;
 }
 
 .pushable:hover { }
@@ -10,6 +9,18 @@
     top: -5px; 
     box-shadow: none;
 }
+
+.pushable-down:active {
+    top: 5px;
+    box-shadow: none;
+}
+
+.operator.pushable-down:active {
+    top: 5px;
+    box-shadow: none;
+}
+
+
 /* END PUSHABLE ITEMS */
 
 
