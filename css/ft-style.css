@@ -37,14 +37,15 @@ header {
     -ms-border-radius: 4px;
 }
 
-#name {
+#header-title {
 	text-align: center;
 	padding-top:39px;
 	font-size: 40px;
 }
 
-#slogan {
-	margin-left: 450px;
+h4 {
+    text-align: center;
+    font-style: italic;
 }
 
 ul#nav {
