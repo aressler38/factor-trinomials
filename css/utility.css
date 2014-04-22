@@ -16,3 +16,14 @@
 .show {
     display:visible;
 }
+
+.no-select-no-drag {
+    user-select:none;
+    -ms-user-select:none;
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    user-drag:none;
+    -ms-user-drag:none;
+    -moz-user-drag:none;
+    -webkit-user-drag:none;
+}
