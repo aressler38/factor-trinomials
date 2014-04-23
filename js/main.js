@@ -1,4 +1,9 @@
-define(["./ft-messenger-central", "./rectangle"], function(FTMessengerCentral, Rectangle) {
+define(
+  [
+    "./ft-messenger-central", 
+    "./rectangle",
+    "./text!../html/templates/number-pad.html"
+  ], function(FTMessengerCentral, Rectangle, numberPadTemplate) {
 
 
     function run() {
@@ -8,6 +13,8 @@ define(["./ft-messenger-central", "./rectangle"], function(FTMessengerCentral, R
         nextButton.onclick  = function() {brain.send("randomize"); };
         brain.send("initialize");
     }
-
-    run();
+    
+    //run(); 
+    var template=$(numberPadTemplate);    
+    $(document.body).append(template);
 });
