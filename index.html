@@ -1,79 +1,11 @@
 <!DOCTYPE html>
 <html language="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Factor Trinomials</title>
-    <link type="text/css" rel="stylesheet" href="../css/ft-style.css"></link> 
+    <title>Factor Trinomials test page</title>
 </head>
-
 <body>
-<div id="page-wrapper">
-	
-    <header>
-		<h1 id="header-title">Factor Trinomials</h1>
-        <h4>This is a helpful resource for anyone studying math.
-            Practice factoring trinomials here.<br> If you are
-            new to the site, head over to the tutorial page
-            to get step by step directions.
-        </h4>
-		
-		<ul id="nav">
-			<li><a href="#">Home</a></li>
-			<li><a href="#">About</a></li>
-			<li><a href="html/example-ft.html">Tutorial</a></li>
-		</ul>
-	</header>
-
-	<div class="ft-container">
-    
-	<div class="ft-trinomial"> Trinomial container </div> 
-    
-	<div class="ft-rectangle">
-        <!--
-                    LAYOUT
-               -----------------
-               |               |
-               |   H  x2 | k2  |
-               |     --------- |
-               |  x1 | a | b | |
-               |  ------------ |
-               |  k1 | c | d | |
-               |     --------- |
-               -----------------
-            (H := hint)
-        -->
-        <div class="ftH"><span>The GCF of the top<br>row goes here<br>&#x25BC;</span></div> 
-        <div class="ftx2"></div> 
-        <div class="ftk2"></div> 
-        <div class="ftx1"></div> 
-        <div class="fta"></div> 
-        <div class="ftb"><span></span></div> 
-        <div class="ftk1"></div>  
-        <div class="ftc"><span></span></div> 
-        <div class="ftd"></div>   
-    </div>   
-
-    <div class="ft-diamond">
-        <svg xmlns="http://www.w3.org/2000/svg"
-             style="width:200px; height:200px;"
-             version="1.1" class="ft-svg-container"
-             viewBox="0 0 200 200">
-        </svg>
-    </div>
-
-    <div class="clear"></div>
-
-    <div class="ft-finalContainer">
-        <div class="explanationArea"></div>
-        <div class="clear"></div>
-        <button id="next-button" >TRY ANOTHER!!!</button>
-    </div>
-</div>
-
-</div> <!--End of page-wrapper -->
-
-
+<div id="factor-trinomials"></div>
 <script src="js/jquery/jquery-min.js"></script>
 <script>
     var $script, $link;
@@ -99,6 +31,5 @@
     $(document.body).append($link);
     $(document.body).append($script);
 </script>
-
 </body>
 </html>

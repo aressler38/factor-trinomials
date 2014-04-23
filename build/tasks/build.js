@@ -97,6 +97,7 @@ module.exports = function( grunt ) {
             }
         } while (result !== null);
 
+        result = null; // clear it
         result = rVars.exec(contents);
         vars = result[1].split(",");
         for (var i = 0; i< vars.length; i++) console.log(vars[i]);
