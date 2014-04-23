@@ -7,11 +7,11 @@ module.exports = function( grunt ) {
     var config = {
         baseUrl: "./",
         name: "js/main",
-        /*out: "dist/main.js",*/
         dir: "dist/",
         optimize: "none",
         optimizeCss: "standard",
         mainConfigFile: "js/main.js",
+        exclude: ["js/text.js"], // We're handling text plugins separately
         // Include dependencies loaded with require
         findNestedDependencies: true,
         // Avoid breaking semicolons inserted by r.js
@@ -44,7 +44,15 @@ module.exports = function( grunt ) {
         }
         else {
             // ignore main module
-            if ( name !== "name" ) {
+            switch (name) {
+                case "js/main":
+                    break;
+                case "js/templates":
+                    console.log("Building Template module");
+                    contents = buildTemplateModule(contents);
+                    console.log("Done Building Template module");
+                    break;
+                default: 
                 contents = contents
                     .replace( /\s*return\s+[^\}]+(\}\);[^\w\}]*)$/, "$1" )
                     // Multiple exports
@@ -56,18 +64,60 @@ module.exports = function( grunt ) {
                 .replace( /define\([^{]*?{/, "" )
                 .replace( rdefineEnd, "" );
 
-            // Remove anything wrapped with
-            // /* ExcludeStart */ /* ExcludeEnd */
-            // or a single line directly after a // BuildExclude comment
-            contents = contents
-                .replace( /\/\*\s*ExcludeStart\s*\*\/[\w\W]*?\/\*\s*ExcludeEnd\s*\*\//ig, "" )
-                .replace( /\/\/\s*BuildExclude\n\r?[\w\W]*?\n\r?/ig, "" );
-
             // Remove empty definitions
             contents = contents
                 .replace( /define\(\[[^\]]+\]\)[\W\n]+$/, "" );
         }
         return contents;
+    }
+
+
+
+    /**
+     * Our build process doesn't handle the require text plugin.
+     * Since we are using simple html templates, we will just append each template file's contents
+     * to a key of the templates object
+     */
+    function buildTemplateModule(contents) {
+        var header = "var templates = {\n"
+        var body   = "";
+        var footer = "};";
+        var rPath  = /(text!(.*))/;         // get requirejs text! paths.
+        var rVars  = /function.*?\((.*)\)/; // get first function declaration with template var names.
+        var paths  = [];
+        var vars   = null; // will be array
+        var result = null;
+
+        do {
+            result = rPath.exec(contents);
+            if (result !== null && result[2] !== undefined) {
+                paths.push(result[2].replace(/"|,/g, ""));
+                console.log("Recognized template path: "+paths[paths.length-1]);
+                contents = contents.replace(result[1], ""); // remove string.
+            }
+        } while (result !== null);
+
+        result = rVars.exec(contents);
+        vars = result[1].split(",");
+        for (var i = 0; i< vars.length; i++) console.log(vars[i]);
+
+
+        paths.forEach(function(path, index, array) {
+            // TODO: Hmmmm... replacing ../ with ./ should be rethought, but it works fine for this project.
+            body += vars[index] + ":" + "'" + fs.readFileSync(path.replace("../", "./"), {encoding:"utf8", flag:"r"})
+                .replace(/\n/g, "") // remove line breaks
+                .replace(/([^\\])'/g, "$1\\'") + "'"; // escape single quotes
+            
+            //TODO: can't have "\'" combinations in the file content from the line above
+
+            if (index !== array.length - 1) {
+                body += ",";
+            }
+            body += "\n";
+        });
+
+
+        return (header + body + footer);
     }
 
     grunt.registerTask(

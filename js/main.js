@@ -2,8 +2,8 @@ define(
   [
     "./ft-messenger-central", 
     "./rectangle",
-    "./text!../html/templates/number-pad.html"
-  ], function(FTMessengerCentral, Rectangle, numberPadTemplate) {
+    "./templates"
+  ], function(FTMessengerCentral, Rectangle, templates) {
 
 
     function run() {
@@ -14,7 +14,10 @@ define(
         brain.send("initialize");
     }
     
-    //run(); 
-    var template=$(numberPadTemplate);    
+    run(); 
+
+
+    //TODO: REMOVE ME!!!!!
+    var template = $(templates.numberPadTemplate);    
     $(document.body).append(template);
 });
