@@ -10,17 +10,27 @@ define(
 
     function setup() {
         var $con = $(document.getElementById(containerID));
-        var $header     = $(templates.header);
+        //var $header     = $(templates.header);
         var $trinomial  = $(templates.trinomial);
         var $rectangle  = $(templates.rectangle);
         var $diamond    = $(templates.diamond);
+        var $numberPad  = $(templates.numberPad);
         var $finalContainer = $(templates.finalContainer);
 
-        $con.append($header); 
+        //$con.append($header); 
         $con.append($trinomial); 
         $con.append($rectangle); 
         $con.append($diamond); 
         $con.append($finalContainer);
+
+        $con.append($numberPad);
+
+        $con.css({
+            width: window.innerWidth,
+            height: window.innerHeight
+        });
+
+
     }
 
 
