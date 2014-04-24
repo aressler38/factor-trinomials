@@ -38,3 +38,17 @@
     -moz-user-drag:none;
     -webkit-user-drag:none;
 }
+
+    transition: bottom 500ms ease-out 1s;
+    -webkit-transition: bottom 500ms ease-out 1s;
+    -moz-transition: bottom 500ms ease-out 1s;
+    -o-transition: bottom 500ms ease-out 1s;
+
+
+
+
+
+
+
+
+
