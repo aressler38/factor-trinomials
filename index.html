@@ -17,7 +17,7 @@
 
     // true  : minified css/js (doesn't use requirejs loader), with source maps.
     // false : non-minified css/js (uses requirejs loader).
-    if (true) {
+    if (!true) {
         console.log("DIST MODE");
         $script.attr("src", "dist/js/main.min.js");
         $link.attr("href", "dist/css/main.css");
