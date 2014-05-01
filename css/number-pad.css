@@ -1,5 +1,6 @@
 .numpad {
-    position:relative;
+    position:absolute;
+    top: 0px;
     border: 1px solid #666;
     border-radius: 10px;
     -webkit-box-shadow: 3px 3px 5px 6px #666;
@@ -7,7 +8,6 @@
     width: 130px;
     padding: 3px;
     height: auto;
-    margin: 0 auto;
     cursor:pointer;
 }
 .number {

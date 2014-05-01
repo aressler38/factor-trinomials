@@ -7,7 +7,9 @@ define(
 
     var containerID = "factor-trinomials";
 
-
+    /** 
+     * Prepare the DOM.
+     */
     function setup() {
         var $con = $(document.getElementById(containerID));
         //var $header     = $(templates.header);
@@ -29,8 +31,7 @@ define(
             width: window.innerWidth,
             height: window.innerHeight
         });
-
-
+        return null;
     }
 
 
@@ -40,11 +41,9 @@ define(
         var nextButton      = document.getElementById("next-button");
         nextButton.onclick  = function() {brain.send("randomize"); };
         brain.send("initialize");
+        return null;
     }
     
     setup();
     run(); 
-
-
-
 });

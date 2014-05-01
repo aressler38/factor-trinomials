@@ -23,8 +23,9 @@ define(
     "./var/appMessenger", 
     "./ft-messenger-central",
     "./var/ifOneOrNegOne",
-    "./var/prettifySign"
-  ],function(appMessenger, brain, ifOneOrNegOne, prettifySign) {
+    "./var/prettifySign",
+    "./NumberPad"
+  ],function(appMessenger, brain, ifOneOrNegOne, prettifySign, NumberPad) {
 
     /** IIFE returns diamond object ready for use */
     Diamond = (function() {
@@ -78,6 +79,8 @@ define(
         
         // This is the function that will create the user input the diamond is clicked.
         // * should only be responsible for creating the input box and printing the MathJax
+        // DEPRECATED!!!
+        /** @deprecated */
         function createInputBox(event) {
             $(Diamond.inputBox).remove();
             var svgTarget = event.currentTarget;
@@ -112,7 +115,32 @@ define(
                  setInputBox(event);  
             });
         }
+        
+        // instead of relying on MathJax to resolve x^2... just do a regex to match
+        // that style of expression and use native html x<sup> whatever </sup>
+        function renderMath(diamondText) {
+            var output = '';
+            if (diamondText && diamondText.match) {
+                if (diamondText.match(/\^/)) {
+                    var pre = diamondText.match(/(.*)\^/)[1];
+                    var exponent = diamondText.match(/\^(.*)/)[1];
+                    output = pre + "<sup>" + exponent + "</sup>";
+                    output = output.replace("x", "<i>x</i>");
+                    return output;
+                }
+                else {
+                    output = diamondText;
+                    output = output.replace("x", "<i>x</i>");
+                    return output;
+                }
+            }
+            else {
+                console.log("TODO");
+                console.log("The text is supposed to have a regex match method.");
+            }
+        }
 
+        /** @deprecated */
         function setInputBox(event) {
             var text = $(Diamond.inputBox).val();
             // Get rid of all the spaces in the user's input text
@@ -273,7 +301,11 @@ define(
                         throw "Error while parsing index in checkDiamondInputs";
                 }
             }
-        }  
+        }
+
+        function insertDiamondText(classSelector, text) {
+            $(classSelector + " > span").html(text);
+        }
 
         return {
 
@@ -289,20 +321,39 @@ define(
 
                 var coefficients = cleanParameters();
                 $(".ft-trinomial").html("Factor the following trinomial: &nbsp;" + "<span class='ft-trinomial-equation' style='font-size:22px'>"                          + coefficients.a+"<em>x</em><sup>2</sup> " + coefficients.b+"<em>x</em> " + coefficients.c + "</span>"); 
+                
+                var numpad = new NumberPad();
+                numpad.hide();
+
+                $(diamondBoxes.join()).click(function(event) {
+                    $(diamondBoxes.join()).removeClass("selected");
+                    $(event.currentTarget).addClass("selected")
+                    numpad.show();
+                });
+                numpad.onclick = function(str, buff) {
+                    $(".diamond-part.selected span").html(renderMath(str));
+                };
+                numpad.onenter = function(str, buff) {
+                    $(".diamond-part.selected span").html(renderMath(str));
+                    $(diamondBoxes.join()).removeClass("selected");
+                };
+
                 // setup for the diamond
-                var xmlns="http://www.w3.org/2000/svg";
-                var diamondPartLength =  Math.floor(View_MAX * Math.sqrt(2.0)/4.0);
+                //var xmlns="http://www.w3.org/2000/svg";
+                //var diamondPartLength =  Math.floor(View_MAX * Math.sqrt(2.0)/4.0);
                     
                 // Grab the html containers and set up the dimensions based on View_MAX
-                $(".ft-diamond")[0].setAttribute("style", "width:" + View_MAX + "px;" + "height:" + View_MAX + "px;");
-                $(".ft-svg-container")[0].setAttribute("style", "width:" + View_MAX + "px;" + "height:" + View_MAX + "px;");
-                $(".ft-svg-container")[0].setAttribute("viewBox", "0 0 " + View_MAX + " " + View_MAX);
+                //$(".ft-diamond")[0].setAttribute("style", "width:" + View_MAX + "px;" + "height:" + View_MAX + "px;");
+                //$(".ft-svg-container")[0].setAttribute("style", "width:" + View_MAX + "px;" + "height:" + View_MAX + "px;");
+                //$(".ft-svg-container")[0].setAttribute("viewBox", "0 0 " + View_MAX + " " + View_MAX);
                 
                 // Make 4 inner squares and rotate them accordingly to make the diamond
                 // Here's the setup structure according to class suffix (1,2,3, or 4)
                 //          3
                 //        2   4  
                 //          1
+                // DEPRECATED
+                /*
                 for (var i=0; i<4; i++) {
                     var angle = 45 + i*90;
                     var diamondPart = document.createElementNS(xmlns, "rect");
@@ -315,39 +366,59 @@ define(
                     diamondPart.setAttribute("style", "stroke-width:3; stroke:blue; fill:white;");
                     $(".ft-svg-container").append(diamondPart);
                 }
+                */
                  
+                /*
+                for (var i=0; i<4; i++) {
+                    var angle = 45 + i*90;
+                    var diamondPart = document.createElement("span");
+                    $(diamondPart).addClass("diamond-part");
+                    $(".ft-diamond").append(diamondPart);
+
+                }
+                */
                 // =============
                 // Event Binding
                 // =============
 
+                // DEPRECATED
+                /*
                 $(diamondBox1 + ',' + diamondBox2 + ',' + diamondBox3 + ',' + diamondBox4).click(function(event) {
                     appMessenger.send("createInputBox", event, createInputBox);  // wow, i can't believe i did this
                 });
+                */
                 return null;
             },
 
+            /**
+             * Recursive function to clear diamond inputs and call diamond eval
+             */
             clearDiamondInput: function(n) {
-                if (typeof(n) === "undefined") {
-                    appMessenger.send("ft-d-eval", {message:"clear all"});
-                    for (var i=1; i<5; i++) {
-                        $("#ft-diamond-text-"+i).remove();
-                        $(diamondBoxes[i-1]).css("fill", "white");
-                    }
-                }
-                else if (typeof(n) === "number") {
-                    appMessenger.send("ft-d-eval", {message:"clear "+n});
-                    $("#ft-diamond-text-"+n).remove();
-                    $(diamondBoxes[n]).css("fill", "white");
+                n = (typeof n === "undefined" || n > 4) ? 4 : n; //start at n=4
+                // weird... passing this message object doesn't really do 
+                // anything. I guess it's just a placeholder that forces 
+                // an evaluation
+                appMessenger.send("ft-d-eval", {message:"clear "+n});
+                $(diamondBoxes[n]).removeClass("selected");
+                if (n >= 0) { 
+                    this.clearDiamondInput(--n); // recursive call.
                 }
             },
             
             colorDiamondInput: function(n, color, alpha) {
-                if (typeof(n) === "undefined") {throw new Error("Expecting 'n' a specific diamond.");}
-                if (typeof(color) === "undefined") {throw new Error("Expecting a color.");}
+                console.log("colorDiamondInput");
+                if (typeof(n) === "undefined") {
+                    throw new Error("Expecting 'n' a specific diamond.");
+                }
+                if (typeof(color) === "undefined") {
+                    throw new Error("Expecting a color.");
+                }
                 var opacity = (typeof(alpha) === "undefined") ? 0.6 : alpha;
                 if (n > 0 && n < 5) {
-                    $(diamondBoxes[n-1]).css("fill", color);
-                    $(diamondBoxes[n-1]).css("fill-opacity", opacity);
+                    $(diamondBoxes[n-1]).css({
+                        "background": color,
+                        "opacity": opacity
+                    });
                     return null;
                 }
                 else {

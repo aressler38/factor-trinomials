@@ -39,11 +39,18 @@
     -webkit-user-drag:none;
 }
 
-.transition-bottom {
-    transition: bottom 500ms ease-out 1s;
-    -webkit-transition: bottom 500ms ease-out 1s;
-    -moz-transition: bottom 500ms ease-out 1s;
-    -o-transition: bottom 500ms ease-out 1s;
+.transition-top {
+    transition: top ease-in-out 300ms;
+    -moz-transition: top ease-in-out 300ms;
+    -webkit-transition: top ease-in-out 300ms;
+}
+
+.offscreen {
+    top: -750px !important; 
+}
+
+.hide {
+    display: none;
 }
 
 

@@ -9,7 +9,7 @@ body {
 	background: burlywood;
 	margin-left: auto;
 	margin-right: auto;
-	padding-bottom: 25px;
+	padding: 25px;
     box-shadow:         inset 0 0 10px #000000;
 	-moz-box-shadow:    inset 0 0 10px #000000;
     -webkit-box-shadow: inset 0 0 10px #000000;
@@ -75,6 +75,7 @@ ul#nav {
     width:100%;
     clear:both;
     font-weight:bold;
+    cursor:default;
 }
 
 .clear {
@@ -84,10 +85,73 @@ ul#nav {
 .ft-diamond {
     display: inline-block;
     position:relative;
+    width:350px;
+    height:350px;
 }
 
 .ft-diamond span {
     font-size:1.5em;
+}
+
+.ft-diamond .diamond-part {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    border: 3px solid blue;
+    background: white;
+    width: 97px;
+    height: 97px;
+    line-height:97px;
+    -webkit-transform-origin: 0px 0px;
+    text-align: center;
+    vertical-align: middle;
+}
+.diamond-part.selected {
+    background-color: yellow;
+}
+/* DIAMOND INNER TEXTS STYLE */
+.ft-diamond .diamond-part span {
+    display: inline-block;
+    position: static;
+    font-family: fantasy;
+}
+
+.exp,
+.ft-diamond .diamond-part .exp{
+    position:relative;
+    top:-6px;
+    left:2px;
+    font-size: 0.5em;
+    vertical-align:top;
+}
+ 
+/* ROTATE DIAMOND BOXES */
+.ft-diamond .diamond-part:nth-child(1) {
+    -webkit-transform: rotate(45deg);
+}
+.ft-diamond .diamond-part:nth-child(2) {
+    -webkit-transform: rotate(135deg);
+}
+.ft-diamond .diamond-part:nth-child(3) {
+
+    -webkit-transform: rotate(225deg);
+}
+.ft-diamond .diamond-part:nth-child(4) {
+    -webkit-transform: rotate(315deg);
+}
+/* APPLY INVERSE TRANSFORM ON INNER SPANS (for text)*/
+.ft-diamond .diamond-part:nth-child(1) > span {
+    -webkit-transform: rotate(-45deg);
+}
+.ft-diamond .diamond-part:nth-child(2) > span {
+    -webkit-transform: rotate(-135deg);
+}
+.ft-diamond .diamond-part:nth-child(3) > span {
+
+    -webkit-transform: rotate(-225deg);
+}
+.ft-diamond .diamond-part:nth-child(4) > span {
+    -webkit-transform: rotate(-315deg);
 }
 
 #ft-diamond-text-3 {
