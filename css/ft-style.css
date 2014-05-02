@@ -105,15 +105,30 @@ ul#nav {
     -webkit-transform-origin: 0px 0px;
     text-align: center;
     vertical-align: middle;
+    cursor: pointer;
 }
 .diamond-part.selected {
     background-color: yellow;
+}
+.correct {
+    background-color: rgba(0,255,0,0.6);
+}
+.incorrect {
+    background-color: rgba(255,0,0,0.6);
+}
+.diamond-part.correct {
+    background-color: rgba(0,255,0,0.6);
+}
+.diamond-part.incorrect {
+    background-color: rgba(255,0,0,0.6);
 }
 /* DIAMOND INNER TEXTS STYLE */
 .ft-diamond .diamond-part span {
     display: inline-block;
     position: static;
     font-family: fantasy;
+    z-index:10;
+    cursor: pointer;
 }
 
 .exp,

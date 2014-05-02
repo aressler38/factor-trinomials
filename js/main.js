@@ -2,8 +2,9 @@ define(
   [
     "./ft-messenger-central", 
     "./rectangle",
-    "./templates"
-  ], function(FTMessengerCentral, Rectangle, templates) {
+    "./templates", 
+    "./prime-factorization"
+  ], function(FTMessengerCentral, Rectangle, templates, primeFactors) {
 
     var containerID = "factor-trinomials";
 
@@ -11,6 +12,7 @@ define(
      * Prepare the DOM.
      */
     function setup() {
+        Math.primeFactors = primeFactors;
         var $con = $(document.getElementById(containerID));
         //var $header     = $(templates.header);
         var $trinomial  = $(templates.trinomial);
@@ -40,7 +42,7 @@ define(
         var brain           = new FTMessengerCentral();
         var nextButton      = document.getElementById("next-button");
         nextButton.onclick  = function() {brain.send("randomize"); };
-        brain.send("initialize");
+        brain.send("randomize");
         return null;
     }
     

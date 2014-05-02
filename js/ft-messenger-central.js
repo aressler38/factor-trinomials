@@ -35,33 +35,33 @@ define(
             
             // Check the middle terms (1) and (3)
             if (diamond['1'] && diamond['3']) {
-                Diamond.colorDiamondInput(2, "green");
-                Diamond.colorDiamondInput(4, "green");
+                Diamond.colorDiamondInput(2, true);
+                Diamond.colorDiamondInput(4, true);
             }
             else {
                 if (diamond['1'] !== null && diamond['3'] !== null) {
-                    Diamond.colorDiamondInput(2, "red");
-                    Diamond.colorDiamondInput(4, "red");
+                    Diamond.colorDiamondInput(2, false);
+                    Diamond.colorDiamondInput(4, false);
                 }
             }
 
             // Check the SUM term... the bottom one
             if (diamond['0'] !== null) {
                 if (diamond['0']) {
-                    Diamond.colorDiamondInput(1, "green");
+                    Diamond.colorDiamondInput(1, true);
                 }
                 else {
-                    Diamond.colorDiamondInput(1, "red");    
+                    Diamond.colorDiamondInput(1, false);    
                 }
             }
             
             // Check the PRODUCT term... the top one
             if (diamond['2'] !== null) {
                 if (diamond['2']) {
-                    Diamond.colorDiamondInput(3, "green");
+                    Diamond.colorDiamondInput(3, true);
                 }
                 else {
-                    Diamond.colorDiamondInput(3, "red"); 
+                    Diamond.colorDiamondInput(3, false); 
                 }
             }
             
@@ -76,8 +76,8 @@ define(
         function diamondCorrect() {
             console.log("calling diamondCorrect");
             $(".ftH span").removeClass("hide");  
-            $(".ftb span").html($("#ft-diamond-text-2").html());
-            $(".ftc span").html($("#ft-diamond-text-4").html());
+            $(".ftb span").html($("[data-diamond='2']").html());
+            $(".ftc span").html($("[data-diamond='4']").html());
             // show inner rectangle
             $(".fta span").removeClass("hide");
             $(".ftd span").removeClass("hide");
@@ -97,7 +97,7 @@ define(
             $(target).html(input);
             $(input).focus();
             $(input).bind("keyup", function(e){
-                if (e.which == 13) {
+                if (e.which === 13) {
                     setRectangleInput.call(this,target);
                 }
             });
@@ -122,14 +122,11 @@ define(
             var parameters = appMessenger.send("getParameters");
             var aIsNegative = (parameters[0] < 0) ? true : false;
             var diamondElements = appMessenger.send("getDiamondElements");
-            
-
             var correctness = [false, false, false, false]; // x1, k1, x2, k2
-
             
             // check the GCF slot in $(".ftx1")
-            if (formattedX1 == topRowGCF) {
-                if (rectangleElements[0] == (topRowGCF+"x")) {
+            if (formattedX1 === topRowGCF) {
+                if (rectangleElements[0] === (topRowGCF+"x")) {
                     correctness[0] = true;
                     colorRectangleInput(".ftx1", true);
                 }
@@ -141,7 +138,7 @@ define(
                 colorRectangleInput(".ftx1", false);
             }
             // check the x2 slot
-            if (!isNaN(parseInt(formattedX2)) && !isNaN(formattedX1)) { // is it empty?
+            if (!Number.isNaN(parseInt(formattedX2)) && !Number.isNaN(formattedX1)) { // is it empty?
                 if (parseInt(formattedX2)*parseInt(formattedX1) == parameters[0]) { // does x1*x2 = ax^2?
                     if (formattedX2.replace(parseInt(formattedX2), "").replace(/x/,"") === "" && formattedX2.match(/x/)) { // is there only numbers and an x?
                         correctness[2] = true;
@@ -158,7 +155,12 @@ define(
             }
 
             // check the k1 slot... it needs to have numbers only. k1*x2 = c, that is, cell c from the grid layout
-            if (!isNaN(parseInt(formattedX2)) && formattedRectEls[1] !== null) {
+            if (!Number.isNaN(parseInt(formattedX2)) && formattedRectEls[1] !== null) {
+                console.log("checking k1");
+                console.log(formattedRectEls);
+                console.log(formattedX2);
+                console.log(diamondElements[3]);
+                console.log((parseInt(formattedRectEls[1])*parseInt(formattedX2)+"x"));
                 if (formattedRectEls[1].replace(parseInt(formattedRectEls[1]), "") === "" && correctness[2]) { // is there only numbers?
                     // and is the x2 slot correct?
                     if ((parseInt(formattedRectEls[1])*parseInt(formattedX2)+"x") == (diamondElements[3])){
@@ -170,12 +172,13 @@ define(
                     }
                 }
                 else {
+                    console.log("in default else handler")
                     colorRectangleInput(".ftk1", false);
                 }
             }
             
             // Lastly, like checking for k1, but check for k2
-            if (!isNaN(parseInt(formattedX2)) && formattedRectEls[3] !== null) {
+            if (!Number.isNaN(parseInt(formattedX2)) && formattedRectEls[3] !== null) {
                 if (formattedRectEls[3].replace(parseInt(formattedRectEls[3]), "") === "" && correctness[0]) { // is there only numbers?
                     // and is the x2 slot correct?
                     if ((parseInt(formattedRectEls[3])*parseInt(formattedX1)+"x") == (diamondElements[1])){
@@ -225,15 +228,22 @@ define(
         
         function colorRectangleInput($selector, bool) {
             if (bool) {
-                $($selector).css({"background":"rgba(0,255,0,0.6)"});
+                $($selector)
+                    .addClass("correct")
+                    .removeClass("incorrect");
             }
             else {
-                $($selector).css({"background":"rgba(255,0,0,0.6)"});
+                $($selector)
+                    .addClass("incorrect")
+                    .removeClass("correct");
             }
         }
 
         function clearRectangleInputs() {
-            $(".ftx1, .ftx2, .ftk1, .ftk2").css({"background":"None"});
+            $(".ftx1, .ftx2, .ftk1, .ftk2")//.css({"background":"None"});
+                .removeClass("correct")
+                .removeClass("incorrect")
+                    
             $(".ftx1, .ftx2, .ftk1, .ftk2").html("");
         }
 
@@ -376,21 +386,24 @@ define(
         }
 
         function setRectangleElement(str, className) {
-            switch (className) {
-                case ("ftx1"):
+            if (className.match(/ftx1/)) {
                     rectangleElements[0] = str;
-                    break;
-                case ("ftk1"):
+                    return null;
+            }
+            else if (className.match(/ftk1/)) {
                     rectangleElements[1] = str;
-                    break;
-                case ("ftx2"):
+                    return null;
+            }
+            else if (className.match(/ftx2/)) {
                     rectangleElements[2] = str;
-                    break;
-                case ("ftk2"):
+                    return null;
+            }
+            else if (className.match(/ftk2/)) {
                     rectangleElements[3] = str;
-                    break;
-                default:
-                    throw new Error("there's no matching class name when setting rectangle inputs");
+                    return null;
+            }
+            else {
+                throw new Error("there's no matching class name when setting rectangle inputs");
             }
         }
 
@@ -433,7 +446,7 @@ define(
 
         function getDiamondElements() {
             for (var i=0; i<4; i++) {
-                diamondElements[i] = $("#ft-diamond-text-"+(i+1)).html();
+                diamondElements[i] = $("[data-diamond="+(i+1)+"] span").html();
             }
             return diamondElements;
         }
