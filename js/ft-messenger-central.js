@@ -172,7 +172,6 @@ define(
                     }
                 }
                 else {
-                    console.log("in default else handler")
                     colorRectangleInput(".ftk1", false);
                 }
             }
@@ -242,7 +241,7 @@ define(
         function clearRectangleInputs() {
             $(".ftx1, .ftx2, .ftk1, .ftk2")//.css({"background":"None"});
                 .removeClass("correct")
-                .removeClass("incorrect")
+                .removeClass("incorrect");
                     
             $(".ftx1, .ftx2, .ftk1, .ftk2").html("");
         }

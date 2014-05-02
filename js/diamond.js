@@ -228,7 +228,7 @@ define(
                 if (typeof data[i] === "undefined") {
                     continue;
                 }
-                data[i] = data[i].replace(/(.*)<span.class="exp">2<\/span>/, "$1\^2");
+                data[i] = data[i].replace(/(.*)<span.class="exp">2<\/span>/, "$1^2");
                 // Handle the case if the coefficient is an implied 1 or an implied -1.
                 if (isNaN(parseInt(data[i]))) {
                     switch (data[i][0]) {
@@ -335,7 +335,7 @@ define(
                 function diamondClickHandler(event) {
                     selectedDiamond = $(this).data("diamond");
                     $(diamondBoxes.join()).removeClass("selected");
-                    $(event.currentTarget).addClass("selected")
+                    $(event.currentTarget).addClass("selected");
                     numpad.show();
                 }
 

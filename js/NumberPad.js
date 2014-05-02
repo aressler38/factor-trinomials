@@ -110,5 +110,14 @@ define([
         this.$numpad.addClass.apply(this.$numpad, arguments);
     };
 
+    NumberPad.prototype.destroy = function() {
+        this.$numpad.off();
+        this.onenter = function() { return null; };
+        this.onclick = function() { return null; };
+        for (var property in this) if (this.hasOwnProperty(property)) {
+            delete this[property];
+        }
+    };
+
     return NumberPad;
 });

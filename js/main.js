@@ -3,7 +3,7 @@ define(
     "./ft-messenger-central", 
     "./rectangle",
     "./templates", 
-    "./prime-factorization"
+    "./var/primeFactors"
   ], function(FTMessengerCentral, Rectangle, templates, primeFactors) {
 
     var containerID = "factor-trinomials";
