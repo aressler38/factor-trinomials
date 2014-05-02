@@ -24,8 +24,9 @@ define(
     "./ft-messenger-central",
     "./var/ifOneOrNegOne",
     "./var/prettifySign",
-    "./NumberPad"
-  ],function(appMessenger, brain, ifOneOrNegOne, prettifySign, NumberPad) {
+    "./NumberPad",
+    "./var/numpad"
+  ],function(appMessenger, brain, ifOneOrNegOne, prettifySign, NumberPad, numpad) {
 
     /** IIFE returns diamond object ready for use */
     Diamond = (function() {
@@ -249,7 +250,6 @@ define(
         // This for loop is where I check the diamondInputs against the parameters.
         // I'm going to color the diamond parts here.
         function checkDiamondInputs(dFormatted) {
-            console.log(dFormatted);
             for (var i=0; i<4; i++) {
                 if (!dFormatted[i] || !dFormatted[i].match('x')) {
                     appMessenger.send("ft-guide", "Make sure you are using the correct variable.");
@@ -315,7 +315,6 @@ define(
             initialize: function(_p1, _p2, _p3) {
                 var selectedDiamond = null;
                 var coefficients;
-                var numpad;
 
                 if (typeof(_p1) === "number" && typeof(_p2) === "number" && typeof(_p3) === "number") {
                     parameters = [_p1, _p2, _p3];
@@ -327,7 +326,7 @@ define(
                 this.clearDiamondInput(); 
 
                 coefficients = cleanParameters();
-                $(".ft-trinomial").html("Factor the following trinomial: &nbsp;" + "<span class='ft-trinomial-equation' style='font-size:22px'>"                          + coefficients.a+"<em>x</em><sup>2</sup> " + coefficients.b+"<em>x</em> " + coefficients.c + "</span>"); 
+                $(".ft-trinomial").html("Factor the following trinomial: &nbsp;" + "<span class='ft-trinomial-equation' style='font-size:22px'>" + coefficients.a+"<em>x</em><sup>2</sup> " + coefficients.b+"<em>x</em> " + coefficients.c + "</span>"); 
                 
                 numpad = new NumberPad();
                 numpad.hide();
@@ -336,6 +335,7 @@ define(
                     selectedDiamond = $(this).data("diamond");
                     $(diamondBoxes.join()).removeClass("selected");
                     $(event.currentTarget).addClass("selected");
+                    numpad.clear();
                     numpad.show();
                 }
 
@@ -346,6 +346,7 @@ define(
 
                 numpad.onclick = function(str, buff) {
                     $(".diamond-part.selected span").html(renderMath(str));
+                    diamondInputs[selectedDiamond-1] = str;
                 };
 
                 numpad.onenter = function(str, buff) {

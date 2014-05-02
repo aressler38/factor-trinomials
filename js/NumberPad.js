@@ -10,6 +10,16 @@ define([
         var buff = [];
         var that = this;
 
+
+        /**
+         * @public
+         * clear buffer
+         */
+        this.clear = function() {
+            while (buff.length) buff.pop();
+            return this;
+        }
+
         /**
          * click event handler
          * @callback 
@@ -38,7 +48,7 @@ define([
         function _onenter(event) {
             that.onenter(buff.join(""), buff);
             that.hide();
-            while (buff.length) buff.pop(); //clear buffer
+            that.clear();
             return null;
         }
 
@@ -98,9 +108,9 @@ define([
     };
 
     NumberPad.prototype.show = function() {
-        this.$numpad.removeClass("hide");
         this.$numpad.removeClass("offscreen");
     };
+
 
     NumberPad.prototype.removeClass = function() {
         this.$numpad.removeClass.apply(this.$numpad, arguments);
@@ -114,9 +124,6 @@ define([
         this.$numpad.off();
         this.onenter = function() { return null; };
         this.onclick = function() { return null; };
-        for (var property in this) if (this.hasOwnProperty(property)) {
-            delete this[property];
-        }
     };
 
     return NumberPad;

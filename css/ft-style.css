@@ -78,9 +78,6 @@ ul#nav {
     cursor:default;
 }
 
-.clear {
-    clear:both;
-}
     
 .ft-diamond {
     display: inline-block;
@@ -107,14 +104,9 @@ ul#nav {
     vertical-align: middle;
     cursor: pointer;
 }
+
 .diamond-part.selected {
     background-color: yellow;
-}
-.correct {
-    background-color: rgba(0,255,0,0.6);
-}
-.incorrect {
-    background-color: rgba(255,0,0,0.6);
 }
 .diamond-part.correct {
     background-color: rgba(0,255,0,0.6);

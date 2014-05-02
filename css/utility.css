@@ -53,8 +53,20 @@
     display: none;
 }
 
+.correct {
+    background-color: rgba(0,255,0,0.6);
+}
+.incorrect {
+    background-color: rgba(255,0,0,0.6);
+}
 
+.clear {
+    clear:both;
+}
 
+.selected {
+    background-color: yellow;
+}
 
 
 

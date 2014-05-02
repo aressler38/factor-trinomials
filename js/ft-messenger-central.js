@@ -11,11 +11,15 @@ define(
     "./var/appMessenger",
     "./diamond",
     "./rectangle",
-    "./var/randomInt"
-  ], function(appMessenger, Diamond, Rectangle, randomInt) {
+    "./var/randomInt",
+    "./NumberPad",
+    "./var/numpad"
+  ], function(appMessenger, Diamond, Rectangle, randomInt, NumberPad, numpad) {
 
     function FTMessengerCentral() {
+
         
+        var $currentRectangle = null;
         // diamond get's reset by initialize
         var diamond = {
             0:null,
@@ -87,9 +91,49 @@ define(
             diamondElements = formatInput( getDiamondElements() );
             console.log(diamondElements);
 
-            $(".ftx1,.ftk1,.ftx2,.ftk2").bind("click", createRectangleInput);
+            bindRectangleEvents();
         }
 
+        /**
+         * event handler for rectangle clicks.
+         * @callback 
+         */
+        function rectangleInputHandler(event) {
+            $currentRectangle = $(this);
+            $currentRectangle.addClass("selected");
+            var parsedValue = $currentRectangle.html().replace(/\+/g,"").replace(/ /g,"");
+            $currentRectangle.html(parsedValue);
+            setRectangleElement(parsedValue, $currentRectangle.attr("class"));
+            checkRectangleElements();
+            numpad.show();
+        }
+
+        function bindRectangleEvents() {
+            if (numpad.destroy) {
+                numpad.destroy();
+            }
+            numpad = new NumberPad();
+
+            // insert numpad output in selected rectangle box
+            numpad.onenter = function(str, buff) {
+                numpad.hide();
+                $currentRectangle.html(str);
+                rectangleInputHandler.call($currentRectangle);
+                $currentRectangle.removeClass("selected");
+            };
+            numpad.onclick = function(str, buff) {
+                $currentRectangle.html(str);
+            };
+
+
+            //$(".ftx1,.ftk1,.ftx2,.ftk2").bind("click", createRectangleInput);
+            $(".ftx1,.ftk1,.ftx2,.ftk2").on("click", rectangleInputHandler);
+            appMessenger.on("genericRectangleComplete", function() {
+                $(".ftx1,.ftk1,.ftx2,.ftk2").off("click", rectangleInputHandler);
+                numpad.hide();
+                numpad.destroy();
+            });
+        }
 
         function createRectangleInput(e) {
             var target = e.currentTarget;
@@ -156,11 +200,6 @@ define(
 
             // check the k1 slot... it needs to have numbers only. k1*x2 = c, that is, cell c from the grid layout
             if (!Number.isNaN(parseInt(formattedX2)) && formattedRectEls[1] !== null) {
-                console.log("checking k1");
-                console.log(formattedRectEls);
-                console.log(formattedX2);
-                console.log(diamondElements[3]);
-                console.log((parseInt(formattedRectEls[1])*parseInt(formattedX2)+"x"));
                 if (formattedRectEls[1].replace(parseInt(formattedRectEls[1]), "") === "" && correctness[2]) { // is there only numbers?
                     // and is the x2 slot correct?
                     if ((parseInt(formattedRectEls[1])*parseInt(formattedX2)+"x") == (diamondElements[3])){
