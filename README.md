@@ -8,8 +8,7 @@ About
 -----
     * This is a program that will display a diamond that is to be used
       with a generic rectangle for factoring quadratic expressions (ax^2 + bx +c).
-    * Initialize the trinomial by calling Messenger.send("ft-initialize", a,b,c), where a, b, c are the 
-      leading coefficients of the trinimial.  
+    * Initialize the application by sending the *initialize* or *randomize* ``appMessenger`` events.  
 
 Development Notes
 -----------------
