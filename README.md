@@ -8,7 +8,7 @@ About
 -----
     * This is a program that will display a diamond that is to be used
       with a generic rectangle for factoring quadratic expressions (ax^2 + bx +c).
-    * Initialize the application by sending the *initialize* or *randomize* `appMessenger` events.  
+    * Initialize the application by sending the *initialize* or *randomize* appMessenger events.  
 
 Development Notes
 -----------------
