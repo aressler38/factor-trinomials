@@ -9,9 +9,13 @@
     position: relative;
     cursor: pointer;
     border-radius: 24px;
+    -webkit-border-radius: 24px;
+    -moz-border-radius: 24px;
     margin: 0 7px 11px 0;
     text-align: center;
     transition: all 0.2s ease0;
+    -webkit-transition: all 0.2s ease0;
+    -moz-transition: all 0.2s ease0;
     font: bold 14px Arial, sans-serif;
     width: 150px;
     line-height: 36px;

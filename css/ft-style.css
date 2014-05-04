@@ -100,6 +100,9 @@ ul#nav {
     height: 97px;
     line-height:97px;
     -webkit-transform-origin: 0px 0px;
+    -moz-transform-origin: 0px 0px;
+    -ms-transform-origin: 0px 0px;
+    transform-origin: 0px 0px;
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
@@ -135,30 +138,44 @@ ul#nav {
 /* ROTATE DIAMOND BOXES */
 .ft-diamond .diamond-part:nth-child(1) {
     -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
 }
 .ft-diamond .diamond-part:nth-child(2) {
     -webkit-transform: rotate(135deg);
+    -moz-transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
 }
 .ft-diamond .diamond-part:nth-child(3) {
-
     -webkit-transform: rotate(225deg);
+    -moz-transform: rotate(225deg);
+    -ms-transform: rotate(225deg);
 }
 .ft-diamond .diamond-part:nth-child(4) {
     -webkit-transform: rotate(315deg);
+    -moz-transform: rotate(315deg);
+    -ms-transform: rotate(315deg);
 }
 /* APPLY INVERSE TRANSFORM ON INNER SPANS (for text)*/
 .ft-diamond .diamond-part:nth-child(1) > span {
     -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
 }
 .ft-diamond .diamond-part:nth-child(2) > span {
     -webkit-transform: rotate(-135deg);
+    -moz-transform: rotate(-135deg);
+    -ms-transform: rotate(-135deg);
 }
 .ft-diamond .diamond-part:nth-child(3) > span {
-
     -webkit-transform: rotate(-225deg);
+    -moz-transform: rotate(-225deg);
+    -ms-transform: rotate(-225deg);
 }
 .ft-diamond .diamond-part:nth-child(4) > span {
     -webkit-transform: rotate(-315deg);
+    -moz-transform: rotate(-315deg);
+    -ms-transform: rotate(-315deg);
 }
 
 #ft-diamond-text-3 {
@@ -271,8 +288,6 @@ ul#nav {
     display: inline-block;
 }
 
-
-
 .example-wrapper {
     position: relative;
     height: 482px;
@@ -370,9 +385,11 @@ ul#nav {
     width: 217px;
     background-color: #FFFFE2;
     box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    -moz-box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
     padding: 5px 5px 5px 45px;
     margin: 10px;
     border-radius: 3px;
+    -moz-border-radius: 3px;
 }
 
 .hr1 {
@@ -460,6 +477,7 @@ ul#nav {
     z-index: 1;
     -webkit-transform: rotate(-45deg);
     -ms-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
     transform: rotate(-45deg);
 }
 
@@ -471,6 +489,7 @@ ul#nav {
     z-index: 1;
     -webkit-transform: rotate(-45deg);
     -ms-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
     transform: rotate(-45deg);
 }
 
@@ -482,6 +501,7 @@ ul#nav {
     z-index: 1;
     -webkit-transform: rotate(-45deg);
     -ms-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
     transform: rotate(-45deg);
 }
 
@@ -493,6 +513,7 @@ ul#nav {
     z-index: 1;
     -webkit-transform: rotate(-45deg);
     -ms-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
     transform: rotate(-45deg);
 }
 
@@ -667,7 +688,9 @@ ul#nav {
     width: 200px;
     padding: 13px;
     border-radius: 15px;
+    -moz-border-radius: 15px;
     box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    -moz-box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
     margin: -9px;
 }
 
@@ -682,6 +705,7 @@ ul#nav {
     border-right: 20px solid transparent; 
     -webkit-transform: rotate(90deg);
     -ms-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
     transform: rotate(90deg);
 }
 
@@ -728,7 +752,7 @@ ul#nav {
 }
 
 .bubble-point.example5 {
-    top: 17x;
+    top: 17px;
 }
 
 .sideInfo.example5 {
@@ -746,6 +770,7 @@ ul#nav {
     top: 197px;
     -webkit-transform: rotate(-87deg);
     -ms-transform: rotate(-87deg);
+    -moz-transform: rotate(-87deg);
     transform: rotate(-87deg);
 }
 
@@ -830,10 +855,12 @@ ul#nav {
     left: -79px;
     -webkit-transform: rotate(87deg);
     -ms-transform: rotate(87deg);
+    -moz-transform: rotate(87deg);
     transform: rotate(87deg)
     left: -79px;
     -webkit-transform: rotate(87deg);
     -ms-transform: rotate(87deg);
+    -moz-transform: rotate(87deg);
     transform: rotate(87deg);
 }
 
