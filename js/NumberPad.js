@@ -18,7 +18,7 @@ define([
         this.clear = function() {
             while (buff.length) buff.pop();
             return this;
-        }
+        };
 
         /**
          * click event handler

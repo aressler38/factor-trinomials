@@ -33,6 +33,13 @@ module.exports = function(grunt) {
             }
         },
 
+        copy: {
+            css2android: {
+                src: "dist/css/main.css",
+                dest: "factor-trinomials/www/css/main.css"
+            }
+        },
+
         /* Configured in build task file */
         build: { all: { } }
         
@@ -43,9 +50,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks("grunt-contrib-uglify");
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.loadTasks( "build/tasks" );
 
-    grunt.registerTask("dist", ["jshint", "build:all", "uglify:main"]);
+    grunt.registerTask("dist", ["jshint", "build:all", "uglify:main", "copy:css2android"]);
     grunt.registerTask("default", ["dist"]);
 }; 

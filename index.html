@@ -31,6 +31,11 @@
     }
     $(document.body).append($link);
     $(document.body).append($script);
+
+    window.setTimeout(function() {
+        app.setup();
+        app.run();
+    }, 500);
 </script>
 </body>
 </html>
