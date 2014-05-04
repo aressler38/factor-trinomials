@@ -1,0 +1,1 @@
+var appMessenger = new Messenger();

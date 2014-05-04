@@ -7,13 +7,18 @@ define(
   ], function(FTMessengerCentral, Rectangle, templates, primeFactors) {
 
     var containerID = "factor-trinomials";
+    var app = {};
+
+    app.containerID = containerID;
+    app.setup = setup;
+    app.run = run;
 
     /** 
      * Prepare the DOM.
      */
     function setup() {
         Math.primeFactors = primeFactors;
-        var $con = $(document.getElementById(containerID));
+        var $con = $(document.getElementById(app.containerID));
         //var $header     = $(templates.header);
         var $trinomial  = $(templates.trinomial);
         var $rectangle  = $(templates.rectangle);
@@ -26,13 +31,20 @@ define(
         $con.append($rectangle); 
         $con.append($diamond); 
         $con.append($finalContainer);
-
         $con.append($numberPad);
-
         $con.css({
             width: window.innerWidth,
             height: window.innerHeight
         });
+
+        // events
+        window.addEventListener("resize", function() {
+            $con.css({
+                width: window.innerWidth,
+                height: window.innerHeight
+            });
+        });
+
         return null;
     }
 
@@ -46,6 +58,8 @@ define(
         return null;
     }
     
-    setup();
-    run(); 
+
+
+    window.app = app;
+    return app;
 });

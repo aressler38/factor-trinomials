@@ -20,7 +20,7 @@ module.exports = function( grunt ) {
             startFile: "js/header.part",
             endFile: "js/footer.part"
         },
-        fileExclusionRegExp:/^\.|node_modules\/*\/*.js|node_modules\/*|build|Gruntfile.js|package.json/,
+        fileExclusionRegExp:/^\.|factor-trinomials|node_modules\/*\/*.js|node_modules\/*|build|Gruntfile.js|package.json/,
         preserveLicenseComments: false,
         onBuildWrite: convert
     };
