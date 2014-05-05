@@ -180,23 +180,52 @@ var prettifySign = function prettifySign(x) {
          * @callback
          */ 
         function dragHandler(event) {
+            var cx, cy, x0, y0, x, y;
             if ($(event.target).hasClass("number")) { return null; }
-            var cx = event.clientX;
-            var cy = event.clientY;
-            var x0 = that.$numpad.offset().left;
-            var y0 = that.$numpad.offset().top;
+            switch (event.type) {
+                case "touchstart":
+                    cx = event.touches[0].clientX;
+                    cy = event.touches[0].clientY;
+                    x0 = that.$numpad.offset().left;
+                    y0 = that.$numpad.offset().top;
+                    document.addEventListener("touchmove", drag);
+                    document.addEventListener("touchend", function() {
+                        document.removeEventListener("touchmove", drag);
+                        endDrag();
+                    });
+                    break;
+                default:
+                    cx = event.clientX;
+                    cy = event.clientY;
+                    x0 = that.$numpad.offset().left;
+                    y0 = that.$numpad.offset().top;
+                    document.addEventListener("mousemove", drag);
+                    document.addEventListener("mouseup", function() {
+                        document.removeEventListener("mousemove", drag);
+                        endDrag();
+                    });
+            }
             that.$numpad.removeClass("transition-top");
 
-            $(document).on("mousemove", drag);
-            $(document).on("mouseup", function() {
-                $(document).off("mousemove", drag);
+            /** @callback */
+            function endDrag(event) {
                 that.$numpad.addClass("transition-top");
-            });    
+            }
+
             /** @callback */
             function drag(event) {
+                switch (event.type) {
+                    case "touchmove": 
+                        x = event.touches[0].clientX-cx + x0;
+                        y = event.touches[0].clientY-cy + y0;
+                        break;
+                    default: 
+                        x = event.clientX-cx + x0;
+                        y = event.clientY-cy + y0;
+                }
                 that.$numpad.css({
-                    "top": event.clientY-cy + y0,
-                    "left": event.clientX-cx + x0 
+                    "left": x,
+                    "top": y 
                 }); 
             }
         }
@@ -204,8 +233,9 @@ var prettifySign = function prettifySign(x) {
 
         // I don't like unbinding previous handlers like this, but it works for now.
         this.$numpad.off();
-        this.$numpad.on("click", clickHandler);
-        this.$numpad.on("mousedown", dragHandler);
+        this.$numpad[0].addEventListener("mousedown", dragHandler);
+        this.$numpad[0].addEventListener("touchstart", dragHandler);
+        this.$numpad[0].addEventListener("click", clickHandler);
     }
 
     /**
@@ -570,7 +600,13 @@ var numpad = {};
                 this.clearDiamondInput(); 
 
                 coefficients = cleanParameters();
-                $(".ft-trinomial").html("Factor the following trinomial: &nbsp;" + "<span class='ft-trinomial-equation' style='font-size:22px'>" + coefficients.a+"<em>x</em><sup>2</sup> " + coefficients.b+"<em>x</em> " + coefficients.c + "</span>"); 
+
+                //$(".ft-trinomial").html("Factor the following trinomial: &nbsp;" + "<span class='ft-trinomial-equation' style='font-size:22px'>" + coefficients.a+"<em>x</em><sup>2</sup> " + coefficients.b+"<em>x</em> " + coefficients.c + "</span>"); 
+
+                $trinomialHeader = $(".ft-trinomial");
+                $trinomialHeader.find(".ft-trinomial-equation .a").html(coefficients.a);
+                $trinomialHeader.find(".ft-trinomial-equation .b").html(coefficients.b);
+                $trinomialHeader.find(".ft-trinomial-equation .c").html(coefficients.c);
                 
                 numpad = new NumberPad();
                 numpad.hide();
@@ -1305,7 +1341,7 @@ numberPad:'<div class="numpad no-select-no-drag transition-top">    <div class="
  finalContainer:'<div class="clear"></div> <!-- TODO: remove that clear div to the left --><div class="ft-finalContainer">    <div class="explanationArea"></div>    <div class="clear"></div>    <button id="next-button" >TRY ANOTHER!!!</button></div>',
  rectangle:'<div class="ft-rectangle">    <!--                LAYOUT           -----------------           |               |           |   H  x2 | k2  |           |     --------- |           |  x1 | a | b | |           |  ------------ |           |  k1 | c | d | |           |     --------- |           -----------------        (H := hint)    -->    <div class="ftH"><span>The GCF of the top<br/>row goes here<br/>&#x25BC;</span></div>     <div class="ftx2"></div>     <div class="ftk2"></div>     <div class="ftx1"></div>     <div class="fta"></div>     <div class="ftb"><span></span></div>     <div class="ftk1"></div>      <div class="ftc"><span></span></div>     <div class="ftd"></div>   </div>   ',
  diamond:'<div class="ft-diamond">    <span class="diamond-part" data-diamond="1"><span></span></span>    <span class="diamond-part" data-diamond="2"><span></span></span>    <span class="diamond-part" data-diamond="3"><span></span></span>    <span class="diamond-part" data-diamond="4"><span></span></span></div>',
- trinomial :'<div class="ft-trinomial"> Trinomial container </div>'
+ trinomial :'<div class="ft-trinomial"><span>    <span>        Factor the following trinomial: &nbsp;    </span>    <span class="ft-trinomial-equation">         <span class="a"></span>x<span class="exp">2</span>         <span class="b"></span>x        <span class="c"></span>     </span></span></div>'
 };
 // Find the prime factorization of a number n
 // this algorithm returns an array of arrays,
@@ -1412,6 +1448,15 @@ var primeFactors = function primeFactors(n) {
      * Prepare the DOM.
      */
     function setup() {
+
+        // Fixes a bug in android browser: the touchmove event only fires once unless
+        // preventDefault is called... lame...
+        document.addEventListener("touchmove", function(event) {
+            if (window.navigator.userAgent.match(/Android/i)) {
+                event.preventDefault();
+            }
+        });
+
         Math.primeFactors = primeFactors;
         var $con = $(document.getElementById(app.containerID));
         //var $header     = $(templates.header);

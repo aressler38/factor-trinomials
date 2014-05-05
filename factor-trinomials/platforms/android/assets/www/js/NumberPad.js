@@ -55,23 +55,52 @@
          * @callback
          */ 
         function dragHandler(event) {
+            var cx, cy, x0, y0, x, y;
             if ($(event.target).hasClass("number")) { return null; }
-            var cx = event.clientX;
-            var cy = event.clientY;
-            var x0 = that.$numpad.offset().left;
-            var y0 = that.$numpad.offset().top;
+            switch (event.type) {
+                case "touchstart":
+                    cx = event.touches[0].clientX;
+                    cy = event.touches[0].clientY;
+                    x0 = that.$numpad.offset().left;
+                    y0 = that.$numpad.offset().top;
+                    document.addEventListener("touchmove", drag);
+                    document.addEventListener("touchend", function() {
+                        document.removeEventListener("touchmove", drag);
+                        endDrag();
+                    });
+                    break;
+                default:
+                    cx = event.clientX;
+                    cy = event.clientY;
+                    x0 = that.$numpad.offset().left;
+                    y0 = that.$numpad.offset().top;
+                    document.addEventListener("mousemove", drag);
+                    document.addEventListener("mouseup", function() {
+                        document.removeEventListener("mousemove", drag);
+                        endDrag();
+                    });
+            }
             that.$numpad.removeClass("transition-top");
 
-            $(document).on("mousemove", drag);
-            $(document).on("mouseup", function() {
-                $(document).off("mousemove", drag);
+            /** @callback */
+            function endDrag(event) {
                 that.$numpad.addClass("transition-top");
-            });    
+            }
+
             /** @callback */
             function drag(event) {
+                switch (event.type) {
+                    case "touchmove": 
+                        x = event.touches[0].clientX-cx + x0;
+                        y = event.touches[0].clientY-cy + y0;
+                        break;
+                    default: 
+                        x = event.clientX-cx + x0;
+                        y = event.clientY-cy + y0;
+                }
                 that.$numpad.css({
-                    "top": event.clientY-cy + y0,
-                    "left": event.clientX-cx + x0 
+                    "left": x,
+                    "top": y 
                 }); 
             }
         }
@@ -79,8 +108,9 @@
 
         // I don't like unbinding previous handlers like this, but it works for now.
         this.$numpad.off();
-        this.$numpad.on("click", clickHandler);
-        this.$numpad.on("mousedown", dragHandler);
+        this.$numpad[0].addEventListener("mousedown", dragHandler);
+        this.$numpad[0].addEventListener("touchstart", dragHandler);
+        this.$numpad[0].addEventListener("click", clickHandler);
     }
 
     /**

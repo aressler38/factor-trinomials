@@ -318,7 +318,13 @@
                 this.clearDiamondInput(); 
 
                 coefficients = cleanParameters();
-                $(".ft-trinomial").html("Factor the following trinomial: &nbsp;" + "<span class='ft-trinomial-equation' style='font-size:22px'>" + coefficients.a+"<em>x</em><sup>2</sup> " + coefficients.b+"<em>x</em> " + coefficients.c + "</span>"); 
+
+                //$(".ft-trinomial").html("Factor the following trinomial: &nbsp;" + "<span class='ft-trinomial-equation' style='font-size:22px'>" + coefficients.a+"<em>x</em><sup>2</sup> " + coefficients.b+"<em>x</em> " + coefficients.c + "</span>"); 
+
+                $trinomialHeader = $(".ft-trinomial");
+                $trinomialHeader.find(".ft-trinomial-equation .a").html(coefficients.a);
+                $trinomialHeader.find(".ft-trinomial-equation .b").html(coefficients.b);
+                $trinomialHeader.find(".ft-trinomial-equation .c").html(coefficients.c);
                 
                 numpad = new NumberPad();
                 numpad.hide();

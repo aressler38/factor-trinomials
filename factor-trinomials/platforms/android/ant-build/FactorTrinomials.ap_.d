@@ -22,10 +22,8 @@
 /home/alexander/factor-trinomials/factor-trinomials/platforms/android/assets/www/img \
 /home/alexander/factor-trinomials/factor-trinomials/platforms/android/assets/www/index.html \
 /home/alexander/factor-trinomials/factor-trinomials/platforms/android/assets/www/css/main.css \
-/home/alexander/factor-trinomials/factor-trinomials/platforms/android/assets/www/css/index.css \
 /home/alexander/factor-trinomials/factor-trinomials/platforms/android/assets/www/js/rectangle.js \
 /home/alexander/factor-trinomials/factor-trinomials/platforms/android/assets/www/js/main.min.js \
-/home/alexander/factor-trinomials/factor-trinomials/platforms/android/assets/www/js/globals.js \
 /home/alexander/factor-trinomials/factor-trinomials/platforms/android/assets/www/js/footer.part \
 /home/alexander/factor-trinomials/factor-trinomials/platforms/android/assets/www/js/var \
 /home/alexander/factor-trinomials/factor-trinomials/platforms/android/assets/www/js/jquery \

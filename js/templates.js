@@ -21,7 +21,7 @@ define([
         finalContainer  : finalContainer,
         rectangle       : rectangle,
         diamond         : diamond,
-        trinomial       : trinomial 
+        trinomial       : trinomial
     };
     return templates;
 });
