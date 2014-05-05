@@ -17,6 +17,15 @@ define(
      * Prepare the DOM.
      */
     function setup() {
+
+        // Fixes a bug in android browser: the touchmove event only fires once unless
+        // preventDefault is called... lame...
+        document.addEventListener("touchmove", function(event) {
+            if (window.navigator.userAgent.match(/Android/i)) {
+                event.preventDefault();
+            }
+        });
+
         Math.primeFactors = primeFactors;
         var $con = $(document.getElementById(app.containerID));
         //var $header     = $(templates.header);
