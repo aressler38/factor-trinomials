@@ -315,6 +315,7 @@ define(
             initialize: function(_p1, _p2, _p3) {
                 var selectedDiamond = null;
                 var coefficients;
+                var _firstClick = false;
 
                 if (typeof(_p1) === "number" && typeof(_p2) === "number" && typeof(_p3) === "number") {
                     parameters = [_p1, _p2, _p3];
@@ -326,8 +327,6 @@ define(
                 this.clearDiamondInput(); 
 
                 coefficients = cleanParameters();
-
-                //$(".ft-trinomial").html("Factor the following trinomial: &nbsp;" + "<span class='ft-trinomial-equation' style='font-size:22px'>" + coefficients.a+"<em>x</em><sup>2</sup> " + coefficients.b+"<em>x</em> " + coefficients.c + "</span>"); 
 
                 $trinomialHeader = $(".ft-trinomial");
                 $trinomialHeader.find(".ft-trinomial-equation .a").html(coefficients.a);
@@ -343,6 +342,10 @@ define(
                     $(event.currentTarget).addClass("selected");
                     numpad.clear();
                     numpad.show();
+                    if (!_firstClick) {
+                        numpad.$numpad.css({ top: event.clientY, left: event.clientX });
+                        _firstClick = true;
+                    }
                 }
 
                 $(diamondBoxes.join()).on("click", diamondClickHandler);
@@ -416,7 +419,6 @@ define(
                 else {
                     throw new Error("colorDiamondInput out of range. Expecting range 1-4.");
                 }
-
             }
         };
     }());

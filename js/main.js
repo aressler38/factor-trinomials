@@ -46,6 +46,10 @@ define(
             height: window.innerHeight
         });
 
+        if (window.isMobile) {
+            $(".numpad").css({ padding: "15px" });
+        }
+
         // events
         window.addEventListener("resize", function() {
             $con.css({
@@ -67,6 +71,8 @@ define(
         return null;
     }
     
+
+    window.isMobile = (function(a){return /Mobile|Android|BlackBerry/.test(a);})(navigator.userAgent||navigator.vendor||window.opera);
 
 
     window.app = app;
