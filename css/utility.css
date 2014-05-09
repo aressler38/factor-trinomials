@@ -82,6 +82,7 @@
 
 .flash {
     border-color:green;
+    background:yellow;
 
 }
 .flash.red {

@@ -10,13 +10,15 @@ define(
         var now = function() {return window.performance.now();};
         var time = now();
         var register = null;
+        var flashQueue = [];
+        var MAX_flashQueue = 5;
 
         function clickHandler(event) {
             var className = event.target.getAttribute("class") || "";
 
             if (className.match(/fta|ftb|ftc|ftd/)) {
                 console.log("match");
-                flash("."+className, "red");
+                flash("."+className+", .ftx1, .ftx2", "");
                 
             }
             else if (false) {
@@ -29,11 +31,16 @@ define(
 
         }
 
-        function flash(selector, color) {
+        function flash(selector, color, callback) {
             var flashCount = MAX_flashCount;
             console.log('start flash'); 
-            var selector = selector;
-            var color = color;
+            //var selector = selector;
+            //var color = color;
+            if (flashQueue.length >= MAX_flashQueue) {
+                console.log("MAX QUEUE");
+                return null;
+            }
+            flashQueue.push(1);
             function _flash() {
                 if ( (now() - time > flashLag) && flashCount ) {
                     if (flashCount%2) {
@@ -49,7 +56,9 @@ define(
                     return window.requestAnimationFrame(_flash);
                 }
                 else if (!flashCount) {
-                    flashCount = MAX_flashCount;
+                    //flashCount = MAX_flashCount;
+                    flashQueue.pop();
+                    if (typeof callback === "function") { callback(); }
                     return null;
                 }
                 else {
