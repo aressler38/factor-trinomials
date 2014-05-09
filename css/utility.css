@@ -78,6 +78,19 @@
 
 
 
+/* FLASH HINT CSS */
+
+.flash {
+    border-color:green;
+
+}
+.flash.red {
+    background: red;
+}
+
+
+
+
 
 
 

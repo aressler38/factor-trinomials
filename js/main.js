@@ -3,8 +3,9 @@ define(
     "./ft-messenger-central", 
     "./rectangle",
     "./templates", 
-    "./var/primeFactors"
-  ], function(FTMessengerCentral, Rectangle, templates, primeFactors) {
+    "./var/primeFactors",
+    "./hints"
+  ], function(FTMessengerCentral, Rectangle, templates, primeFactors, Hints) {
 
     var containerID = "factor-trinomials";
     var app = {};
@@ -45,6 +46,10 @@ define(
             width: window.innerWidth,
             height: window.innerHeight
         });
+
+        var hints = new Hints();
+        hints.render("#factor-trinomials");
+        hints.on();
 
         if (window.isMobile) {
             $(".numpad").css({ padding: "15px" });

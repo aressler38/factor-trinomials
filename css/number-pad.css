@@ -13,6 +13,7 @@
     padding: 3px;
     height: auto;
     cursor:pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 .number {
     display: inline-block;
