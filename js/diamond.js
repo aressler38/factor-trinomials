@@ -351,6 +351,7 @@ define(
                 $(diamondBoxes.join()).on("click", diamondClickHandler);
                 appMessenger.on("diamondCorrect", function() {
                     $(diamondBoxes.join()).off("click", diamondClickHandler);
+                    numpad.destroy();
                 });
 
                 numpad.onclick = function(str, buff) {
