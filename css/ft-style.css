@@ -1,4 +1,5 @@
 body {
+    overflow-y: hidden;
     font-family: sans-serif;
     margin: 0;
 }

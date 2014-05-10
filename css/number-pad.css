@@ -77,7 +77,3 @@
     background: #ff0;
     font-style: normal;
 }
-.number.clr:after {
-
-    content: "\232B";
-}
