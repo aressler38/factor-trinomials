@@ -106,10 +106,12 @@ ul#nav {
     width:350px;
     height:350px;
     background: rgba(50,50,50,0.3);
+    -webkit-tap-highlight-color: transparent;
 }
 
 .ft-diamond span {
     font-size:1.5em;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .ft-diamond .diamond-part {
@@ -128,11 +130,9 @@ ul#nav {
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.diamond-part.selected {
-    background-color: yellow;
-}
 .diamond-part.correct {
     background-color: rgba(0,255,0,0.6);
 }

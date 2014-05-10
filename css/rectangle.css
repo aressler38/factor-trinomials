@@ -1,11 +1,13 @@
 .ft-rectangle {
     display:inline-block;
     position:relative;
-    height:350px;
-    width:350px; 
+    margin:  0px 20px 0px 20px;
+    padding: 20px 0px 0px 0px;
+    height: 330px; /* == width-(margin-top) */
+    width:  350px; 
+    background: rgba(0,0,255,0.2);
     text-align:center;
     vertical-align: top;
-    margin:0px 20px 0px 20px;
 }
 
 .ft-rectangle div {
@@ -16,16 +18,19 @@
     vertical-align: baseline;
 }
 
+.ft-rectangle > div > span {
+    position:absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    font-size:1em;
+    vertical-align:middle;
+    text-align: center;
+}
+
 .ftH {
     margin-left:2px;
-    /*margin-top:40px;*/
-}
-.ftH span {
-    position:relative;
-    line-height:0.75em;
-    font-size:1em;
-    top:25px;
-    vertical-align:middle;
 }
 .ftH span:hover {
     color:red;
@@ -37,13 +42,11 @@
 
 .ftx2 {
     border:1px solid black;
-    /*margin-top:40px;*/
     line-height:100px;
     font-size:1.5em;
 }
 .ftk2 {
     border:1px solid black;
-    /*margin-top:40px;*/
     line-height:100px;
     font-size:1.5em;
 }
@@ -63,9 +66,6 @@
     font-size:1.5em;
     border:1px solid black;
 
-}
-.fta span {
-    vertical-align:middle;
 }
 .ftb { 
     line-height:100px;
@@ -88,9 +88,6 @@
     border:1px solid black;
     line-height:100px;
     font-size:1.5em;
-}
-.ftd span {
-    vertical-align:middle;
 }
 
 .ftx2 input, .ftx1 input, .ftk1 input, .ftk2 input {

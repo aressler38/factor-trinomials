@@ -100,12 +100,27 @@ define(
          */
         function rectangleInputHandler(event) {
             $currentRectangle = $(this);
-            $currentRectangle.addClass("selected");
-            var parsedValue = $currentRectangle.html().replace(/\+/g,"").replace(/ /g,"");
-            $currentRectangle.html(parsedValue);
-            setRectangleElement(parsedValue, $currentRectangle.attr("class"));
-            checkRectangleElements();
+            numpad.clear();
             numpad.show();
+            unselectRectangles();
+            $currentRectangle.addClass("selected");
+            setAndCheckRectangleElement() 
+        }
+
+        function setAndCheckRectangleElement() {
+            setRectangleElement( insertParsedValue($currentRectangle), $currentRectangle.attr("class") );
+            checkRectangleElements();
+        }
+
+        function insertParsedValue($currentRectangle) {
+            var parsedValue = null;
+            parsedValue = $currentRectangle.find("span").html().replace(/\+/g,"").replace(/ /g,"");
+            $currentRectangle.find("span").html(parsedValue);
+            return parsedValue;
+        }
+
+        function unselectRectangles() {
+            $(".ftx1,.ftk1,.ftx2,.ftk2").removeClass("selected");
         }
 
         function bindRectangleEvents() {
@@ -117,16 +132,17 @@ define(
             // insert numpad output in selected rectangle box
             numpad.onenter = function(str, buff) {
                 numpad.hide();
-                $currentRectangle.html(str);
-                rectangleInputHandler.call($currentRectangle);
-                $currentRectangle.removeClass("selected");
+                $currentRectangle.find("span").html(str);
+                setAndCheckRectangleElement() 
+                unselectRectangles();
             };
             numpad.onclear = function(str, buff) {
-                $currentRectangle.html("");
-                diamondInputs[selectedDiamond-1] = str;
+                $currentRectangle.find("span").html("");
+                //diamondElements[selectedDiamond-1] = str;
             };
             numpad.onclick = function(str, buff) {
-                $currentRectangle.html(str);
+                $currentRectangle.find("span").html(str);
+                setAndCheckRectangleElement();
             };
 
 
@@ -245,6 +261,7 @@ define(
 
         function genericRectangleComplete() {
             console.log("YAYAA!!!");
+            unselectRectangles();
             var rectEls = appMessenger.send("getRectangleElements");
             rectEls[0] = checkSimpleCases(rectEls[0]);
             rectEls[2] = checkSimpleCases(rectEls[2]);
@@ -286,7 +303,7 @@ define(
                 .removeClass("correct")
                 .removeClass("incorrect");
                     
-            $(".ftx1, .ftx2, .ftk1, .ftk2").html("");
+            $(".ftx1, .ftx2, .ftk1, .ftk2").find("span").html("");
         }
 
         function getTopRowGCF() {
@@ -411,7 +428,7 @@ define(
                     data[i] = data[i].replace(/\+/g, "");
                 }
                 // Handle the case if the coefficient is an implied 1 or an implied -1.
-                if (isNaN(parseInt(data[i]))) {
+                if (Number.isNaN(parseInt(data[i]))) {
                     switch (data[i][0]) {
                         case "x": //implied 1
                             data[i] = "1"+data[i];
