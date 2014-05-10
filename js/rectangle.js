@@ -39,7 +39,7 @@ define([
                 switch (c) {
                     case "a":
                         coefficients[c] = ifOneOrNegOne(coefficients[c], false);
-                        if (typeof coefficients[c] == "string") {
+                        if (typeof coefficients[c] === "string") {
                             coefficients[c] = coefficients[c].replace('+', '');
                         }
                         break;
