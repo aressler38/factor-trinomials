@@ -121,6 +121,10 @@ define(
                 rectangleInputHandler.call($currentRectangle);
                 $currentRectangle.removeClass("selected");
             };
+            numpad.onclear = function(str, buff) {
+                $currentRectangle.html("");
+                diamondInputs[selectedDiamond-1] = str;
+            };
             numpad.onclick = function(str, buff) {
                 $currentRectangle.html(str);
             };
