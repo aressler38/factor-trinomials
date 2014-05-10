@@ -105,7 +105,7 @@ define(
             on    : on,
             off   : off,
             render: render
-        }
+        };
     }
 
     return Hints;
