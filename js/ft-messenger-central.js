@@ -219,7 +219,7 @@ define(
             if (!Number.isNaN(parseInt(formattedX2)) && formattedRectEls[3] !== null) {
                 if (formattedRectEls[3].replace(parseInt(formattedRectEls[3]), "") === "" && correctness[0]) { // is there only numbers?
                     // and is the x2 slot correct?
-                    if ((parseInt(formattedRectEls[3])*parseInt(formattedX1)+"x") == (diamondElements[1])){
+                    if ((parseInt(formattedRectEls[3])*parseInt(formattedX1)+"x") === (diamondElements[1])){
                         correctness[3] = true;
                         colorRectangleInput(".ftk2", true);
                     }
