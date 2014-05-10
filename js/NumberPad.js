@@ -34,6 +34,10 @@ define([
                 _onenter(event);
                 return null;
             }
+            if ($(button).hasClass("clr")) {
+                _onclear(event);
+                return null;
+            }
             else { 
                 buff.push(content); 
                 that.onclick(buff.join(""), buff);
@@ -49,6 +53,16 @@ define([
             that.onenter(buff.join(""), buff);
             that.hide();
             that.clear();
+            return null;
+        }
+
+        /**
+         * clear the buffer callback
+         * @callback
+         */
+        function _onclear(event) {
+            that.clear();
+            that.onclear(buff.join(""), buff);
             return null;
         }
 
@@ -132,6 +146,8 @@ define([
      * @param array - array representing the buttons that were pressed.
      */
     NumberPad.prototype.onclick = function(str, array) { };
+
+    NumberPad.prototype.onclear = function(str, array) { };
 
     NumberPad.prototype.hide = function() {
         this.$numpad.addClass("offscreen");

@@ -9,8 +9,8 @@
     -moz-box-shadow: 3px 3px 5px 6px #666;
     -webkit-box-shadow: 3px 3px 5px 6px #666;
     background-color: #DDE;
-    width: 130px;
-    padding: 3px;
+    width: 230px;
+    padding: 4px;
     height: auto;
     cursor:pointer;
     -webkit-tap-highlight-color: transparent;
@@ -56,7 +56,6 @@
     background: #FF7958;
 }
 .number.operator {
-    width: 3em; 
     background: #00FFCC;
     -moz-box-shadow: 1px 4px 0px #00997a;
     -webkit-box-shadow: 1px 4px 0px #00997a;
@@ -66,4 +65,16 @@
 .number.operator:hover {
     position:relative;
     background: #85FFFF;
+}
+.number.operator:after {
+    content: "\2714";
+}
+.number.clr {
+    -moz-box-shadow: 1px 4px 0px #aa0;
+    -webkit-box-shadow: 1px 4px 0px #aa0;
+    box-shadow: 1px 4px 0px #aa0;
+    background: #ff0;
+}
+.number.clr:after {
+    content: "\2718";
 }

@@ -359,6 +359,11 @@ define(
                     diamondInputs[selectedDiamond-1] = str;
                 };
 
+                numpad.onclear = function(str, buff) {
+                    $(".diamond-part.selected span").html("");
+                    diamondInputs[selectedDiamond-1] = str;
+                };
+
                 numpad.onenter = function(str, buff) {
                     $(".diamond-part.selected span").html(renderMath(str));
                     $(diamondBoxes.join()).removeClass("selected");
