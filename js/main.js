@@ -40,6 +40,7 @@ define(
         $con.append($trinomial); 
         $con.append($rectangle); 
         $con.append($diamond); 
+        $con.append($("<hr class='hr-divider'>"));
         $con.append($finalContainer);
         $con.append($numberPad);
         $con.css({
@@ -55,11 +56,16 @@ define(
             $(".numpad").css({ padding: "15px" });
         }
 
+        var body = document.querySelector("body");
+
         // events
         window.addEventListener("resize", function() {
+            body.style.height = window.innerHeight;
+            body.style.width = window.innerWidth;
+
             $con.css({
-                width: window.innerWidth,
-                height: window.innerHeight
+                width: $("body").width(),
+                height: $("body").height()
             });
         });
 

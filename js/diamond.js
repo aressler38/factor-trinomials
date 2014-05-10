@@ -343,7 +343,7 @@ define(
                     numpad.clear();
                     numpad.show();
                     if (!_firstClick) {
-                        numpad.$numpad.css({ top: event.clientY, left: event.clientX });
+                        numpad.$numpad.css({ top: event.pageY, left: event.pageX });
                         _firstClick = true;
                     }
                 }

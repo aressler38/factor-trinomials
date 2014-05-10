@@ -82,9 +82,20 @@
     background: red;
 }
 
+/* END FLASH HINT CSS */
+
+/* BORDER STUFF */
+.blue-border {
+    box-shadow: inset 0px 0px 260px 1px blue;
+}
+/* END BORDER STUFF */
+
+/* DIVIDERS */
+.hr-divider {
+    border-width: 0px;
 
 
-
-
+}
+/* END DIVIDERS */
 
 

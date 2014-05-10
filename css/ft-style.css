@@ -89,9 +89,15 @@ ul#nav {
     font-style: italic;
     font-family: CMSY10, CMEX10, Symbol, Times;
     font-size: 1.5em;
+    display: inline-block;
 }
+
 .ft-trinomial .ft-trinomial-equation .exp {
     font-size: 0.75em;
+}
+.ft-trinomial > span:nth-child(1):before {
+    margin-right: 1em;
+    content: "Factor the following quadratic:\0020";
 }
     
 .ft-diamond {
@@ -99,6 +105,7 @@ ul#nav {
     position:relative;
     width:350px;
     height:350px;
+    background: rgba(50,50,50,0.3);
 }
 
 .ft-diamond span {
@@ -108,7 +115,7 @@ ul#nav {
 .ft-diamond .diamond-part {
     position: absolute;
     top: 50%;
-    right: 50%;
+    left: 50%;
     border: 3px solid blue;
     background: white;
     width: 97px;
@@ -144,10 +151,9 @@ ul#nav {
 .exp,
 .ft-diamond .diamond-part .exp{
     position:relative;
-    top:-6px;
     left:2px;
     font-size: 0.5em;
-    vertical-align:top;
+    vertical-align:super;
 }
  
 /* ROTATE DIAMOND BOXES */
@@ -195,107 +201,6 @@ ul#nav {
 
 #ft-diamond-text-3 {
     margin-left:-15px;
-}
-
-.ft-rectangle {
-    position:relative;
-    display: inline-block;
-    height:350px;
-    width:400px; 
-    /*background:rgba(0,0,255,0.5);*/
-    margin-left:10px;
-    display:inline-block;
-    text-align:center;
-}
-
-.ft-rectangle div {
-    position: relative;
-    float: left;
-    width: 100px;
-    height: 100px;
-}
-
-.ftH {
-    margin-left:2px;
-    margin-top:40px;
-}
-.ftH span {
-    position:relative;
-    line-height:0.75em;
-    font-size:1em;
-    top:25px;
-    vertical-align:middle;
-}
-.ftH span:hover {
-    color:red;
-    cursor:pointer;
-}
-.hide {
-    opacity:0.0; 
-}
-
-.ftx2 {
-    border:1px solid black;
-    margin-top:40px;
-    line-height:100px;
-    font-size:1.5em;
-}
-.ftk2 {
-    border:1px solid black;
-    margin-top:40px;
-    line-height:100px;
-    font-size:1.5em;
-}
-.ftx1 {
-    clear:both;
-    line-height:100px;
-    font-size:1.5em;
-    border:1px solid black;
-}
-.fta, .ftb, .ftc, .ftd {
-    -webkit-transition: all 1s;
-    -moz-transition: all 1s;
-    transition: all 1s;
-}
-.fta {
-    line-height:100px;
-    font-size:1.5em;
-    border:1px solid black;
-
-}
-.fta span {
-    vertical-align:middle;
-}
-.ftb { 
-    line-height:100px;
-    font-size:1.5em;
-    border:1px solid black;
-}
-.ftk1 {
-    line-height:100px;
-    font-size:1.5em;
-    border:1px solid black;
-    clear:both;
-}
-.ftc {
-    line-height:100px;
-    border:1px solid black;
-    font-size:1.5em;
-}
-
-.ftd {
-    border:1px solid black;
-    line-height:100px;
-    font-size:1.5em;
-}
-.ftd span {
-    vertical-align:middle;
-}
-
-.ftx2 input, .ftx1 input, .ftk1 input, .ftk2 input {
-    max-width:90%;
-    font-size:2em;
-    height:1.95em;
 }
 
 .ft-finalContainer {

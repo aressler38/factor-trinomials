@@ -65,6 +65,7 @@
 .number.operator:hover {
     position:relative;
     background: #85FFFF;
+    font-style: normal;
 }
 .number.operator:after {
     content: "\2714";
@@ -74,7 +75,9 @@
     -webkit-box-shadow: 1px 4px 0px #aa0;
     box-shadow: 1px 4px 0px #aa0;
     background: #ff0;
+    font-style: normal;
 }
 .number.clr:after {
-    content: "\2718";
+
+    content: "\232B";
 }

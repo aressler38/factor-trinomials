@@ -86,8 +86,8 @@ define([
                     });
                     break;
                 default:
-                    cx = event.clientX;
-                    cy = event.clientY;
+                    cx = event.pageX;
+                    cy = event.pageY;
                     x0 = that.$numpad.offset().left;
                     y0 = that.$numpad.offset().top;
                     document.addEventListener("mousemove", drag);
@@ -111,8 +111,8 @@ define([
                         y = event.touches[0].clientY-cy + y0;
                         break;
                     default: 
-                        x = event.clientX-cx + x0;
-                        y = event.clientY-cy + y0;
+                        x = event.pageX-cx + x0;
+                        y = event.pageY-cy + y0;
                 }
                 that.$numpad.css({
                     "left": x,
