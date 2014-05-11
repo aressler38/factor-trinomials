@@ -169,6 +169,13 @@ define(
         // This for loop is where I check the diamondInputs against the parameters.
         // I'm going to color the diamond parts here.
         function checkDiamondInputs(dFormatted) {
+            /** 
+             * Check d[1] * d[3] === a*c
+             * @function
+             */
+            function productCorrect() {
+                return ((parseInt(dFormatted[1])*parseInt(dFormatted[3])) === (parameters[0]*parameters[2]));
+            }
             for (var i=0; i<4; i++) {
                 if (!dFormatted[i] || !dFormatted[i].match('x')) {
                     appMessenger.send("ft-guide", "Make sure you are using the correct variable.");
@@ -177,7 +184,7 @@ define(
                     // bottom square --- match middle term
                     case 0:
                         if (dFormatted[0] === undefined){break;}
-                        if (dFormatted[0] !== (parameters[1]+'x')) {
+                        else if (dFormatted[0] !== (parameters[1]+'x')) {
                             appMessenger.send("ft-guide", "That is not the correct value for the sum.");
                             appMessenger.send("ft-d-eval", {0:false});
                         }
@@ -188,8 +195,13 @@ define(
                     // left - check the sum AND the product
                     case 1:
                         if (dFormatted[1] === undefined || dFormatted[3] === undefined){break;}
-                        if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') !== (parameters[1]+'x')) {
-                            appMessenger.send("ft-guide", "The left and right diamond inputs don't add up to the correct value.");
+                        // check sum
+                        else if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') !== (parameters[1]+'x')) {
+                            appMessenger.send("ft-d-eval", {1:false, 3:false});
+                        }
+                        // check product
+                        else if (!productCorrect()) {
+                            console.log("product incorrect");
                             appMessenger.send("ft-d-eval", {1:false, 3:false});
                         }
                         else {
@@ -200,7 +212,7 @@ define(
                     // top square --- if product isn't correct
                     case 2:
                         if (dFormatted[2] === undefined){break;}
-                        if (dFormatted[2] !== ((parameters[0]*parameters[2])+"x^2")) {
+                        else if (dFormatted[2] !== ((parameters[0]*parameters[2])+"x^2")) {
                             appMessenger.send("ft-d-eval", {2:false});
                         }
                         else {
@@ -211,8 +223,13 @@ define(
                     // right - check the sum AND the product
                     case 3:
                         if (dFormatted[1] === undefined || dFormatted[3] === undefined){break;}
-                        if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') !== (parameters[1]+'x')) {
-                            appMessenger.send("ft-guide", "The left and right diamond inputs don't add up to the correct value.");
+                        // check sum
+                        else if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') !== (parameters[1]+'x')) {
+                            appMessenger.send("ft-d-eval", {1:false, 3:false});
+                        }
+                        // check product
+                        else if (!productCorrect()) {
+                            console.log("product incorrect");
                             appMessenger.send("ft-d-eval", {1:false, 3:false});
                         }
                         else {
