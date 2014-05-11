@@ -266,6 +266,7 @@ define(
                             appMessenger.send("ft-d-eval", {0:true});
                         }
                         break;
+                    // left - check the sum AND the product
                     case 1:
                         if (dFormatted[1] === undefined || dFormatted[3] === undefined){break;}
                         if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') !== (parameters[1]+'x')) {
@@ -288,10 +289,10 @@ define(
                             appMessenger.send("ft-d-eval", {2:true});
                         }
                         break;
-                    // right square --- if sum doesn't add up
+                    // right - check the sum AND the product
                     case 3:
                         if (dFormatted[1] === undefined || dFormatted[3] === undefined){break;}
-                        if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') != (parameters[1]+'x')) {
+                        if ((parseInt(dFormatted[1])+parseInt(dFormatted[3])+'x') !== (parameters[1]+'x')) {
                             appMessenger.send("ft-guide", "The left and right diamond inputs don't add up to the correct value.");
                             appMessenger.send("ft-d-eval", {1:false, 3:false});
                         }
@@ -300,8 +301,7 @@ define(
                         }
                         break;
                     default:
-                        console.log("Something is seriously wrong... contact tech support");
-                        throw "Error while parsing index in checkDiamondInputs";
+                        throw new Error("Something is seriously wrong... contact tech support");
                 }
             }
         }

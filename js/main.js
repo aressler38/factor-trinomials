@@ -35,6 +35,7 @@ define(
         var $diamond    = $(templates.diamond);
         var $numberPad  = $(templates.numberPad);
         var $finalContainer = $(templates.finalContainer);
+        var body;
 
         //$con.append($header); 
         $con.append($trinomial); 
@@ -56,13 +57,12 @@ define(
             $(".numpad").css({ padding: "15px" });
         }
 
-        var body = document.querySelector("body");
+        body = document.querySelector("body");
 
         // events
         window.addEventListener("resize", function() {
-            body.style.height = window.innerHeight;
-            body.style.width = window.innerWidth;
-
+            body.style.height = window.innerHeight + "px";
+            body.style.width = window.innerWidth + "px";
             $con.css({
                 width: $("body").width(),
                 height: $("body").height()
