@@ -1,40 +1,43 @@
+.hint-button-wrapper {
+    margin-left: 20px;
+    position:relative;
+    display:inline-block;
+}
 .hint-button {
-    width: 100px;
-    height: 50px;
-    border-radius: 50px;
+    width: 4em;
+    height: 1.5em;
     background: red;
     -webkit-transition: all 0.4s;
-    -webkit-box-shadow: inset -50px 0px 0px #A3A375;
-    -moz-box-shadow: inset -50px 0px 0px #A3A375;
-    box-shadow: inset -50px 0px 0px #A3A375;
-    line-height: 3.5em;
-    margin-left: 100px;
+    -webkit-box-shadow: inset -2.5em 0em 0em 0em #A3A375;
+    -moz-box-shadow: inset -2.5em 0em 0em 0em #A3A375;
+    box-shadow: inset -2.5em 0em 0em 0em #A3A375;
+    line-height: 1.5em;
+    margin-left: 8ex;
+    border-radius: 15px;
 }
 
 .hint-button:before {
     position: relative;
     content: "Hints";
-    left: -96px;
-    font-size: 40px;
+    left: -5ex;
+    font-size: 24px;
 }
 
 .hint-button:after {
-    content: "OFF";
     position: absolute;
-    left: 155px;
+    content: "OFF";
+    left: 11.2ex;
 }
 
 .hint-button.on:after {
     content: "ON";
     position: absolute;
-    left: 117px;
+    left: 9ex;
 }
 
 .hint-button.on {
-    box-shadow: inset 50px 0px 0px #A3A375;
-    -webkit-box-shadow: inset 50px 0px 0px #A3A375;
-    -moz-box-shadow: inset 50px 0px 0px #A3A375;
-    -webkit-border-radius: 50px;
-    -moz-border-radius: 50px;
+    box-shadow: inset 2.5em 0em 0em 0em #A3A375;
+    -webkit-box-shadow: inset 2.5em 0em 0em 0em #A3A375;
+    -moz-box-shadow: inset 2.5em 0em 0em 0em #A3A375;
     background: green;
 }

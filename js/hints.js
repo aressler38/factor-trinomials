@@ -4,6 +4,7 @@ define(
 
     function Hints() {
         var hintButton;
+        var hintButtonWrapper;
         var state = 0; // 1:on, 0:off
         var MAX_flashCount = 4;
         var flashLag = 500;
@@ -79,7 +80,10 @@ define(
             document.removeEventListener("mousedown", clickHandler);
         }
         function makeButton() {
+            hintButtonWrapper = document.createElement("div");
             hintButton = document.createElement("div");
+            
+            hintButtonWrapper.setAttribute("class", "hint-button-wrapper");
             hintButton.setAttribute("class", "hint-button");
             // toggle on/off state
             hintButton.addEventListener("click", function(event) {
@@ -94,7 +98,8 @@ define(
             });
         }
         function render(selector) {
-            document.querySelector(selector).appendChild(hintButton);
+            hintButtonWrapper.appendChild(hintButton);
+            document.querySelector(selector).appendChild(hintButtonWrapper);
         } 
 
 
