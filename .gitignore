@@ -2,3 +2,13 @@ commit_all_modified.py
 node_modules
 dist
 factor-trinomials/www/css/main.css
+factor-trinomials/platforms/android/CordovaLib/ant-build/build.prop
+factor-trinomials/platforms/android/ant-build/FactorTrinomials-debug-unaligned.apk
+factor-trinomials/platforms/android/ant-build/FactorTrinomials-debug.apk
+factor-trinomials/platforms/android/ant-build/FactorTrinomials.ap_
+factor-trinomials/platforms/android/ant-build/build.prop
+factor-trinomials/platforms/android/assets/www/css/main.css
+factor-trinomials/platforms/android/assets/www/js/diamond.js
+factor-trinomials/platforms/android/assets/www/js/main.js
+factor-trinomials/platforms/android/assets/www/js/main.min.js
+factor-trinomials/platforms/android/assets/www/js/main.min.map
