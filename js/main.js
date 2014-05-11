@@ -31,6 +31,7 @@ define(
         var $con = $(document.getElementById(app.containerID));
         //var $header     = $(templates.header);
         var $trinomial  = $(templates.trinomial);
+        var $hints      = $(templates.hints);
         var $rectangle  = $(templates.rectangle);
         var $diamond    = $(templates.diamond);
         var $numberPad  = $(templates.numberPad);
@@ -39,6 +40,7 @@ define(
 
         //$con.append($header); 
         $con.append($trinomial); 
+        $con.append($hints); 
         $con.append($rectangle); 
         $con.append($diamond); 
         $con.append($("<hr class='hr-divider'>"));
