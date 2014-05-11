@@ -104,7 +104,7 @@ define(
             numpad.show();
             unselectRectangles();
             $currentRectangle.addClass("selected");
-            setAndCheckRectangleElement() 
+            setAndCheckRectangleElement();
         }
 
         function setAndCheckRectangleElement() {
@@ -133,7 +133,7 @@ define(
             numpad.onenter = function(str, buff) {
                 numpad.hide();
                 $currentRectangle.find("span").html(str);
-                setAndCheckRectangleElement() 
+                setAndCheckRectangleElement();
                 unselectRectangles();
             };
             numpad.onclear = function(str, buff) {
