@@ -71,6 +71,10 @@ define(
             });
         });
 
+        $("body").bind("touchmove", function(event) {
+            event.preventDefault();
+        });
+
         return null;
     }
 
