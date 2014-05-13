@@ -1,5 +1,16 @@
+html {
+    -ms-overflow-style: none !important;
+}
 body {
+    top: 0px;
+    left 0px;
+    right: 0px;
+    bottom 0px;
+    position:relative;
     overflow-y: hidden;
+    overflow: hidden;
+    -ms-content-zooming: none;
+    -ms-touch-action:none;
     font-family: sans-serif;
     margin: 0;
 }
