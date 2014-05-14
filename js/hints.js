@@ -104,6 +104,8 @@ define(
             hintButton.setAttribute("class", "hint-button");
             // toggle on/off state
             hintButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                event.stopPropagation();
                 if (state===1) {
                     state = 0;
                     off();

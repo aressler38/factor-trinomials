@@ -27,6 +27,9 @@ define(
             }
         });
 
+        //document.ontouchmove = function(e){e.preventDefault();};
+
+
         Math.primeFactors = primeFactors;
         var $con = $(document.getElementById(app.containerID));
         //var $header     = $(templates.header);
@@ -69,6 +72,10 @@ define(
                 width: $("body").width(),
                 height: $("body").height()
             });
+        });
+
+        $("body").bind("touchmove", function(event) {
+            event.preventDefault();
         });
 
         return null;

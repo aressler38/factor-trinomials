@@ -279,7 +279,7 @@ define(
                     numpad.clear();
                     numpad.show();
                     if (!_firstClick) {
-                        numpad.$numpad.css({ top: "200px", left: "150px" });
+                        numpad.$numpad.css({ top: "30px", left: "22px" });
                         _firstClick = true;
                     }
                 }

@@ -37,6 +37,12 @@ module.exports = function(grunt) {
             css2android: {
                 src: "dist/css/main.css",
                 dest: "factor-trinomials/www/css/main.css"
+            },
+            fontdir: {
+                expand: true,
+                cwd: "dist/css/icons",
+                src: "**",
+                dest: "factor-trinomials/www/css/icons"
             }
         },
 
@@ -54,6 +60,6 @@ module.exports = function(grunt) {
 
     grunt.loadTasks( "build/tasks" );
 
-    grunt.registerTask("dist", ["jshint", "build:all", "uglify:main", "copy:css2android"]);
+    grunt.registerTask("dist", ["jshint", "build:all", "uglify:main", "copy:css2android", "copy:fontdir"]);
     grunt.registerTask("default", ["dist"]);
 }; 

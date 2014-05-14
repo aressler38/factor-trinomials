@@ -1,5 +1,16 @@
+html {
+    -ms-overflow-style: none !important;
+}
 body {
+    top: 0px;
+    left 0px;
+    right: 0px;
+    bottom 0px;
+    position:relative;
     overflow-y: hidden;
+    overflow: hidden;
+    -ms-content-zooming: none;
+    -ms-touch-action:none;
     font-family: sans-serif;
     margin: 0;
 }
@@ -68,7 +79,7 @@ header {
 }
 .ft-trinomial .ft-trinomial-equation {
     font-style: italic;
-    font-family: CMSY10, CMEX10, Symbol, Times;
+    font-family: Times;
     font-size: 1.5em;
     display: inline-block;
 }
@@ -124,7 +135,7 @@ header {
 .ft-diamond .diamond-part span {
     display: inline-block;
     position: static;
-    font-family: fantasy;
+    font-family: Times;
     z-index:10;
     cursor: pointer;
 }
