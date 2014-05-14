@@ -135,7 +135,7 @@ header {
 .ft-diamond .diamond-part span {
     display: inline-block;
     position: static;
-    font-family: fantasy;
+    font-family: Times;
     z-index:10;
     cursor: pointer;
 }

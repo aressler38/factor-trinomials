@@ -18,6 +18,7 @@
     z-index:1000;
 }
 .number {
+    -webkit-transform: translate3d(0px,0px,0px);
     display: inline-block;
     position:relative;
     background: #FF4719;

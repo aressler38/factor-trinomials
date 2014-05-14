@@ -6,6 +6,7 @@ define([
      * @constructor
      */
     function NumberPad() {
+        var numpad = document.querySelector(".numpad");
         this.$numpad = $(".numpad");
         var buff = [];
         var that = this;
@@ -127,9 +128,14 @@ define([
 
         // I don't like unbinding previous handlers like this, but it works for now.
         this.$numpad.off();
+        /*
         this.$numpad[0].addEventListener("mousedown", dragHandler);
         this.$numpad[0].addEventListener("touchstart", dragHandler);
         this.$numpad[0].addEventListener("click", clickHandler);
+        */
+        numpad.addEventListener("mousedown", dragHandler);
+        numpad.addEventListener("touchstart", dragHandler);
+        numpad.addEventListener("mousedown", clickHandler);
     }
 
     /**
