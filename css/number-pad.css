@@ -1,5 +1,6 @@
 .numpad {
     position:absolute;
+    -webkit-transform: translate3d(0px,0px,0px);
     top: 0px;
     border: 1px solid #666;
     border-radius: 10px;
