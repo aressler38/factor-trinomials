@@ -10,7 +10,6 @@ define([
         var buff = [];
         var that = this;
 
-        document.ontouchmove = function(e){e.preventDefault();};
 
         /**
          * @public
@@ -72,8 +71,7 @@ define([
          * @callback
          */ 
         function dragHandler(event) {
-            event.preventDefault();
-            event.stopPropagation();
+            //event.preventDefault();
             var cx, cy, x0, y0, x, y;
             if ($(event.target).hasClass("number")) { return null; }
             switch (event.type) {
@@ -108,8 +106,8 @@ define([
 
             /** @callback */
             function drag(event) {
-                event.preventDefault();
-                event.stopPropagation();
+                //event.preventDefault();
+                //event.stopPropagation();
                 switch (event.type) {
                     case "touchmove": 
                         x = event.touches[0].clientX-cx + x0;
