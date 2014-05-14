@@ -194,70 +194,6 @@ header {
     width: 100%;
 }
 
-.tri-dia {
-    position: relative;
-    height: 354px;
-    width: 356px;
-    left: 421px;
-    top: 61px;
-}
-
-.tri-top {
-    position: relative;
-    width: 120px;
-    height:120px;
-    left: 116px;
-    top: 29px;    
-    border: 2px solid blue;
-    background: yellow;
-    -ms-transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-}
-
-.tri-top2 {
-    position: relative;
-    width: 120px;
-    height: 120px;
-    top: -9px;
-    left: 202px;
-    border: 2px solid blue;
-    background: white;
-    -ms-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
-}
-
-.tri-top3 {
-    position: relative;
-    width: 120px;
-    height: 120px;
-    top: -134px;
-    left: 31px;
-    border: 2px solid blue;
-    background: white;
-    -ms-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
-}
-
-.tri-top4 {
-    position: relative;
-    width: 120px;
-    height: 120px;
-    top: -172px;
-    left: 117px;
-    border: 2px solid blue;
-    background: white;
-    -ms-transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    transform: rotate(45deg);
-}
-
 .sideInfo {
     position: relative;
     width: 200px;
@@ -265,21 +201,7 @@ header {
     font-family: sans-serif;
 }
 
-.ft-triangle1 {
-    position: absolute;
-    top: 120px;
-    left: 20px;
-    height: 0;
-    width: 0;
-}
-
-.eq {
-    font-size: 22px;
-    top: 30px;
-    left: 18px;
-}
-
-.trinomial-wrapper {
+.expression-wrapper {
     position: relative;
     height: auto;
     width: 217px;
@@ -292,288 +214,20 @@ header {
     -moz-border-radius: 3px;
 }
 
+.expression-wrapper > span {
+    font-size: 22px;
+    top: 30px;
+    left: 18px;
+}
+
 .hr1 {
     position: relative;
     display: block;
 }
 
-.ft-box1 {
-    position: relative;
-    height: 97px;
-    width: 100px;
-    border: 1px solid black;
-    left: 200px;
-    top: -6px;
-}
-
-.ft-box2 {
-    position: relative;
-    height: 97px;
-    width: 100px;
-    border: 1px solid black;
-    left: 200px;
-    top: -8px;
-}
-
-.ft-box3 {
-    position: relative;
-    height: 97px;
-    width: 100px;
-    border: 1px solid black;
-    left: 200px;
-    top: -10px
-}
-
-.ft-box4 {
-    position: relative;
-    height: 97px;
-    width: 100px;
-    border: 1px solid black;
-    left: 99px;
-    top: -303px;
-}
-
-.ft-box5 {
-    position: relative;
-    height: 97px;
-    width: 100px;
-    border: 1px solid black;
-    left: 99px;
-    top: -305px;
-}
-
-.ft-box6 {
-    position: relative;
-    height: 97px;
-    width: 100px;
-    border: 1px solid black;
-    left: 99px;
-    top: -307px;
-}
-
-.ft-box7 {
-    position: relative;
-    height: 97px;
-    width: 100px;
-    border: 1px solid black;
-    left: -2px;
-    top: -503px;
-}
-
-.ft-box8 {
-    position: relative;
-    height: 97px;
-    width: 100px;
-    border: 1px solid black;
-    left: -2px;
-    top: -505px;
-}
-
-.tt5 {
-    position: relative;
-    font-size: 19px;
-    top: 5px;
-    left: 25px;
-    z-index: 1;
-    -webkit-transform: rotate(-45deg);
-    -ms-transform: rotate(-45deg);
-    -moz-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-}
-
-.tt6 {
-    position: relative;
-    font-size: 19px;
-    top: 5px;
-    left: 25px;
-    z-index: 1;
-    -webkit-transform: rotate(-45deg);
-    -ms-transform: rotate(-45deg);
-    -moz-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-}
-
-.tt7 {
-    position: relative;
-    font-size: 19px;
-    top: 5px;
-    left: 25px;
-    z-index: 1;
-    -webkit-transform: rotate(-45deg);
-    -ms-transform: rotate(-45deg);
-    -moz-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-}
-
-.tt8 {
-    position: relative;
-    font-size: 19px;
-    top: 5px;
-    left: 25px;
-    z-index: 1;
-    -webkit-transform: rotate(-45deg);
-    -ms-transform: rotate(-45deg);
-    -moz-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-}
-
-.tri-top.example2 {
-    background: white;
-}
-
-.tri-top4.example2 {
-    background: yellow;
-}
-
-.tri-top.example3 {
-    background: white;
-}
-
-.tri-top3.example3 {
-    background: yellow;
-}
-
-.tri-top2.example3 { 
-    background: yellow;
-}
-
-.tri-top.example4 {
-    background-image: radial-gradient(yellow,green);
-}
-
-.tri-top2.example4 {
-    background-image: radial-gradient(yellow,green);
-}
-
-.tri-top3.example4 {
-    background-image: radial-gradient(yellow,green);
-}
-
-.tri-top4.example4 {
-    background-image: radial-gradient(yellow,green);
-}
-
-.tri-dia.example1 {
-    left: 391px;
-    top: 25px;
-}
-
-.tri-dia.example2 {
-    top: 2px;
-}
-
 .sideInfo.example4 {
     color: turquoise;
     font-size: 25px;
-}
-
-.tri-top.example5 {
-    background: white;
-}
-
-.tri-dia.example5 {
-    left: 600px;
-    top: -4px;
-}
-
-.ft-box2.example5 {
-    background: yellow;
-}
-
-.ft-box5.example5 {
-    background: yellow;
-}
-
-.tt9 {
-    position: relative;
-    top: 32px;
-    left: 36px;
-    font-size: 19px;
-}
-
-.tt10 {
-    position: relative;
-    top: 32px;
-    left: 36px;
-    font-size: 23px;
-}
-
-.tt11 {
-    position: relative;
-    top: 32px;
-    left: 36px;
-    font-size: 19px;
-}
-
-.tt12 {
-    position: relative;
-    top: 32px;
-    left: 36px;
-    font-size: 19px;
-}
-
-.tt13 {
-    position: relative;
-    top: 36px;
-    left: 45px;
-    font-size: 24px;
-}
-
-.ft-box5.example6 {
-    background: yellow;
-}
-
-.tt14 {
-    position: relative;
-    top: 40px;
-    left: 45px;
-    font-size: 24px;
-}
-
-.tt15 {
-    position: relative;
-    top: 35px;
-    left: 40px;
-    font-size: 19px;
-}
-
-.tt16 {
-    position: relative;
-    top: 35px;
-    left: 40px;
-    font-size: 19px;
-}
-
-.ft-box1.example8 {
-    background-image: radial-gradient(yellow,green);
-}
-
-.ft-box2.example8 {
-    background-image: radial-gradient(yellow,green);
-}
-
-.ft-box3.example8 {
-    background-image: radial-gradient(yellow,green);
-}
-
-.ft-box4.example8 {
-    background-image: radial-gradient(yellow,green);
-}
-
-.ft-box5.example8 {
-    background-image: radial-gradient(yellow,green);
-}
-
-.ft-box6.example8 {
-    background-image: radial-gradient(yellow,green);
-}
-
-.ft-box7.example8 {
-    background-image: radial-gradient(yellow,green);
-}
-
-.ft-box8.example8 {
-    background-image: radial-gradient(yellow,green);
 }
 
 .bubble-wrapper {
@@ -583,7 +237,7 @@ header {
 }
 
 .bubble {
-    background-color: #ffffff;
+    background-color: darkgoldenrod;
     height: auto;
     width: 200px;
     padding: 13px;
@@ -600,7 +254,7 @@ header {
     top: 20%;
     left: -37px;
     border-top: 20px outset black;
-    border-top-color: #ffffff; 
+    border-top-color: darkgoldenrod; 
     border-left: 20px solid transparent;
     border-right: 20px solid transparent; 
     -webkit-transform: rotate(90deg);
@@ -623,11 +277,6 @@ header {
 
 .bubble.example3:after {
     top: 34%;
-}
-
-.tri-dia.example3 {
-    left: 377px;
-    top: 11px;
 }
 
 .bubble-point.example3 {
@@ -687,18 +336,6 @@ header {
     top: -441px;
 }
 
-.ft-box4.example6 {
-    background: lightblue;
-}
-
-.ft-box7.example6 {
-    background: yellow;
-}
-
-.ft-box1.example7 {
-    background: lightblue;
-}
-
 .sideInfo.example7 {
     left: 375px;
     top: -152px;
@@ -716,22 +353,6 @@ header {
 
 .bubble-point.example7 {
     top: 16px; 
-}
-
-.ft-triangle1.example8 {
-    top: 136px;
-}
-
-.ft-box1.example9 {
-    background: yellow;
-}
-
-.ft-box3.example9 {
-    background: yellow;
-}
-
-.ft-box8.example9 {
-    background: lightblue;
 }
 
 .sideInfo.example8 {
@@ -782,27 +403,4 @@ header {
     background-color: black;
 }
 
-.ft-box1.example10 {
-    background-image: radial-gradient(grey, lightblue);
-}
 
-.ft-box4.example10 {
-    background-image: radial-gradient(grey, lightblue);
-}
-
-.ft-box7.example10 {
-    background-image: radial-gradient(grey, lightblue);
-}
-
-.ft-box8.example10 {
-    background-image: radial-gradient(grey, lightblue);
-}
-
-.tri-dia.example4 {
-    left: 391px;
-    top: 9px;
-}
-
-.ft-triangle1.example6 {
-    top: 191px;
-}
