@@ -79,7 +79,7 @@ header {
 }
 .ft-trinomial .ft-trinomial-equation {
     font-style: italic;
-    font-family: CMSY10, CMEX10, Symbol, Times;
+    font-family: Times;
     font-size: 1.5em;
     display: inline-block;
 }
