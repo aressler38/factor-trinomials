@@ -196,7 +196,7 @@ header {
 }
 
 .ft-finalContainer {
-    display: inline-block;
+    display: block;
 }
 
 .example-wrapper {

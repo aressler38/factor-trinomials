@@ -1,0 +1,13 @@
+{
+    "name": "FactorQuadratics",
+    "version": "0.0.1",
+    "app": {
+        "launch": {
+            "local_path": "dist/index.html"
+        }
+    },
+    "description": "An algegra math program",
+    "icons": {
+        "128": "/home/alexander/factor-trinomials/icons/logo_128x128.png"
+    }
+}

@@ -2,7 +2,7 @@
 @import url("ft-style.css");
 @import url("button.css");
 @import url("utility.css");
-@import url("modal.css"); /* DEPRECATED ??? */
+@import url("modal.css"); 
 @import url("rectangle.css");
 @import url("number-pad.css");
 @import url("hints.css");
