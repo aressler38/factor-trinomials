@@ -13,8 +13,9 @@ define(
     "./rectangle",
     "./var/randomInt",
     "./NumberPad",
-    "./var/numpad"
-  ], function(appMessenger, Diamond, Rectangle, randomInt, NumberPad, numpad) {
+    "./var/numpad",
+    "./templates"
+  ], function(appMessenger, Diamond, Rectangle, randomInt, NumberPad, numpad, templates) {
 
     function FTMessengerCentral() {
 
@@ -266,23 +267,29 @@ define(
             rectEls[0] = checkSimpleCases(rectEls[0]);
             rectEls[2] = checkSimpleCases(rectEls[2]);
            
-            if (parseInt(rectEls[1]) >= 0){rectEls[1] = "+"+rectEls[1];}
-            if (parseInt(rectEls[3]) >= 0){rectEls[3] = "+"+rectEls[3];}
-            
+            if (parseInt(rectEls[1]) >= 0) { rectEls[1] = "+"+rectEls[1]; }
+            if (parseInt(rectEls[3]) >= 0) { rectEls[3] = "+"+rectEls[3]; }
             
             $(".ft-finalContainer").show();
-            $(".ft-finalContainer .explanationArea").html("Great! The factors are exactly: " + "<br>" + "(" + rectEls[0] + rectEls[1] + ") (" + rectEls[2] + rectEls[3] + ") = " + $(".ft-trinomial span").html() + "<br>");
+
+            var $modal = $(templates.modal);
+            $modal.find(".front").html("Great! The factors are exactly: " + "<br/>" + "(" + rectEls[0] + rectEls[1] + ") (" + rectEls[2] + rectEls[3] + ") = " + $(".ft-trinomial span").html() + "<br/> <div><button id=\"next-button\">Next</button></div>");
 
             setTimeout(function(){
                 $(".ft-finalContainer button").attr("disabled", false);
+                $("#next-button").on("click", function() {
+                    $(document.body).find(".modal").remove();
+                    appMessenger.send("randomize"); 
+                });
             },1000);
+
+            $(document.body).append($modal);
             
             function checkSimpleCases(str) {
-                if (str == "1x"){return "x";}
-                if (str == "-1x"){return "-x";}
+                if (str === "1x"){return "x";}
+                if (str === "-1x"){return "-x";}
                 return str;
             }
-            
         }
         
         function colorRectangleInput($selector, bool) {

@@ -38,7 +38,6 @@ define(
         var $rectangle  = $(templates.rectangle);
         var $diamond    = $(templates.diamond);
         var $numberPad  = $(templates.numberPad);
-        var $finalContainer = $(templates.finalContainer);
         var body;
 
         //$con.append($header); 
@@ -47,7 +46,6 @@ define(
         $con.append($rectangle); 
         $con.append($diamond); 
         $con.append($("<hr class='hr-divider'>"));
-        $con.append($finalContainer);
         $con.append($numberPad);
         $con.css({
             width: window.innerWidth,
@@ -85,8 +83,6 @@ define(
     function run() {
         var rectangle       = new Rectangle();
         var brain           = new FTMessengerCentral();
-        var nextButton      = document.getElementById("next-button");
-        nextButton.onclick  = function() {brain.send("randomize"); };
         brain.send("randomize");
         return null;
     }

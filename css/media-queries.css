@@ -1,4 +1,4 @@
-@media (max-width: 520px) {
+@media screen and (min-width: 520px) and (max-width:740px) {
     #factor-trinomials > div {
         margin-left: 10px;
     }
@@ -16,20 +16,105 @@
         padding: 10px 4px 4px 4px;
     }
 
+    /* RECTANGLES */
+    .ft-rectangle {
+        padding: 10px 0px 0px 0px;
+        width: 240px;
+        height: 230px;
+    }
+    .ft-rectangle div {
+        width: 64px;
+        height: 64px;
+        line-height: 64px;
+    }
+    .ft-rectangle .ftH {
+        font-size: 10px;
+        line-height: 10px;
+    }
+    /* END RECTANGLES */
 
+    /*  DIAMOND */
+    .ft-diamond {
+        width: 240px;
+        height: 240px;
+    }
+    .ft-diamond .diamond-part {
+        width: 64px;
+        height: 64px;
+        line-height: 64px;
+        font-size:14px;
+
+    }
+    /* END DIAMOND */
+
+
+    /* HINTS */
+    .hint-container {
+        position: absolute;
+        z-index: 1000;
+        font-size: 12px;
+        background: white;
+        top: 2px;
+        left 0px;
+    }
+    .hint-container > span {
+        box-shadow: none;
+    }
+    .hint-container.show {
+        position: absolute;
+        border: 6px solid white;
+        padding: 0px 0px 0.5em 5px;
+        box-shadow: 0px 0px 10px 0px #000;
+    }
+    .hint-button-wrapper {
+        position: absolute;
+        top: 8px;
+        right: 50px;
+        font-size: 12px;
+    }
+    .hint-button:before {
+        font-size: 12px;
+    }
+    /* END HINTS */
+
+}
+
+
+/* 4 Inch Screens */
+@media screen and (max-width: 520px) {
+    #factor-trinomials > div {
+        margin-left: 10px;
+    }
+    .ft-trinomial {
+        position: relative;
+        min-width: 50%;
+        top: 2px;
+        padding: 0px;
+        margin-bottom: 22px;
+        height: 1em;
+        font-weight: normal;
+        font-size:12px;
+    }
+    .ft-trinomial > span {
+        padding: 10px 4px 4px 4px;
+    }
 
     /* RECTANGLES */
     .ft-rectangle {
         padding: 10px 0px 0px 0px;
         width: 200px;
         height: 190px;
+        font-size:14px;
     }
     .ft-rectangle div {
         width: 55px;
         height: 55px;
+        font-size:14px;
+        line-height:55px;
     }
     .ft-rectangle .ftH {
         font-size: 10px;
+        line-height: 10px;
     }
     /* END RECTANGLES */
 
@@ -42,7 +127,7 @@
         width: 48px;
         height: 48px;
         line-height: 48px;
-
+        font-size:14px;
     }
     /* END DIAMOND */
 
