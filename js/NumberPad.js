@@ -11,7 +11,6 @@ define([
         var buff = [];
         var that = this;
 
-
         /**
          * @public
          * clear buffer
@@ -39,7 +38,7 @@ define([
                 _onclear(event);
                 return null;
             }
-            else { 
+            else if (buff.length < 5) { 
                 buff.push(content); 
                 that.onclick(buff.join(""), buff);
             }
@@ -125,14 +124,8 @@ define([
             }
         }
 
-
         // I don't like unbinding previous handlers like this, but it works for now.
         this.$numpad.off();
-        /*
-        this.$numpad[0].addEventListener("mousedown", dragHandler);
-        this.$numpad[0].addEventListener("touchstart", dragHandler);
-        this.$numpad[0].addEventListener("click", clickHandler);
-        */
         numpad.addEventListener("mousedown", dragHandler);
         numpad.addEventListener("touchstart", dragHandler);
         numpad.addEventListener("mousedown", clickHandler);
@@ -162,8 +155,14 @@ define([
         this.$numpad.addClass("offscreen");
     };
 
-    NumberPad.prototype.show = function() {
+    NumberPad.prototype.show = function(dims) {
         this.$numpad.removeClass("offscreen");
+        if (dims instanceof Array) {
+            this.$numpad.css({
+                left: dims[0] + "px",
+                top: dims[1] + "px"
+            });
+        }
     };
 
 

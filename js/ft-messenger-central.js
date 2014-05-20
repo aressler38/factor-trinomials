@@ -91,7 +91,6 @@ define(
             
             diamondElements = formatInput( getDiamondElements() );
             console.log(diamondElements);
-
             bindRectangleEvents();
         }
 
@@ -102,7 +101,7 @@ define(
         function rectangleInputHandler(event) {
             $currentRectangle = $(this);
             numpad.clear();
-            numpad.show();
+            numpad.show([245, 50]);
             unselectRectangles();
             $currentRectangle.addClass("selected");
             setAndCheckRectangleElement();
