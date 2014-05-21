@@ -101,7 +101,11 @@ define(
         function rectangleInputHandler(event) {
             $currentRectangle = $(this);
             numpad.clear();
-            numpad.show([245, 50]);
+            (function(w){
+                if (w < 520) { numpad.show([245, 50]); }
+                else if (w < 741) { numpad.show([260, 70]); }
+                else { numpad.show([400, 120]); }
+            })(window.innerWidth);
             unselectRectangles();
             $currentRectangle.addClass("selected");
             setAndCheckRectangleElement();
