@@ -43,6 +43,14 @@ module.exports = function( grunt ) {
                 .replace( rdefineEnd, "" );
         }
         else {
+            if (name.match(/jquery/)) {
+                console.log("IGNORING JQUERY FILE FOR PROCESSING: ", name);
+                return contents;
+            }
+            else if (name.match(/require/)) {
+                console.log("IGNORING REQUIREJS FILE FOR PROCESSING: ", name);
+                return contents;
+            }
             // ignore main module
             switch (name) {
                 case "js/main":
