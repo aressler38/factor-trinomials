@@ -100,11 +100,12 @@ module.exports = function( grunt ) {
         result = null; // clear it
         result = rVars.exec(contents);
         vars = result[1].split(",");
-        for (var i = 0; i< vars.length; i++) console.log(vars[i]);
+        for (var i = 0; i< vars.length; i++) { console.log(vars[i]); }
 
 
         paths.forEach(function(path, index, array) {
             // TODO: Hmmmm... replacing ../ with ./ should be rethought, but it works fine for this project.
+            path = path.trim();
             body += vars[index] + ":" + "'" + fs.readFileSync(path.replace("../", "./"), {encoding:"utf8", flag:"r"})
                 .replace(/\n/g, "") // remove line breaks
                 .replace(/([^\\])'/g, "$1\\'") + "'"; // escape single quotes
