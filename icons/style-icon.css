@@ -1,0 +1,79 @@
+body {
+    background: transparent;
+}
+#mainContainer {
+    position: relative;
+    width: 520px;
+    height: 520px;
+    background-image:-webkit-radial-gradient(50% 40%, closest-corner,yellow,#00B26B);
+    border-radius: 82px;
+    -moz-border-radius: 82px;
+}
+
+#mainContainer span:nth-child(1) {
+    position:absolute;
+    display: inline-block;
+    top: 7%;
+    left: 6%;
+    word-wrap: break-word;
+    width: 5px;
+    line-height: 0.8em;
+}
+
+#diamond {
+    position: relative;
+    left: 50%;
+    top: 40%;
+    width: 0px;
+    height: 0px;
+}
+#diamond > div {
+    -webkit-transform-origin: 0px 0px;
+    position: absolute;
+    border: 2px solid black;
+    width: 110px;
+    height: 110px;
+    background-image: radial-gradient(grey,black);
+}
+
+#diamond > div:nth-child(1) {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+}
+
+
+#diamond > div:nth-child(2) {
+    -webkit-transform: rotate(225deg);
+    -moz-transform: rotate(225deg);
+    -ms-transform: rotate(225deg);
+}   
+
+#diamond > div:nth-child(3) {
+    -webkit-transform: rotate(315deg);
+    -moz-transform: rotate(315deg);
+    -ms-transform: rotate(315deg);
+}
+
+#diamond > div:nth-child(4) {
+    -webkit-transform: rotate(135deg);
+    -moz-transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
+}
+
+#fq-title {
+    position: absolute;
+    bottom: 10%;
+    left: 5%;
+    letter-spacing: 12px;
+    text-align: center;
+}
+
+.text {
+    -webkit-text-stroke-width: 3px;
+    -webkit-text-stroke-color: black;
+    -webkit-text-fill-color: white;
+    font-size: 69px;
+    font-family: 'Permanent Marker';
+}
+
