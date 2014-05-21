@@ -1,0 +1,79 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/main.css" />
+        <script src="js/jquery/jquery-2.1.1.min.js"></script>
+        <script src="js/require.js"></script>
+        
+    </head>
+
+    <body>
+        <style>
+            .nav-button {
+                display:inline-block;
+                border: 1px solid blue;
+                padding: 10px;
+                user-select: none;
+            }
+            .nav-button-wrapper {
+                position: absolute;
+                top: 20px;
+                left: 400px;
+                z-index:1000000;
+            }
+        </style>
+        <div class="nav-button-wrapper">
+            <div class="nav-button" id="prev">prev</div>
+            <div class="nav-button" id="next">next</div>
+        </div>
+        <div id="exampleContainer"> </div>
+
+        <script>
+            require(["js/example.controller"],function(Examples){
+                var examples    = new Examples();
+                var $body       = $(document.body);
+                var example     = null;
+                var container   = document.getElementById("exampleContainer");
+                var next        = document.getElementById("next");
+                var prev        = document.getElementById("prev");
+                var oldChild    = null;
+
+                examples.set(-1);
+                clickNext();
+
+                next.addEventListener("click", clickNext);
+                prev.addEventListener("click", function() {
+                    oldChild = example;
+                    example = examples.prev();
+                    if (null === example) {
+                        console.log("start");
+                    }
+                    else { 
+                        appendExample(); 
+                    }
+                });
+
+                function clickNext() {
+                    oldChild = example;
+                    example = examples.next();
+                    if (null === example) {
+                        console.log("finished");
+                    }
+                    else {
+                        appendExample(); 
+                    }
+                }
+
+                function appendExample() {
+                    container.innerHTML = "";
+                    container.appendChild(example);
+                }
+
+
+
+
+            });
+        </script>
+
+    </body>
+</html>
