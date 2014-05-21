@@ -1,5 +1,4 @@
 define([
-
     "./text!../html/templates/number-pad.html",
     "./text!../html/templates/nav-buttons.html",
     "./text!../html/templates/header.html",
@@ -9,7 +8,7 @@ define([
     "./text!../html/templates/hints.html",
     "./text!../html/templates/modal.html",
     "./text!../html/templates/trinomial.html",
-    "./text!../html/templates/example-ft.html"    
+    "./text!../html/templates/example-ft.html"
 ], function(numberPad, navButtons, header, finalContainer, rectangle, diamond, hints, modal, trinomial, examples ) {
     // TODO: can't have a line break in the function argument!!!!
 
