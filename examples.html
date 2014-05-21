@@ -11,9 +11,26 @@
         <style>
             .nav-button {
                 display:inline-block;
-                border: 1px solid blue;
                 padding: 10px;
+                margin: 3px;
+                width: 3.5em;
+                line-height: 0.5em;
+                text-align: center;
+                font-size: 20px;
+                background: #99FF33;
+                -webkit-box-shadow: 1px 4px 0px #4C801A;
+                -moz-box-shadow: 1px 4px 0px #4C801A;
+                box-shadow: 1px 4px 0px #4C801A;
+                border-radius: 5px;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                -ms-user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
                 user-select: none;
+                -ms-user-drag: none;
+                -moz-user-drag: none;
+                -webkit-user-drag: none;
             }
             .nav-button-wrapper {
                 position: absolute;
@@ -23,8 +40,19 @@
             }
         </style>
         <div class="nav-button-wrapper">
-            <div class="nav-button icon-arrow-left" id="prev">prev</div>
-            <div class="nav-button icon-arrow-right" id="next">next</div>
+            <div class="nav-button" id="prev">
+                <span class="icon-arrow-left"></span>
+                <span>
+                    prev
+                </span>
+                
+            </div>
+            <div class="nav-button" id="next">
+                <span>
+                    next
+                </span>
+                <span class="icon-arrow-right"></span>
+            </div>
         </div>
         <div id="exampleContainer"> </div>
 
