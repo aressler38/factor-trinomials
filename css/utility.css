@@ -76,10 +76,16 @@
 .flash {
     border-color:green;
     background:yellow;
-
+    box-shadow: 0px 0px 3px 4px green;
+    z-index:100;
 }
 .flash.red {
+    box-shadow: 0px 0px 3px 4px red, inset 0px 0px 20px 5px red;
     background: red;
+}
+.flash.blue {
+    box-shadow: 0px 0px 3px 4px green, inset 0px 0px 20px 5px blue;
+    background: lightblue;
 }
 
 /* END FLASH HINT CSS */

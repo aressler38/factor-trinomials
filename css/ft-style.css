@@ -14,6 +14,9 @@ body {
     font-family: sans-serif;
     margin: 0;
 }
+body *:not(".numpad") {
+    -webkit-transition: all 0.166s; 
+}
 
 #factor-trinomials {
     position:relative;
@@ -106,12 +109,15 @@ header {
     -webkit-tap-highlight-color: transparent;
 }
 
+.diamond-part {
+    background: white;
+}
+
 .ft-diamond .diamond-part {
     position: absolute;
     top: 50%;
     left: 50%;
     border: 3px solid blue;
-    background: white;
     width: 97px;
     height: 97px;
     line-height:97px;
