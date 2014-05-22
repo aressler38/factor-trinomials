@@ -14,11 +14,23 @@ define(
     "./var/randomInt",
     "./NumberPad",
     "./var/numpad",
-    "./templates"
-  ], function(appMessenger, Diamond, Rectangle, randomInt, NumberPad, numpad, templates) {
+    "./templates",
+    "./var/utils",
+    "./hints",
+    "./model"
+  ], function(appMessenger, Diamond, Rectangle, randomInt, NumberPad, numpad, templates, utils, Hints, Model) {
 
     function FTMessengerCentral() {
+        utils.setGlobals(window);
+        // STATES
+        // 1 := user working on diamond
+        // 2 := user working on rectangle
+        var state = 1;
+        var model = new Model();
 
+        var hints = new Hints();
+        hints.render("#factor-trinomials");
+        hints[model.get("hints")]();
         
         var $currentRectangle = null;
         // diamond get's reset by initialize
@@ -92,6 +104,8 @@ define(
             diamondElements = formatInput( getDiamondElements() );
             console.log(diamondElements);
             bindRectangleEvents();
+            state = 2;
+            model.set("state", state);
         }
 
         /**
@@ -101,11 +115,7 @@ define(
         function rectangleInputHandler(event) {
             $currentRectangle = $(this);
             numpad.clear();
-            (function(w){
-                if (w < 520) { numpad.show([245, 50]); }
-                else if (w < 741) { numpad.show([260, 70]); }
-                else { numpad.show([400, 120]); }
-            })(window.innerWidth);
+            utils.setNumpad(numpad);
             unselectRectangles();
             $currentRectangle.addClass("selected");
             setAndCheckRectangleElement();
@@ -118,7 +128,10 @@ define(
 
         function insertParsedValue($currentRectangle) {
             var parsedValue = null;
-            parsedValue = $currentRectangle.find("span").html().replace(/\+/g,"").replace(/ /g,"");
+            var buff = null;
+            buff = $currentRectangle.find("span").html();
+            if (buff === undefined) { return false; }
+            parsedValue = buff.replace(/\+/g,"").replace(/ /g,"");
             $currentRectangle.find("span").html(parsedValue);
             return parsedValue;
         }
@@ -276,7 +289,7 @@ define(
             $(".ft-finalContainer").show();
 
             var $modal = $(templates.modal);
-            $modal.find(".front").html("Great! The factors are exactly: " + "<br/>" + "(" + rectEls[0] + rectEls[1] + ") (" + rectEls[2] + rectEls[3] + ") = " + $(".ft-trinomial span").html() + "<br/> <div><button id=\"next-button\">Next</button></div>");
+            $modal.find(".front").html("Great! The factors are exactly: " + "<br/>" + "(" + rectEls[0] + rectEls[1] + ") (" + rectEls[2] + rectEls[3] + ") = " + $(".ft-trinomial span").html() + "<br/> <div><button id=\"next-button\">Next</button><div class=\"your-score\"></div></div>");
 
             setTimeout(function(){
                 $(".ft-finalContainer button").attr("disabled", false);
@@ -286,7 +299,11 @@ define(
                 });
             },1000);
 
+            model.increment("score");
+            model.write();
             $(document.body).append($modal);
+            $modal.find(".your-score").html("Score: "+model.get("score"));
+            
             
             function checkSimpleCases(str) {
                 if (str === "1x"){return "x";}
@@ -430,6 +447,7 @@ define(
                     continue;
                 }
                 else {
+                    if (false === data[i] || true === data[i]) { return false; }
                     data[i] = data[i].replace("<sup>2</sup>","");
                     data[i] = data[i].replace(/</g,"");    
                     data[i] = data[i].replace(/>/g,"");    
@@ -476,7 +494,10 @@ define(
             }
         }
 
-        function getParameters() {
+        function getParameters(cb) {
+            if (typeof cb === "function") {
+                cb(polynomial);
+            }
             return polynomial;
         }
 
@@ -561,6 +582,8 @@ define(
             appMessenger.send("setMainDiagonal");
             appMessenger.send("onLoad");
             appMessenger.send("clearRectangle");
+            state = 1;
+            model.set("state", state);
         });
 
         appMessenger.on("ft-guide", guide);
@@ -591,6 +614,13 @@ define(
                 }, 1);
             });
         });
+        appMessenger.on("getState", function(callback) {
+            return ((typeof callback === "function") ? callback(state) : false, state);
+        });
+        appMessenger.on("getModel", function(callback) {
+            return ((typeof callback === "function") ? callback(model) : false, model);
+        });
+
 
     }
     return FTMessengerCentral;
