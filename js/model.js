@@ -14,7 +14,8 @@ define(function() {
                 "type": "localStorage"
             },
             "model": {
-                "hints": "on"
+                "hints": "on",
+                "score": 0
             }
         }, config);
         var model = {};
@@ -54,7 +55,7 @@ define(function() {
         };
 
         this.increment = function(key) {
-            this.set(key, this.get(key) + 1);
+            this.set(key, parseInt(this.get(key)) + 1);
         };
 
         this.dump = function() {
