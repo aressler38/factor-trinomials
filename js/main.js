@@ -4,8 +4,8 @@ define(
     "./rectangle",
     "./templates", 
     "./var/primeFactors",
-    "./hints"
-  ], function(FTMessengerCentral, Rectangle, templates, primeFactors, Hints) {
+    "./var/appMessenger"
+  ], function(FTMessengerCentral, Rectangle, templates, primeFactors, appMessenger) {
 
     var containerID = "factor-trinomials";
     var app = {};
@@ -27,12 +27,8 @@ define(
             }
         });
 
-        //document.ontouchmove = function(e){e.preventDefault();};
-
-
         Math.primeFactors = primeFactors;
         var $con = $(document.getElementById(app.containerID));
-        //var $header     = $(templates.header);
         var $trinomial  = $(templates.trinomial);
         var $hints      = $(templates.hints);
         var $rectangle  = $(templates.rectangle);
@@ -40,7 +36,6 @@ define(
         var $numberPad  = $(templates.numberPad);
         var body;
 
-        //$con.append($header); 
         $con.append($trinomial); 
         $con.append($hints); 
         $con.append($rectangle); 
@@ -52,9 +47,6 @@ define(
             height: window.innerHeight
         });
 
-        var hints = new Hints();
-        hints.render("#factor-trinomials");
-        hints.on();
 
         if (window.isMobile) {
             $(".numpad").css({ padding: "15px" });
@@ -90,6 +82,12 @@ define(
 
     window.isMobile = (function(a){return /Mobile|Android|BlackBerry/.test(a);})(navigator.userAgent||navigator.vendor||window.opera);
 
+    window.onunload = function() {
+
+        appMessenger.send("getModel", function(m) {
+            m.write();
+        });
+    };
 
     window.app = app;
     return app;
