@@ -1,12 +1,13 @@
 define(
 [
-],function() {
+    "./var/appMessenger"
+],function(appMessenger) {
 
     function Hints() {
         var $hintContainer = $(".hint-container");
         var hintButton;
         var hintButtonWrapper;
-        var state = 0; // 1:on, 0:off
+        var state = 0; // 1:on, 0:off NOT APP STATE
         var MAX_flashCount = 4;
         var flashLag = 500;
         var HINT_TIMEOUT = (MAX_flashCount * flashLag)<<1;
@@ -15,27 +16,86 @@ define(
         var register = null;
         var flashQueue = [];
         var MAX_flashQueue = 1;
+        var APP_STATE = null;
 
+        function getDiamond(number) {
+            return document.querySelector("span[data-diamond=\""+number+"\"]");
+        }
+        function getDiamondInnerContent(number) {
+            return getDiamond(number).querySelector("span").innerHTML;
+        }
+        function numberCleanup(n) {
+            return (n===1) ? "" : (n===-1) ? "-" : n;
+        }
+
+        function getAppState() {
+            return (appMessenger.send("getState", function(s) { APP_STATE = s; }), APP_STATE);
+        }
+
+        function flashNextMissingDiamondPart() {
+            appMessenger.send("getParameters", function(p) {
+                [].splice.call(p).forEach(function(x,i,a) {
+                    a[i] = numberCleanup(x);
+                });
+                register = [
+                    document.querySelector(".leading-term").innerHTML,
+                    document.querySelector(".middle-term").innerHTML,
+                    document.querySelector(".constant-term").innerHTML
+                ];
+                // start with 1, then go to 3, and finish with 2 & 4;
+                if (getDiamondInnerContent(1) === "") {
+                    hintText("First, put the middle term ("+p[1]+"x) in the flashing diamond.");
+                    flash([getDiamond(1), ".middle-term"], "blue");
+                } 
+                else if (getDiamondInnerContent(3) === "") {
+                    hintText("The <u>product</u> of ("+register[0]+") and ("+register[2]+") goes in the flashing diamond.");
+                    flash([getDiamond(3), ".leading-term", ".constant-term"], "blue");
+                }
+                else if (getDiamondInnerContent(2) === "" || getDiamondInnerContent(4) === "") {
+                    hintText("The sum of the two side diamonds equals ("+register[1]+") <u>and</u> their product is equal to ("+p[2]+"x<span class=\"exp\">2</span>&nbsp;).");
+                    flash([getDiamond(2), getDiamond(4), getDiamond(1)], "blue", function() {
+                        flash([getDiamond(2), getDiamond(4), getDiamond(3)], "blue");
+                    });
+
+                }
+            });
+        }
 
         function clickHandler(event) {
             if (flashQueue.length) { return null; }
             var className = event.target.getAttribute("class") || "";
+
+            localStorage["ft-click"] = getAppState();
+
+            if (typeof event.target.dataset.diamond === "string") {
+                flashNextMissingDiamondPart();
+                return null;
+            }
+
             // Rectangle boxes
-            if (className.match(/fta|ftb|ftc|ftd/)) {
-                if (className.match(/fta/)) {
-                    flash("."+className+", .ftx1, .ftx2, .ft-trinomial-equation .leading-term", "");
-                    hintText("This squre is the product square; find the two factors.");
+            if (className.match(/fta|ftb|ftc|ftd|ftx1|ftx2|ftk1|ftk2/)) {
+                if (true && 1===getAppState()) {
+                    flashNextMissingDiamondPart();
+                    return null;
                 }
-                else if (className.match(/ftb/)) {
-                    flash("."+className+", .ftk2, .ftx1", "");
+                // filter on particular class name
+                if (className.match(/ftx1/)) {
+                    flash(".fta, .ftx1, .ftb, .ftH", "blue");
+                    hintText("");
+                }
+                else if (className.match(/fta/)) { 
+                    flash(".fta, .ftx2, .ftx1", "blue");
+                }
+                else if (className.match(/ftb|ftx1|ftk2/)) {
+                    flash(".ftb, .ftk2, .ftx1", "blue");
                     hintText("This square is one of the middle terms.");
                 }
-                else if (className.match(/ftc/)) {
-                    flash("."+className+", .ftk1, .ftx2", "");
+                else if (className.match(/ftc|ftk1|ftx2/)) {
+                    flash(".ftc, .ftk1, .ftx2", "blue");
                     hintText("This square is one of the middle terms.");
                 }
                 else {
-                    flash("."+className+", .ftk1, .ftk2, .ft-trinomial-equation .c", "");
+                    flash(".ftd, .ftk1, .ftk2, .ft-trinomial-equation .c", "blue");
                     hintText("This is the square for the constant term.");
                 }
             }
@@ -48,6 +108,14 @@ define(
         }
 
         function flash(selector, color, callback) {
+            function handleClasses(ar) {
+                if (selector instanceof Array) {
+                    selector.forEach(function(s) {
+                        $(s)[ar+"Class"]("flash "+color); 
+                    });
+                }
+                else { $(selector)[ar+"Class"]("flash "+color); }
+            }
             var flashCount = MAX_flashCount;
             if (flashQueue.length >= MAX_flashQueue) {
                 return null;
@@ -56,10 +124,10 @@ define(
             function _flash() {
                 if ( (now() - time > flashLag) && flashCount ) {
                     if (flashCount%2) {
-                        $(selector).removeClass("flash "+color);
+                        handleClasses("remove");
                     }
                     else {
-                        $(selector).addClass("flash "+color);
+                        handleClasses("add");
                     }
                     flashCount--;
                     time = now();
@@ -77,7 +145,9 @@ define(
             return window.requestAnimationFrame(_flash);
         }
 
-        function hintText(hint) {
+        function hintText(hint, delay) {
+            delay = (delay) ? delay : 0;
+            window.setTimeout(function() {
             $hintContainer.addClass("show");
             $hintContainer.find(".hint").html(hint);
             window.setTimeout(function() {
@@ -85,16 +155,24 @@ define(
                     $hintContainer.removeClass("show");
                 }
             }, HINT_TIMEOUT);
+            }, delay);
         }
         function on() {
             state = 1;
             $(hintButton).addClass("on");
             document.addEventListener("mousedown", clickHandler);
+            appMessenger.send("getModel", function(m) {
+                m.set("hints", "on");
+            });
         }
         function off() {
             $(hintButton).removeClass("on");
             state = 0;
             document.removeEventListener("mousedown", clickHandler);
+            appMessenger.send("getModel", function(m) {
+                console.log('turning off');
+                m.set("hints", "off");
+            });
         }
         function makeButton() {
             hintButtonWrapper = document.createElement("div");
