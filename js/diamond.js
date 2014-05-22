@@ -25,8 +25,9 @@ define(
     "./var/ifOneOrNegOne",
     "./var/prettifySign",
     "./NumberPad",
-    "./var/numpad"
-  ],function(appMessenger, brain, ifOneOrNegOne, prettifySign, NumberPad, numpad) {
+    "./var/numpad",
+    "./var/utils"
+  ],function(appMessenger, brain, ifOneOrNegOne, prettifySign, NumberPad, numpad, utils) {
 
     /** IIFE returns diamond object ready for use */
     Diamond = (function() {
@@ -279,7 +280,7 @@ define(
                     numpad.clear();
                     numpad.show();
                     if (!_firstClick) {
-                        numpad.$numpad.css({ top: "30px", left: "22px" });
+                        utils.setNumpad(numpad);
                         _firstClick = true;
                     }
                 }
