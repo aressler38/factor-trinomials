@@ -27,7 +27,6 @@ define(
         // 2 := user working on rectangle
         var state = 1;
         var model = new Model();
-            window.model = model
 
         var hints = new Hints();
         hints.render("#factor-trinomials");
