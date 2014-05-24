@@ -123,6 +123,7 @@ define(
         function setAndCheckRectangleElement() {
             setRectangleElement( insertParsedValue($currentRectangle), $currentRectangle.attr("class") );
             checkRectangleElements();
+            fixRectangleElements();
         }
 
         function setCurrentRectangleElement() {
@@ -139,6 +140,17 @@ define(
             return parsedValue;
         }
 
+        // There's some bug that allows the user to enter a '-' and this program parses it as -1.
+        // However the UI registers it as simply '-'. So this method will replace that with -1.
+        function fixRectangleElements() {
+            $(".ftx1 span,.ftk1 span,.ftx2 span,.ftk2 span").each(function(idx, el) {
+                // handle lone '-'
+                if (el.innerHTML.trim() === "-") {
+                    el.innerHTML += "1";
+                }
+            });
+        }
+
         function unselectRectangles() {
             $(".ftx1,.ftk1,.ftx2,.ftk2").removeClass("selected");
         }
@@ -148,7 +160,6 @@ define(
                 numpad.destroy();
             }
             numpad = new NumberPad();
-            console.log("SETTING NEW NUMPAD");
 
             // insert numpad output in selected rectangle box
             numpad.onenter = function(str, buff) {
@@ -175,7 +186,9 @@ define(
             });
         }
 
+        /** @deprecated */
         function createRectangleInput(e) {
+            console.log("HERE");
             var target = e.currentTarget;
             var input = document.createElement("input");
             $(target).html(input);
@@ -190,10 +203,12 @@ define(
             });
         }
 
+        /** @deprecated */
         function setRectangleInput(target) {
             var parsedValue = this.value.replace(/\+/g,"").replace(/ /g,"");
             $(target).html(renderMath(parsedValue));
             setRectangleElement(parsedValue, $(target).attr("class"));
+            console.log(target, parsedValue);
         }
          
         // START CHECKING THE RECTANGLE
@@ -607,7 +622,7 @@ define(
                 $(".ftc span").addClass("hide");
                 $(".ft-finalContainer button").attr("disabled", true);
                 $(".ft-finalContainer").hide();
-                $(".ftx1,.ftk1,.ftx2,.ftk2").unbind("click", createRectangleInput);
+                //$(".ftx1,.ftk1,.ftx2,.ftk2").unbind("click", createRectangleInput);
                 window.setTimeout(function() {
                     $(".ftH span, .fta span, .ftb span, .ftc span, .ftd span").css({
                         "-webkit-transition"    : "all 1s;",
