@@ -92,7 +92,7 @@ header {
 }
 .ft-trinomial > span:nth-child(1):before {
     margin-right: 1em;
-    content: "Factor the following quadratic:\0020";
+    content: "Factor the quadratic:\0020";
 }
     
 .ft-diamond {

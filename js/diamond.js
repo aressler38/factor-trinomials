@@ -25,9 +25,8 @@ define(
     "./var/ifOneOrNegOne",
     "./var/prettifySign",
     "./NumberPad",
-    "./var/numpad",
     "./var/utils"
-  ],function(appMessenger, brain, ifOneOrNegOne, prettifySign, NumberPad, numpad, utils) {
+  ],function(appMessenger, brain, ifOneOrNegOne, prettifySign, NumberPad, utils) {
 
     /** IIFE returns diamond object ready for use */
     Diamond = (function() {
@@ -253,6 +252,7 @@ define(
                 var selectedDiamond = null;
                 var coefficients;
                 var _firstClick = false;
+                var numpad;
 
                 if (typeof(_p1) === "number" && typeof(_p2) === "number" && typeof(_p3) === "number") {
                     parameters = [_p1, _p2, _p3];
