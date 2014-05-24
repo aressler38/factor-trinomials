@@ -9,8 +9,8 @@ if [ "$PROJECT_HOME" == "" ]; then
 fi
 
 # SET VERSIONS 
-MAJOR=0 # app features
-MINOR=2 # patch
+MAJOR=1 
+MINOR=2 # app feature set / patch
 GIT_REVISION=$(git log --oneline | wc -l)
 
 echo "WRITING NEW VERSIONS TO JSON FILES"

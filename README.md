@@ -26,7 +26,35 @@ To build the project run:
 
 
 
+Revision History
+----------------
+
+1.2.x
+*****
+* Added Hints module.
+* Bugfixes.
+
+1.1.x
+*****
+* Added the number pad module.
+* Bugfixes.
+
+1.0.0
+*****
+* Added grunt build processes.
+* Converted entire project to AMD compliant code.
+* Cleaned code to pass jshint.
+
+0.x.x
+*****
+* Initial feature set.
+* No Hints module.
+* SVG used for Diamond.
+* Not AMD compliant.
+
+
+
+
 TODO
 ----
 * No html template is allowed to have an instance of "\'" (no double quotes) in its content. This is an issue in the build process for templates.
-    
