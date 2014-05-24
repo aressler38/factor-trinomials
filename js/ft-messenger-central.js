@@ -176,8 +176,6 @@ define(
                 setCurrentRectangleElement();
             };
 
-
-            //$(".ftx1,.ftk1,.ftx2,.ftk2").bind("click", createRectangleInput);
             $(".ftx1,.ftk1,.ftx2,.ftk2").on("click", rectangleInputHandler);
             appMessenger.on("genericRectangleComplete", function() {
                 $(".ftx1,.ftk1,.ftx2,.ftk2").off("click", rectangleInputHandler);
@@ -186,31 +184,6 @@ define(
             });
         }
 
-        /** @deprecated */
-        function createRectangleInput(e) {
-            console.log("HERE");
-            var target = e.currentTarget;
-            var input = document.createElement("input");
-            $(target).html(input);
-            $(input).focus();
-            $(input).bind("keyup", function(e){
-                if (e.which === 13) {
-                    setRectangleInput.call(this,target);
-                }
-            });
-            $(input).bind("blur", function(e){
-                setRectangleInput.call(this,target);
-            });
-        }
-
-        /** @deprecated */
-        function setRectangleInput(target) {
-            var parsedValue = this.value.replace(/\+/g,"").replace(/ /g,"");
-            $(target).html(renderMath(parsedValue));
-            setRectangleElement(parsedValue, $(target).attr("class"));
-            console.log(target, parsedValue);
-        }
-         
         // START CHECKING THE RECTANGLE
         function checkRectangleElements() {
             var formattedRectEls = formatInput(rectangleElements);
@@ -527,6 +500,7 @@ define(
             return polynomial; 
         }
 
+        /** @deprecated */
         function createInputBox(arg0,arg1) {
             arg1(arg0);// Wow this isn't human-readable, but it's something in diamond.js.
         }
@@ -560,7 +534,7 @@ define(
         }
 
         function guide(msg) {
-            console.log("you are logging to ft-guide: "+msg);
+            console.log("ft-guide: "+msg);
         }
         
         // ===========================================================================================
@@ -596,7 +570,9 @@ define(
                 Diamond.initialize(a,b,c);
             }
             
+            //DEPRECATED USAGE
             appMessenger.on("createInputBox", createInputBox);
+
             appMessenger.send("setMainDiagonal");
             appMessenger.send("onLoad");
             appMessenger.send("clearRectangle");
@@ -622,7 +598,6 @@ define(
                 $(".ftc span").addClass("hide");
                 $(".ft-finalContainer button").attr("disabled", true);
                 $(".ft-finalContainer").hide();
-                //$(".ftx1,.ftk1,.ftx2,.ftk2").unbind("click", createRectangleInput);
                 window.setTimeout(function() {
                     $(".ftH span, .fta span, .ftb span, .ftc span, .ftd span").css({
                         "-webkit-transition"    : "all 1s;",
