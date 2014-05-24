@@ -47,6 +47,7 @@ define(
         this.on     = function() {appMessenger.on.apply(this, arguments);};
         this.off    = function() {appMessenger.off.apply(this, arguments);};
         this.send   = function() {appMessenger.send.apply(this, arguments);};
+
         function evaluateDiamond(dInput) {
             $.extend(diamond, dInput);
             
@@ -84,7 +85,6 @@ define(
             
             // Check all the terms
             if (diamond['0'] && diamond['1'] && diamond['2'] && diamond['3']) {
-                console.log("diamond ready");
                 appMessenger.off("createInputBox", createInputBox);
                 appMessenger.send("diamondCorrect");
             }
@@ -102,7 +102,6 @@ define(
             $(".ftc span").removeClass("hide");
             
             diamondElements = formatInput( getDiamondElements() );
-            console.log(diamondElements);
             bindRectangleEvents();
             state = 2;
             model.set("state", state);
@@ -126,6 +125,10 @@ define(
             checkRectangleElements();
         }
 
+        function setCurrentRectangleElement() {
+            setRectangleElement( insertParsedValue($currentRectangle), $currentRectangle.attr("class") );
+        }
+
         function insertParsedValue($currentRectangle) {
             var parsedValue = null;
             var buff = null;
@@ -145,6 +148,7 @@ define(
                 numpad.destroy();
             }
             numpad = new NumberPad();
+            console.log("SETTING NEW NUMPAD");
 
             // insert numpad output in selected rectangle box
             numpad.onenter = function(str, buff) {
@@ -155,11 +159,10 @@ define(
             };
             numpad.onclear = function(str, buff) {
                 $currentRectangle.find("span").html("");
-                //diamondElements[selectedDiamond-1] = str;
             };
             numpad.onclick = function(str, buff) {
                 $currentRectangle.find("span").html(str);
-                setAndCheckRectangleElement();
+                setCurrentRectangleElement();
             };
 
 
@@ -191,7 +194,6 @@ define(
             var parsedValue = this.value.replace(/\+/g,"").replace(/ /g,"");
             $(target).html(renderMath(parsedValue));
             setRectangleElement(parsedValue, $(target).attr("class"));
-            checkRectangleElements();
         }
          
         // START CHECKING THE RECTANGLE
@@ -199,6 +201,7 @@ define(
             var formattedRectEls = formatInput(rectangleElements);
             var formattedX1 = parseInt(formattedRectEls[0]);
             var formattedX2 = formattedRectEls[2];
+            var intX2       = parseInt(formattedX2);
             var topRowGCF = getTopRowGCF();
             var parameters = appMessenger.send("getParameters");
             var aIsNegative = (parameters[0] < 0) ? true : false;
@@ -215,13 +218,13 @@ define(
                     colorRectangleInput(".ftx1", false);
                 }
             }
-            else if (!isNaN(formattedX1)) {
+            else if (!Number.isNaN(formattedX1)) {
                 colorRectangleInput(".ftx1", false);
             }
             // check the x2 slot
-            if (!Number.isNaN(parseInt(formattedX2)) && !Number.isNaN(formattedX1)) { // is it empty?
-                if (parseInt(formattedX2)*parseInt(formattedX1) == parameters[0]) { // does x1*x2 = ax^2?
-                    if (formattedX2.replace(parseInt(formattedX2), "").replace(/x/,"") === "" && formattedX2.match(/x/)) { // is there only numbers and an x?
+            if (!Number.isNaN(intX2) && !Number.isNaN(formattedX1)) { // is it empty?
+                if (intX2*formattedX1 === parameters[0]) { // does x1*x2 = ax^2?
+                    if (formattedX2.replace(intX2, "").replace(/x/,"") === "" && formattedX2.match(/x/)) { // is there only numbers and an x?
                         correctness[2] = true;
                         colorRectangleInput(".ftx2", true);
                     }
@@ -236,10 +239,10 @@ define(
             }
 
             // check the k1 slot... it needs to have numbers only. k1*x2 = c, that is, cell c from the grid layout
-            if (!Number.isNaN(parseInt(formattedX2)) && formattedRectEls[1] !== null) {
+            if (!Number.isNaN(intX2) && formattedRectEls[1] !== null) {
                 if (formattedRectEls[1].replace(parseInt(formattedRectEls[1]), "") === "" && correctness[2]) { // is there only numbers?
                     // and is the x2 slot correct?
-                    if ((parseInt(formattedRectEls[1])*parseInt(formattedX2)+"x") == (diamondElements[3])){
+                    if ((parseInt(formattedRectEls[1])*intX2+"x") == (diamondElements[3])){
                         correctness[1] = true;
                         colorRectangleInput(".ftk1", true);
                     }
@@ -253,10 +256,10 @@ define(
             }
             
             // Lastly, like checking for k1, but check for k2
-            if (!Number.isNaN(parseInt(formattedX2)) && formattedRectEls[3] !== null) {
+            if (!Number.isNaN(intX2) && formattedRectEls[3] !== null) {
                 if (formattedRectEls[3].replace(parseInt(formattedRectEls[3]), "") === "" && correctness[0]) { // is there only numbers?
                     // and is the x2 slot correct?
-                    if ((parseInt(formattedRectEls[3])*parseInt(formattedX1)+"x") === (diamondElements[1])){
+                    if ((parseInt(formattedRectEls[3])*formattedX1+"x") === (diamondElements[1])){
                         correctness[3] = true;
                         colorRectangleInput(".ftk2", true);
                     }
