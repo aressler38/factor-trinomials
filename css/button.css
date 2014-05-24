@@ -43,3 +43,39 @@
 .nav-buttons .btn:active {
     background:#8D4775; 
 }
+
+.nav-button {
+    position: relative;
+    display: inline-block; 
+    padding: 10px;
+    margin: 3px;
+    width: 5.5em;
+    line-height: 0.5em;
+    text-align: center;
+    font-size: 16px;
+    background: #5CE65C;
+    -webkit-box-shadow: 1px 4px 0px #296629;
+    -moz-box-shadow: 1px 4px 0px #296629;
+    box-shadow: 1px 4px 0px #296629;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+.nav-button-wrapper {
+    position: absolute;
+    width: 923px;
+    top: 276px; 
+    left: 2px;
+    padding-bottom: 20px;
+    z-index: 10;
+}
+
+#prev {
+    margin-right: 112px;
+}

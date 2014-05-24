@@ -209,6 +209,14 @@ header {
     position: relative;
     height: auto;
     width: 100%;
+    user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-drag: none;
+    -ms-user-drag: none;
+    -moz-user-drag: none;
+    -webkit-user-drag: none;
 }
 
 .expression-wrapper {
@@ -238,8 +246,7 @@ header {
 .bubble {
     background-color: #DBB84D;
     height: auto;
-    width: auto;
-    max-width: 715px;
+    width: 719px;
     padding: 13px;
     box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
     -moz-box-shadow: 1px 1px 5px rgba(0,0,0,0.5);

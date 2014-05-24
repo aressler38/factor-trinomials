@@ -8,37 +8,7 @@
     </head>
 
     <body>
-        <style>
-            .nav-button {
-                display:inline-block;
-                padding: 10px;
-                margin: 3px;
-                width: 3.5em;
-                line-height: 0.5em;
-                text-align: center;
-                font-size: 20px;
-                background: #99FF33;
-                -webkit-box-shadow: 1px 4px 0px #4C801A;
-                -moz-box-shadow: 1px 4px 0px #4C801A;
-                box-shadow: 1px 4px 0px #4C801A;
-                border-radius: 5px;
-                -webkit-border-radius: 5px;
-                -moz-border-radius: 5px;
-                -ms-user-select: none;
-                -moz-user-select: none;
-                -webkit-user-select: none;
-                user-select: none;
-                -ms-user-drag: none;
-                -moz-user-drag: none;
-                -webkit-user-drag: none;
-            }
-            .nav-button-wrapper {
-                position: absolute;
-                top: 20px;
-                left: 400px;
-                z-index:1000000;
-            }
-        </style>
+        <div id="exampleContainer"> </div>
         <div class="nav-button-wrapper">
             <div class="nav-button" id="prev">
                 <span class="icon-arrow-left"></span>
@@ -54,7 +24,6 @@
                 <span class="icon-arrow-right"></span>
             </div>
         </div>
-        <div id="exampleContainer"> </div>
 
         <script>
             require(["js/example.controller"],function(Examples){
@@ -65,6 +34,8 @@
                 var next        = document.getElementById("next");
                 var prev        = document.getElementById("prev");
                 var oldChild    = null;
+                var navWrapper  = document.querySelector(".nav-button-wrapper")
+
 
                 examples.set(-1);
                 clickNext();
@@ -95,9 +66,14 @@
                 function appendExample() {
                     container.innerHTML = "";
                     container.appendChild(example);
+                    renderNavButtons()
                 }
 
-
+                function renderNavButtons() {
+                    var diamondWrapper = document.querySelector(".ft-diamond")
+                    diamondWrapper.appendChild (navWrapper);
+                    
+                }
 
 
             });

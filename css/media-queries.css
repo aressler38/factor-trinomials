@@ -78,6 +78,20 @@
     }
     /* END HINTS */
 
+    .nav-button-wrapper {
+        top: 187px;
+        left: 9px;
+    }
+    .nav-button {
+        font-size: 10px;
+    }
+    #prev {
+        margin-right: 64px;
+    }
+    .bubble {
+        height: auto;
+        width: 500px;
+    }
 }
 
 
@@ -162,4 +176,21 @@
         font-size: 12px;
     }
     /* END HINTS */
+    
+    .bubble {
+        width: 295px;
+        height: auto;
+        font-size: 15px;
+        padding: 19px;
+    }
+    .nav-button-wrapper {
+        top: 149px;
+        left: 6px;
+    }
+    .nav-button {
+        font-size: 7px;
+    }
+    #prev {
+        margin-right: 57px;
+    }
 }

@@ -26,7 +26,9 @@
     top: 60px;
     left: 60px;
     box-shadow: 0px 0px 250px 0px blue;
-    background: #eeeeee;
+    background: beige;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
     z-index:10;
 }
 
