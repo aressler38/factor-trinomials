@@ -52,7 +52,8 @@ module.exports = function(grunt) {
         },
 
         /* Configured in build task file */
-        build: { all: { } }
+        build: { all: { } },
+        writeVersion: { all: {} }
         
     });
 
@@ -65,6 +66,6 @@ module.exports = function(grunt) {
 
     grunt.loadTasks( "build/tasks" );
 
-    grunt.registerTask("dist", ["jshint", "build:all", "uglify:main", "copy:css2android", "copy:fontdir"]);
+    grunt.registerTask("dist", ["jshint", "writeVersion:all", "build:all", "uglify:main", "copy:css2android", "copy:fontdir"]);
     grunt.registerTask("default", ["dist"]);
 }; 
