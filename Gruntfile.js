@@ -43,7 +43,12 @@ module.exports = function(grunt) {
                 cwd: "dist/css/icons",
                 src: "**",
                 dest: "factor-trinomials/www/css/icons"
+            },
+            htmlIndex: {
+                src: "dist.html",
+                dest: "dist/index.html"
             }
+
         },
 
         /* Configured in build task file */
@@ -56,7 +61,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks("grunt-contrib-uglify");
-    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks("grunt-contrib-copy");
 
     grunt.loadTasks( "build/tasks" );
 
