@@ -296,7 +296,6 @@ define(
             $(document.body).append($modal);
             $modal.find(".your-score").html("Score: "+model.get("score"));
             var $spans = $modal.find(".text span");
-            console.log($spans);
             $($spans[0]).html(rectEls[0]);
             $($spans[1]).html(rectEls[1]);
             $($spans[2]).html(rectEls[2]);
