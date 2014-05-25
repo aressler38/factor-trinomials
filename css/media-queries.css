@@ -23,12 +23,14 @@
         width: 240px;
         height: 230px;
     }
-    .ft-rectangle div {
+    .ft-rectangle div,
+    .ft-rectangle div span {
         width: 64px;
         height: 64px;
         line-height: 64px;
     }
-    .ft-rectangle .ftH {
+    .ft-rectangle .ftH, 
+    .ft-rectangle .ftH span {
         font-size: 10px;
         line-height: 10px;
     }
@@ -125,13 +127,15 @@
         height: 190px;
         font-size:14px;
     }
-    .ft-rectangle div {
+    .ft-rectangle div,
+    .ft-rectangle div span {
         width: 55px;
         height: 55px;
         font-size:14px;
         line-height:55px;
     }
-    .ft-rectangle .ftH {
+    .ft-rectangle .ftH,
+    .ft-rectangle .ftH span {
         font-size: 10px;
         line-height: 10px;
     }
