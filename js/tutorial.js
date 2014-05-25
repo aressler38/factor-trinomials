@@ -16,7 +16,6 @@ define([
         var prev        = $template.find("#prev")[0];
         var navWrapper  = $template[0];
 
-
         examples.set(-1);
         clickNext();
         $(container).addClass("tutorial container");
@@ -45,7 +44,8 @@ define([
 
         function appendExample() {
             container.innerHTML = "";
-            container.appendChild(example);
+            container.innerHTML = example.innerHTML;
+            //container.appendChild(example);
             renderNavButtons();
         }
 

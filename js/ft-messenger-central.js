@@ -613,6 +613,10 @@ define(
         appMessenger.on("getModel", function(callback) {
             return ((typeof callback === "function") ? callback(model) : false, model);
         });
+        // controlls tutorial state
+        appMessenger.on("ft-click-state", function(state) {
+            model.write("ft-click", state);
+        });
 
 
     }
