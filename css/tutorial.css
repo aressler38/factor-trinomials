@@ -31,6 +31,7 @@ body.tutorial .tutorial.container {
 body.tutorial .tutorial.container > div {
     margin-left: 10px;
 }
-body.tutorial .tutorial.container .ft-diamond {
+body.tutorial .tutorial.container{
+    font-size: 0;
     margin: 0;
 }
