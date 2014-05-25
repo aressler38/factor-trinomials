@@ -280,7 +280,8 @@ define(
             $(".ft-finalContainer").show();
 
             var $modal = $(templates.modal);
-            $modal.find(".front").html("Great! The factors are exactly: " + "<br/>" + "(" + rectEls[0] + rectEls[1] + ") (" + rectEls[2] + rectEls[3] + ") = " + $(".ft-trinomial span").html() + "<br/> <div><button id=\"next-button\">Next</button><div class=\"your-score\"></div></div>");
+            var $finalModal = $(templates.finalModal);
+            $modal.find(".front").html($finalModal);
 
             setTimeout(function(){
                 $(".ft-finalContainer button").attr("disabled", false);
@@ -294,6 +295,13 @@ define(
             model.write();
             $(document.body).append($modal);
             $modal.find(".your-score").html("Score: "+model.get("score"));
+            var $spans = $modal.find(".text span");
+            console.log($spans);
+            $($spans[0]).html(rectEls[0]);
+            $($spans[1]).html(rectEls[1]);
+            $($spans[2]).html(rectEls[2]);
+            $($spans[3]).html(rectEls[3]);
+            $($spans[4]).html($(".ft-trinomial span").html());
             
             
             function checkSimpleCases(str) {

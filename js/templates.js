@@ -8,8 +8,9 @@ define([
     "./text!../html/templates/hints.html",
     "./text!../html/templates/modal.html",
     "./text!../html/templates/trinomial.html",
-    "./text!../html/templates/example-ft.html"
-], function(numberPad, navButtons, header, finalContainer, rectangle, diamond, hints, modal, trinomial, examples ) {
+    "./text!../html/templates/example-ft.html",
+    "./text!../html/templates/finalModal.html"
+], function(numberPad, navButtons, header, finalContainer, rectangle, diamond, hints, modal, trinomial, examples, finalModal) {
     // TODO: can't have a line break in the function argument!!!!
 
     // NOTE: don't change the name of the 'templates' var, and you need to 
@@ -25,7 +26,8 @@ define([
         hints           : hints,
         modal           : modal,
         trinomial       : trinomial,
-        examples        : examples
+        examples        : examples,
+        finalModal      : finalModal
     };
     return templates;
 });
