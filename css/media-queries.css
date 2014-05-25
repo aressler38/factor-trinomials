@@ -91,16 +91,23 @@
         margin-right: 64px;
     }
     .bubble {
+        position: absolute;
         height: auto;
-        width: 500px;
+        width: 298px;
+        top: 0px;
+        left: 207px;
+        padding: 2px;
+        margin: 0px;
+        font-size: 13px;
+        z-index: 50;
     }
     .tutorial.nav-button {
-        top: 34px;
-        left: 432px;
+        top: 0px;
+        left: 272px;
     }
     body.tutorial .tutorial.nav-button {
-        top: 118px;
-        left: 23px;
+        top: 40px;
+        left: 11px;
         width: 4em;
         font-size: 12px;    
     }
@@ -219,7 +226,7 @@
     }
     body.tutorial .tutorial.nav-button {
         top: 39px;
-        left: 19px;
+        left: 11px;
         width: 3.5em;
         font-size: 10px;    
     }
