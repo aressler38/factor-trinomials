@@ -92,6 +92,10 @@
         height: auto;
         width: 500px;
     }
+    .tutorial.nav-button {
+        top: 34px;
+        left: 432px;
+    }
 }
 
 
@@ -192,5 +196,10 @@
     }
     #prev {
         margin-right: 57px;
+    }
+    .tutorial.nav-button {
+        top: 34px;
+        left: 352px;
+        font-size: 10px;
     }
 }

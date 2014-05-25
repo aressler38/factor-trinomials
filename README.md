@@ -28,6 +28,11 @@ To build the project run:
 
 Revision History
 ----------------
+1.3.x
+*****
+* Added Tutorial module.
+* Breakpoint support for 4, 5-7, and 7+ inch screens. 
+* Bugfixes.
 
 1.2.x
 *****
