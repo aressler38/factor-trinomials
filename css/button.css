@@ -65,6 +65,7 @@
     -ms-user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
+    cursor: pointer;
 }
 
 .nav-button-wrapper {
@@ -74,8 +75,4 @@
     left: 2px;
     padding-bottom: 20px;
     z-index: 10;
-}
-
-#prev {
-    margin-right: 112px;
 }
