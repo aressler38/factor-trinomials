@@ -24,9 +24,13 @@ define(
             if (!tutorialMode) {
                 tutorial = new Tutorial({ });
                 tutorial.insert();
+                $("body").addClass("tutorial");
+                tutorialStart.innerHTML = "Home";
             }
             else {
                 tutorial.remove();
+                $("body").removeClass("tutorial");
+                tutorialStart.innerHTML = "Tutorial";
             }
             tutorialMode = (tutorialMode) ? 0 : 1;
             return null;
