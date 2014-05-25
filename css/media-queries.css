@@ -98,6 +98,12 @@
         top: 34px;
         left: 432px;
     }
+    body.tutorial .tutorial.nav-button {
+        top: 118px;
+        left: 23px;
+        width: 4em;
+        font-size: 12px;    
+    }
 }
 
 
@@ -210,5 +216,11 @@
         top: 34px;
         left: 352px;
         font-size: 10px;
+    }
+    body.tutorial .tutorial.nav-button {
+        top: 39px;
+        left: 19px;
+        width: 3.5em;
+        font-size: 10px;    
     }
 }
