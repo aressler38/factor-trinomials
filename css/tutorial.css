@@ -20,7 +20,7 @@
 
 body.tutorial .tutorial.nav-button {
     top: 153px;
-    left: 30px;
+    left: 20px;
     font-size: 1.5em;
     width: 3.5em;
 }
@@ -31,7 +31,6 @@ body.tutorial .tutorial.container {
 body.tutorial .tutorial.container > div {
     margin-left: 10px;
 }
-body.tutorial .tutorial.container{
-    font-size: 0;
+body.tutorial .tutorial.container .ft-diamond {
     margin: 0;
 }

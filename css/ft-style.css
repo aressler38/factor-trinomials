@@ -73,6 +73,7 @@ header {
     padding: 25px 25px 25px 25px;
     font-weight:bold;
     cursor:default;
+    font-size: 16px;
 }
 .ft-trinomial > span{
     padding: 15px;
