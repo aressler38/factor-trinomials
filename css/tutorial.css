@@ -1,0 +1,19 @@
+.tutorial.nav-button {
+    position:absolute;
+    top: 25px;
+    left: 400px;
+    z-index: 223456789;
+}
+#prev {
+    margin-right: 112px;
+}
+
+.tutorial.container {
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    position: absolute;
+    z-index: 123456789;
+    background: white;
+}
