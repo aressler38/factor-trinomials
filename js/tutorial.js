@@ -54,14 +54,6 @@ define([
             diamondWrapper.appendChild(navWrapper);
         }
 
-        this.destroy = function() {
-            this.remove();
-            delete container;
-            delete next;
-            delete prev;
-            delete navWrapper;
-            return null;
-        };
         this.insert = insert;
         this.remove = remove;
     }
