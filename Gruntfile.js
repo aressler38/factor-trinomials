@@ -66,6 +66,6 @@ module.exports = function(grunt) {
 
     grunt.loadTasks( "build/tasks" );
 
-    grunt.registerTask("dist", ["jshint", "writeVersion:all", "build:all", "uglify:main", "copy:css2android", "copy:fontdir"]);
+    grunt.registerTask("dist", ["jshint", "writeVersion:all", "build:all", "uglify:main", "copy:css2android", "copy:fontdir", "copy:htmlIndex"]);
     grunt.registerTask("default", ["dist"]);
 }; 
