@@ -1,6 +1,6 @@
 {
     "name": "FactorQuadratics",
-    "version": "1.3.224",
+    "version": "1.3.253",
     "app": {
         "launch": {
             "local_path": "dist/index.html"
