@@ -4,31 +4,23 @@
     top: 0px;
     border: 1px solid #666;
     border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
     box-shadow: 3px 3px 5px 6px #666;
-    -moz-box-shadow: 3px 3px 5px 6px #666;
-    -webkit-box-shadow: 3px 3px 5px 6px #666;
     background-color: #DDE;
     width: 230px;
     padding: 4px;
     height: auto;
     cursor:pointer;
     -webkit-tap-highlight-color: transparent;
-    z-index:323456789;
+    z-index:1000;
 }
 .number {
     -webkit-transform: translate3d(0px,0px,0px);
     display: inline-block;
     position:relative;
     background: #FF4719;
-    -webkit-box-shadow: 1px 4px 0px #B22400;
-    -moz-box-shadow: 1px 4px 0px #B22400;
     box-shadow: 1px 4px 0px #B22400;
     border: 1px solid #A20000;
     border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
     margin: 4px;
     width: 1.5em; 
     height: 1.5em; 
@@ -60,8 +52,6 @@
 }
 .number.operator {
     background: #00FFCC;
-    -moz-box-shadow: 1px 4px 0px #00997a;
-    -webkit-box-shadow: 1px 4px 0px #00997a;
     box-shadow: 1px 4px 0px #00997a;
     border: 1px solid #00997a;
 }
@@ -74,8 +64,6 @@
     content: "\2714";
 }
 .number.clr {
-    -moz-box-shadow: 1px 4px 0px #aa0;
-    -webkit-box-shadow: 1px 4px 0px #aa0;
     box-shadow: 1px 4px 0px #aa0;
     background: #ff0;
     font-style: normal;

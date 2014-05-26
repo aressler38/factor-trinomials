@@ -9,13 +9,9 @@
     position: relative;
     cursor: pointer;
     border-radius: 24px;
-    -webkit-border-radius: 24px;
-    -moz-border-radius: 24px;
     margin: 0 7px 11px 0;
     text-align: center;
     transition: all 0.2s ease0;
-    -webkit-transition: all 0.2s ease0;
-    -moz-transition: all 0.2s ease0;
     font: bold 14px Arial, sans-serif;
     width: 150px;
     line-height: 36px;
@@ -54,13 +50,8 @@
     text-align: center;
     font-size: 16px;
     background: #5CE65C;
-    -webkit-box-shadow: 1px 4px 0px #296629;
-    -moz-box-shadow: 1px 4px 0px #296629;
     box-shadow: 1px 4px 0px #296629;
     border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -ms-border-radius: 5px;
     user-select: none;
     -ms-user-select: none;
     -moz-user-select: none;

@@ -2,7 +2,7 @@
     position:absolute;
     top: 19px;
     left: 382px;
-    z-index: 223456789;
+    z-index: 999;
 }
 #prev {
     margin-right: 112px;
@@ -14,10 +14,13 @@
     right: 0px;
     bottom: 0px;
     position: absolute;
-    z-index: 123456789;
+    z-index: 1100;
     background: white;
 }
 
+body.tutorial .tutorial.nav-button{
+    z-index:2000;
+}
 body.tutorial .tutorial.container {
     margin: 0;
     padding: 0;
