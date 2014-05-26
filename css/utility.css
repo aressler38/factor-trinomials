@@ -75,7 +75,6 @@
 
 .flash {
     border-color:green;
-    background:yellow;
     box-shadow: 0px 0px 3px 4px green;
     z-index:100;
 }
@@ -84,9 +83,55 @@
     background: red;
 }
 .flash.blue {
-    box-shadow: 0px 0px 3px 4px green, inset 0px 0px 20px 5px blue;
+    box-shadow: 0px 0px 3px 4px green, inset 0px 0px 20px 5px rgba(0,0,255, 0.75);
     background: lightblue;
 }
+
+.flash.factor {
+    box-shadow: 0px 0px 3px 4px orange, inset 0px 0px 20px 5px rgba(123,123,255, 0.75);
+    background: lightorange;
+}
+
+@-webkit-keyframes outerglow {
+    0.0% {
+        box-shadow: 0px 0px 3px 4px green;
+    }
+    50% {
+        box-shadow: 0px 0px 3px 4px orange;
+    }
+    100% {
+        box-shadow: 0px 0px 3px 4px green;
+    }
+}
+
+@-webkit-keyframes innerglow {
+    0.0% {
+        box-shadow: inset 0px 0px 3px 4px blue;
+        background: lightblue;
+    }
+    50% {
+        box-shadow: inset 0px 0px 3px 4px orange;
+        background: rgba(100, 0, 200, 0.4);
+    }
+    100% {
+        box-shadow: inset 0px 0px 3px 4px blue;
+        background: lightblue;
+    }
+}
+.flash.innerglow {
+    -webkit-animation: innerglow 2s infinite;
+    animation: innerglow 2s infinite;
+}
+
+.flash.outerglow {
+    -webkit-animation: outerglow 2s infinite;
+    animation: outerglow 2s infinite;
+}
+.flash.delay {
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+}
+
 
 /* END FLASH HINT CSS */
 
@@ -99,8 +144,6 @@
 /* DIVIDERS */
 .hr-divider {
     border-width: 0px;
-
-
 }
 /* END DIVIDERS */
 
