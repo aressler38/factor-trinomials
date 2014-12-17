@@ -33,6 +33,7 @@ Revision History
 * Added Tutorial module.
 * Breakpoint support for 4, 5-7, and 7+ inch screens. 
 * Bugfixes.
+* Updated to Apache Cordova 3.6.3-0.2.13
 
 1.2.x
 *****
